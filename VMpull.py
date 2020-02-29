@@ -20,7 +20,7 @@ newImg = encodedImg["VM"]
 #replace for GUI functionalities
 print("Input name to save")
 saveName = input()
-saveName = saveName + ".vmdk"
+saveName = saveName + ".ova"
 
 with open(saveName, "wb") as decoded_image:
 	decoded_image.write(base64.decodebytes(newImg))
