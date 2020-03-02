@@ -9,8 +9,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 import os, sys
+import base64
+from pymongo import MongoClient 
+from bson.objectid import ObjectId
 
 class Ui_Export(object):
+
     # Opens file browser on browse button click
     def fileBrowser(self):
         options = QFileDialog.Options()
@@ -23,12 +27,16 @@ class Ui_Export(object):
             if os.sep == '\\':
                 self.path = self.path.replace('/', '\\')
                 self.destinationDirectoryLINEEDIT.setText(self.path)
+                os.chdir(self.path)
             return self.path
         else:
             self.destinationDirectoryLINEEDIT.setText(self.path)
             return ""
             
     def setupUi(self, Export):
+        client = MongoClient("mongodb+srv://user:password@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
+        db = client.Test
+        data = db["Demo"]
         Export.setObjectName("Export")
         Export.resize(622, 479)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
@@ -70,19 +78,14 @@ class Ui_Export(object):
         self.databseTREEWIDGET = QtWidgets.QTreeWidget(self.widget)
         self.databseTREEWIDGET.setObjectName("databseTREEWIDGET")
         self.databseTREEWIDGET.headerItem().setText(0, "1")
-        item_0 = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
-        item_0.setCheckState(0, QtCore.Qt.Checked)
-        item_0.setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
-        item_1.setCheckState(0, QtCore.Qt.Checked)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
-        item_1.setCheckState(0, QtCore.Qt.Checked)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
-        item_1.setCheckState(0, QtCore.Qt.Checked)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
-        item_1.setCheckState(0, QtCore.Qt.Checked)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
-        item_1.setCheckState(0, QtCore.Qt.Checked)
+        for collection in data.find():
+            item_0 = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
+            item_0.setCheckState(0, QtCore.Qt.Checked)
+            item_0.setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate)
+            for key in collection:
+                if(key!="_id" and key!="name"):
+                    item_1 = QtWidgets.QTreeWidgetItem(item_0)
+                    item_1.setCheckState(0, QtCore.Qt.Checked)                   
         self.databseTREEWIDGET.header().setVisible(False)
         self.verticalLayout_2.addWidget(self.databseTREEWIDGET)
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
@@ -102,18 +105,25 @@ class Ui_Export(object):
         QtCore.QMetaObject.connectSlotsByName(Export)
 
     def retranslateUi(self, Export):
+        j = 0
+        i = 0
+        client = MongoClient("mongodb+srv://user:password@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
+        db = client.Test
+        data = db["Demo"]
         _translate = QtCore.QCoreApplication.translate
         Export.setWindowTitle(_translate("Export", "Export"))
         self.destinationDirectoryLABEL.setText(_translate("Export", "Destination Directory:"))
         self.browserBUTTON.setText(_translate("Export", "Browse"))
         __sortingEnabled = self.databseTREEWIDGET.isSortingEnabled()
         self.databseTREEWIDGET.setSortingEnabled(False)
-        self.databseTREEWIDGET.topLevelItem(0).setText(0, _translate("Export", "New Item"))
-        self.databseTREEWIDGET.topLevelItem(0).child(0).setText(0, _translate("Export", "New Subitem"))
-        self.databseTREEWIDGET.topLevelItem(0).child(1).setText(0, _translate("Export", "New Item"))
-        self.databseTREEWIDGET.topLevelItem(0).child(2).setText(0, _translate("Export", "New Item"))
-        self.databseTREEWIDGET.topLevelItem(0).child(3).setText(0, _translate("Export", "New Item"))
-        self.databseTREEWIDGET.topLevelItem(0).child(4).setText(0, _translate("Export", "New Item"))
+        for collection in data.find():
+            j=0
+            self.databseTREEWIDGET.topLevelItem(i).setText(0, _translate("Export", collection['name']))
+            for key in collection:
+                if(key!="_id" and key!="name"):
+                    self.databseTREEWIDGET.topLevelItem(i).child(j).setText(0, _translate("Export", key))
+                    j+=1
+            i+=1  
         self.databseTREEWIDGET.setSortingEnabled(__sortingEnabled)
         self.backBUTTON.setText(_translate("Export", "Back"))
         self.exportBUTTON.setText(_translate("Export", "Export"))
