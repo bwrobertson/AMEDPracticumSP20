@@ -32,11 +32,14 @@ class Ui_Export(object):
         else:
             self.destinationDirectoryLINEEDIT.setText(self.path)
             return ""
-            
+
     def setupUi(self, Export):
-        client = MongoClient("mongodb+srv://user:password@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
+        client = MongoClient("mongodb+srv://user:pass@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
         db = client.Test
         data = db["Demo"]
+        x=0
+        y=0
+        self.tree={}
         Export.setObjectName("Export")
         Export.resize(622, 479)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
@@ -79,13 +82,15 @@ class Ui_Export(object):
         self.databseTREEWIDGET.setObjectName("databseTREEWIDGET")
         self.databseTREEWIDGET.headerItem().setText(0, "1")
         for collection in data.find():
-            item_0 = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
-            item_0.setCheckState(0, QtCore.Qt.Checked)
-            item_0.setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate)
+            self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
+            self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
+            self.tree["parent{0}".format(x)].setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate)
             for key in collection:
                 if(key!="_id" and key!="name"):
-                    item_1 = QtWidgets.QTreeWidgetItem(item_0)
-                    item_1.setCheckState(0, QtCore.Qt.Checked)                   
+                    self.tree["child{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(x)])
+                    self.tree["child{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+                    y+=1
+            x+=1                   
         self.databseTREEWIDGET.header().setVisible(False)
         self.verticalLayout_2.addWidget(self.databseTREEWIDGET)
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
@@ -98,6 +103,7 @@ class Ui_Export(object):
         self.horizontalLayout_2.addItem(spacerItem)
         self.exportBUTTON = QtWidgets.QPushButton(self.widget)
         self.exportBUTTON.setObjectName("exportBUTTON")
+        self.exportBUTTON.clicked.connect(self.check_status)
         self.horizontalLayout_2.addWidget(self.exportBUTTON)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
 
@@ -107,7 +113,7 @@ class Ui_Export(object):
     def retranslateUi(self, Export):
         j = 0
         i = 0
-        client = MongoClient("mongodb+srv://user:password@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
+        client = MongoClient("mongodb+srv://user:pass@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
         db = client.Test
         data = db["Demo"]
         _translate = QtCore.QCoreApplication.translate
@@ -128,6 +134,33 @@ class Ui_Export(object):
         self.backBUTTON.setText(_translate("Export", "Back"))
         self.exportBUTTON.setText(_translate("Export", "Export"))
 
+    def check_status(self):
+        print("Export Clicked")
+        client = MongoClient("mongodb+srv://user:pass@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
+        db = client.Test
+        data = db["Demo"]
+        x=0
+        y=0
+        fileName = ""
+        fileContent = ""
+        for collection in data.find():
+            #if (self.tree["parent{0}".format(x)] == QtCore.Qt.Checked):
+            for key in collection:
+                if(key!="_id" and key!="name"):
+                    if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
+                        fileName = collection["name"] + key
+                        fileContent = collection[key]
+                        if(key == "PCAP"):
+                            fileName = fileName + ".pcap"
+                        elif(key == "log"):
+                            fileName = fileName + ".log"
+                        else:
+                            fileName = fileName + ".jpg"
+                        with open(fileName, "wb") as decoded_image:
+                            decoded_image.write(base64.decodebytes(fileContent))
+                            print(fileName + " written to " + self.path)
+                    y+=1
+            x+=1          
 
 if __name__ == "__main__":
     import sys
