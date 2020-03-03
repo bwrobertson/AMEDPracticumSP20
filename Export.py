@@ -12,6 +12,8 @@ import os, sys
 import base64
 from pymongo import MongoClient 
 from bson.objectid import ObjectId
+from zipfile import ZipFile
+
 
 class Ui_Export(object):
 
@@ -136,31 +138,34 @@ class Ui_Export(object):
 
     def check_status(self):
         print("Export Clicked")
-        client = MongoClient("mongodb+srv://user:pass@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
         db = client.Test
         data = db["Demo"]
         x=0
         y=0
         fileName = ""
         fileContent = ""
-        for collection in data.find():
-            #if (self.tree["parent{0}".format(x)] == QtCore.Qt.Checked):
-            for key in collection:
-                if(key!="_id" and key!="name"):
-                    if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
-                        fileName = collection["name"] + key
-                        fileContent = collection[key]
-                        if(key == "PCAP"):
-                            fileName = fileName + ".pcap"
-                        elif(key == "log"):
-                            fileName = fileName + ".log"
-                        else:
-                            fileName = fileName + ".jpg"
-                        with open(fileName, "wb") as decoded_image:
-                            decoded_image.write(base64.decodebytes(fileContent))
-                            print(fileName + " written to " + self.path)
-                    y+=1
-            x+=1          
+        with ZipFile('test.zip', 'w') as newzip:
+            for collection in data.find():
+                #if (self.tree["parent{0}".format(x)] == QtCore.Qt.Checked):
+                for key in collection:
+                    if(key!="_id" and key!="name"):
+                        if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
+                            fileName = collection["name"] + key
+                            fileContent = collection[key]
+                            if(key == "PCAP"):
+                                fileName = fileName + ".pcap"
+                            elif(key == "log"):
+                                fileName = fileName + ".log"
+                            else:
+                                fileName = fileName + ".jpg"
+                            with open(fileName, "wb") as decoded_image:
+                                decoded_image.write(base64.decodebytes(fileContent))
+                                print(fileName + " written to " + self.path)
+                                newzip.write(fileName)
+                            os.remove(fileName)
+                        y+=1
+                x+=1          
 
 if __name__ == "__main__":
     import sys
