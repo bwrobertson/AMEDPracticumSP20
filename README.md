@@ -6,3 +6,5 @@ Plugins Required
 Databases:
 Pymongo
 
+GUI:
+PyQT5
