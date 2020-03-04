@@ -5,7 +5,9 @@
 # Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
-
+############################################
+#           Changes Start Here             #
+############################################
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 import os, sys
@@ -13,8 +15,9 @@ import base64
 from pymongo import MongoClient 
 from bson.objectid import ObjectId
 from zipfile import ZipFile
-
-
+############################################
+#           Changes End   Here             #
+############################################
 class Ui_Export(object):
 
     # Opens file browser on browse button click
@@ -24,12 +27,19 @@ class Ui_Export(object):
         self.dialog.setOptions(options)
         self.path = str(QFileDialog.getExistingDirectory(self.dialog, "Select Directory"))
         
+        ############################################
+        #           Changes Start Here             #
+        ############################################
+        
         if self.path:
         #If Windows, change the separator
             if os.sep == '\\':
                 self.path = self.path.replace('/', '\\')
                 self.destinationDirectoryLINEEDIT.setText(self.path)
                 os.chdir(self.path)
+                ############################################
+                #           Changes End   Here             #
+                ############################################
             return self.path
         else:
             self.destinationDirectoryLINEEDIT.setText(self.path)
@@ -83,6 +93,9 @@ class Ui_Export(object):
         self.databseTREEWIDGET = QtWidgets.QTreeWidget(self.widget)
         self.databseTREEWIDGET.setObjectName("databseTREEWIDGET")
         self.databseTREEWIDGET.headerItem().setText(0, "1")
+        ############################################
+        #           Changes Start Here             #
+        ############################################
         for collection in data.find():
             self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
             self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
@@ -92,7 +105,10 @@ class Ui_Export(object):
                     self.tree["child{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(x)])
                     self.tree["child{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
                     y+=1
-            x+=1                   
+            x+=1    
+        ############################################
+        #           Changes End   Here             #
+        ############################################
         self.databseTREEWIDGET.header().setVisible(False)
         self.verticalLayout_2.addWidget(self.databseTREEWIDGET)
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
@@ -113,17 +129,27 @@ class Ui_Export(object):
         QtCore.QMetaObject.connectSlotsByName(Export)
 
     def retranslateUi(self, Export):
+        ############################################
+        #           Changes Start Here             #
+        ############################################
+        
         j = 0
         i = 0
         client = MongoClient("mongodb+srv://user:pass@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
         db = client.Test
         data = db["Demo"]
+        ############################################
+        #           Changes End   Here             #
+        ############################################
         _translate = QtCore.QCoreApplication.translate
         Export.setWindowTitle(_translate("Export", "Export"))
         self.destinationDirectoryLABEL.setText(_translate("Export", "Destination Directory:"))
         self.browserBUTTON.setText(_translate("Export", "Browse"))
         __sortingEnabled = self.databseTREEWIDGET.isSortingEnabled()
         self.databseTREEWIDGET.setSortingEnabled(False)
+        ############################################
+        #           Changes Start Here             #
+        ############################################
         for collection in data.find():
             j=0
             self.databseTREEWIDGET.topLevelItem(i).setText(0, _translate("Export", collection['name']))
@@ -131,11 +157,17 @@ class Ui_Export(object):
                 if(key!="_id" and key!="name"):
                     self.databseTREEWIDGET.topLevelItem(i).child(j).setText(0, _translate("Export", key))
                     j+=1
-            i+=1  
+            i+=1
+        ############################################
+        #           Changes End   Here             #
+        ############################################
         self.databseTREEWIDGET.setSortingEnabled(__sortingEnabled)
         self.backBUTTON.setText(_translate("Export", "Back"))
         self.exportBUTTON.setText(_translate("Export", "Export"))
 
+        ############################################
+        #           Changes Start Here             #
+        ############################################
     def check_status(self):
         print("Export Clicked")
         client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
@@ -166,7 +198,9 @@ class Ui_Export(object):
                             os.remove(fileName)
                         y+=1
                 x+=1          
-
+############################################
+#           Changes End   Here             #
+############################################
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
