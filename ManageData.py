@@ -131,6 +131,13 @@ class Ui_ManageData(object):
         self.horizontalLayout_2.addItem(spacerItem1)
         self.exportBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.exportBUTTON.setObjectName("exportBUTTON")
+        ############################################
+        #           Changes Start Here             #
+        ############################################        
+        self.exportBUTTON.clicked.connect(self.check_status)
+        ############################################
+        #           Changes End   Here             #
+        ############################################
         self.horizontalLayout_2.addWidget(self.exportBUTTON)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
 
