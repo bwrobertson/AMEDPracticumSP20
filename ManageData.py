@@ -42,7 +42,7 @@ class Ui_ManageData(object):
         ############################################
         #           Changes Start Here             #
         ############################################
-        client = MongoClient("mongodb+srv://user:pass@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test") 
         db = client.Test
         data = db["Demo"]
         x=0
@@ -134,12 +134,17 @@ class Ui_ManageData(object):
         ############################################
         #           Changes Start Here             #
         ############################################        
-        self.exportBUTTON.clicked.connect(self.check_status)
+        self.exportBUTTON.clicked.connect(self.progress)
         ############################################
         #           Changes End   Here             #
         ############################################
         self.horizontalLayout_2.addWidget(self.exportBUTTON)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
+
+        self.progressBar = QtWidgets.QProgressBar(self.layoutWidget)
+        self.progressBar.setProperty("value", 0)
+        self.progressBar.setObjectName("progressBar")
+        self.verticalLayout_3.addWidget(self.progressBar)
 
         self.retranslateUi(ManageData)
         QtCore.QMetaObject.connectSlotsByName(ManageData)
@@ -150,7 +155,7 @@ class Ui_ManageData(object):
         ############################################
         j = 0
         i = 0
-        client = MongoClient("mongodb+srv://user:pass@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test") 
         db = client.Test
         data = db["Demo"]
         ############################################
@@ -184,9 +189,65 @@ class Ui_ManageData(object):
     ############################################
     #           Changes Start Here             #
     ############################################
+
+    def progress(self):
+        """url = "http://localhost/practicum/TEST2.pdf"
+        file_name = "TEST2.pdf"
+        r = requests.get(url, stream = True) #get url request"""
+
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test") 
+        db = client.Test
+        data = db["Demo"]
+        self.count = 0
+        numFiles = 0
+        x=0
+        y=0
+        for collection in data.find():
+                #if (self.tree["parent{0}".format(x)] == QtCore.Qt.Checked):
+                for key in collection:
+                    if(key!="_id" and key!="name"):
+                        if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
+                            numFiles+=1
+                        y+=1
+           
+        tickSize = 100/numFiles
+        print(tickSize)
+        x=0
+        y=0
+        fileName = ""
+        fileContent = ""
+        with ZipFile('test.zip', 'w') as newzip:
+            for collection in data.find():
+                #if (self.tree["parent{0}".format(x)] == QtCore.Qt.Checked):
+                for key in collection:
+                    if(key!="_id" and key!="name"):
+                        if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
+                            fileName = collection["name"] + key
+                            fileContent = collection[key]
+                            if(key == "PCAP"):
+                                fileName = fileName + ".pcap"
+                            elif(key == "log"):
+                                fileName = fileName + ".log"
+                            else:
+                                fileName = fileName + ".jpg"
+                            with open(fileName, "wb") as decoded_image:
+                                decoded_image.write(base64.decodebytes(fileContent))
+                                print(fileName + " written to " + self.path)
+                                newzip.write(fileName)
+                            os.remove(fileName)
+                            self.count+=tickSize
+                            print(self.count)
+                            self.progressBar.setValue(self.count)
+                        y+=1
+                x+=1          
+
+
+        return
+
+
     def check_status(self):
-        print("Export Clicked")
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test?retryWrites=true&w=majority") 
+        #print("Export Clicked")
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test") 
         db = client.Test
         data = db["Demo"]
         x=0
