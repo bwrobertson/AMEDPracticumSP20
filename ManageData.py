@@ -18,6 +18,10 @@ class Ui_ManageData(object):
     #           Changes Start Here             #
     ############################################
     # Opens a file browser window
+    def exportButtonStatus(self, path):
+        if os.path.exists(path):
+            self.exportBUTTON.setEnabled(True)
+
     def fileBrowser(self):
         options = QFileDialog.Options()
         self.dialog = QFileDialog()
@@ -126,6 +130,7 @@ class Ui_ManageData(object):
         self.horizontalLayout_2.addItem(spacerItem)
         self.deleteBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.deleteBUTTON.setObjectName("deleteBUTTON")
+        self.deleteBUTTON.clicked.connect(self.deleteSelected)
         self.horizontalLayout_2.addWidget(self.deleteBUTTON)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem1)
@@ -133,7 +138,9 @@ class Ui_ManageData(object):
         self.exportBUTTON.setObjectName("exportBUTTON")
         ############################################
         #           Changes Start Here             #
-        ############################################        
+        ############################################     
+        self.exportBUTTON.setEnabled(False)
+        self.destinationDirectoryLINEEDIT.textChanged.connect(self.exportButtonStatus)   
         self.exportBUTTON.clicked.connect(self.progress)
         ############################################
         #           Changes End   Here             #
@@ -191,10 +198,6 @@ class Ui_ManageData(object):
     ############################################
 
     def progress(self):
-        """url = "http://localhost/practicum/TEST2.pdf"
-        file_name = "TEST2.pdf"
-        r = requests.get(url, stream = True) #get url request"""
-
         client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test") 
         db = client.Test
         data = db["Demo"]
@@ -210,7 +213,7 @@ class Ui_ManageData(object):
                             numFiles+=1
                         y+=1
            
-        tickSize = 100/numFiles
+        tickSize = int(100/numFiles)
         print(tickSize)
         x=0
         y=0
@@ -245,36 +248,21 @@ class Ui_ManageData(object):
         return
 
 
-    def check_status(self):
-        #print("Export Clicked")
+    def deleteSelected(self):
+        #Not yet completed
         client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test") 
         db = client.Test
         data = db["Demo"]
-        x=0
+        self.count = 0
+        numFiles = 0
         y=0
-        fileName = ""
-        fileContent = ""
-        with ZipFile('test.zip', 'w') as newzip:
-            for collection in data.find():
-                #if (self.tree["parent{0}".format(x)] == QtCore.Qt.Checked):
-                for key in collection:
-                    if(key!="_id" and key!="name"):
-                        if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
-                            fileName = collection["name"] + key
-                            fileContent = collection[key]
-                            if(key == "PCAP"):
-                                fileName = fileName + ".pcap"
-                            elif(key == "log"):
-                                fileName = fileName + ".log"
-                            else:
-                                fileName = fileName + ".jpg"
-                            with open(fileName, "wb") as decoded_image:
-                                decoded_image.write(base64.decodebytes(fileContent))
-                                print(fileName + " written to " + self.path)
-                                newzip.write(fileName)
-                            os.remove(fileName)
-                        y+=1
-                x+=1          
+        for collection in data.find():
+            for key in collection:
+                if(key!="_id" and key!="name"):
+                    if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
+                        data.delete_one(key)
+                    y+=1
+    
     ############################################
     #           Changes End   Here             #
     ############################################
