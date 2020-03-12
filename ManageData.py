@@ -6,9 +6,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 import os, sys
 import base64
-from pymongo import MongoClient 
+from pymongo import MongoClient
 from bson.objectid import ObjectId
 from zipfile import ZipFile
+from datetime import date
 ############################################
 #           Changes End   Here             #
 ############################################
@@ -27,7 +28,7 @@ class Ui_ManageData(object):
         self.dialog = QFileDialog()
         self.dialog.setOptions(options)
         self.path = str(QFileDialog.getExistingDirectory(self.dialog, "Select Directory"))
-        
+
         if self.path:
         #If Windows, change the separator
             if os.sep == '\\':
@@ -46,7 +47,7 @@ class Ui_ManageData(object):
         ############################################
         #           Changes Start Here             #
         ############################################
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test") 
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Demo"]
         x=0
@@ -114,7 +115,7 @@ class Ui_ManageData(object):
                     self.tree["child{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(x)])
                     self.tree["child{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
                     y+=1
-            x+=1    
+            x+=1
         ############################################
         #           Changes End   Here             #
         ############################################
@@ -138,9 +139,9 @@ class Ui_ManageData(object):
         self.exportBUTTON.setObjectName("exportBUTTON")
         ############################################
         #           Changes Start Here             #
-        ############################################     
+        ############################################
         self.exportBUTTON.setEnabled(False)
-        self.destinationDirectoryLINEEDIT.textChanged.connect(self.exportButtonStatus)   
+        self.destinationDirectoryLINEEDIT.textChanged.connect(self.exportButtonStatus)
         self.exportBUTTON.clicked.connect(self.progress)
         ############################################
         #           Changes End   Here             #
@@ -162,7 +163,7 @@ class Ui_ManageData(object):
         ############################################
         j = 0
         i = 0
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test") 
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Demo"]
         ############################################
@@ -198,7 +199,7 @@ class Ui_ManageData(object):
     ############################################
 
     def progress(self):
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test") 
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Demo"]
         self.count = 0
@@ -212,14 +213,17 @@ class Ui_ManageData(object):
                         if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
                             numFiles+=1
                         y+=1
-           
+
         tickSize = int(100/numFiles)
         print(tickSize)
         x=0
         y=0
         fileName = ""
         fileContent = ""
-        with ZipFile('test.zip', 'w') as newzip:
+        today = date.today()
+        today = today.strftime("%d%b%Y")
+        zipName = str(today) + "Scenario.zip"
+        with ZipFile(zipName, 'w') as newzip:
             for collection in data.find():
                 #if (self.tree["parent{0}".format(x)] == QtCore.Qt.Checked):
                 for key in collection:
@@ -227,12 +231,7 @@ class Ui_ManageData(object):
                         if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
                             fileName = collection["name"] + key
                             fileContent = collection[key]
-                            if(key == "PCAP"):
-                                fileName = fileName + ".pcap"
-                            elif(key == "log"):
-                                fileName = fileName + ".log"
-                            else:
-                                fileName = fileName + ".jpg"
+                            fileName = fileName.replace(";",".")
                             with open(fileName, "wb") as decoded_image:
                                 decoded_image.write(base64.decodebytes(fileContent))
                                 print(fileName + " written to " + self.path)
@@ -242,7 +241,8 @@ class Ui_ManageData(object):
                             print(self.count)
                             self.progressBar.setValue(self.count)
                         y+=1
-                x+=1          
+                x+=1
+            self.progressBar.setValue(100)
 
 
         return
@@ -250,19 +250,21 @@ class Ui_ManageData(object):
 
     def deleteSelected(self):
         #Not yet completed
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test") 
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Demo"]
         self.count = 0
-        numFiles = 0
+        deletion = ""
         y=0
         for collection in data.find():
             for key in collection:
                 if(key!="_id" and key!="name"):
                     if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
-                        data.delete_one(key)
+                        deletion = {key: collection[key]}
+                        data.delete_one(deletion)
+                        #ManageData.update()
                     y+=1
-    
+
     ############################################
     #           Changes End   Here             #
     ############################################
@@ -275,4 +277,3 @@ if __name__ == "__main__":
     ui.setupUi(ManageData)
     ManageData.show()
     sys.exit(app.exec_())
-
