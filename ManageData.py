@@ -27,15 +27,20 @@ class Ui_ManageData(object):
         options = QFileDialog.Options()
         self.dialog = QFileDialog()
         self.dialog.setOptions(options)
-        self.path = str(QFileDialog.getExistingDirectory(self.dialog, "Select Directory"))
+        self.path = str(QFileDialog.getExistingDirectory(self.dialog, "Select Directory")) 
 
         if self.path:
-        #If Windows, change the separator
-            if os.sep == '\\':
+            #If Windows, change the separator
+            if self.path == 'C:\\':
                 self.path = self.path.replace('/', '\\')
                 self.destinationDirectoryLINEEDIT.setText(self.path)
                 os.chdir(self.path)
-            return self.path
+                return self.path
+            # if Linux-based
+            else:
+                self.destinationDirectoryLINEEDIT.setText(self.path)
+                os.chdir(self.path)
+                return self.path    
         else:
             self.destinationDirectoryLINEEDIT.setText(self.path)
             return ""
