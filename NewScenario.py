@@ -7,22 +7,8 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from ManageVulnerablePrograms import Ui_ManageVulnerablePrograms
-from ManageExploits import Ui_ManageExploits
 
 class Ui_NewScenario(object):
-
-    # function to open either manage vulnerable programs window
-    # or exploits window
-    # param windowName is passed via lambda expression to indicate which window to open
-    def openWindow(self, windowName):
-        self.window = QtWidgets.QWidget()
-        if windowName == "VulnerableProgramsWindow":
-            self.ui = Ui_ManageVulnerablePrograms()
-        else:
-            self.ui = Ui_ManageExploits()
-        self.ui.setupUi(self.window)
-        self.window.show()
 
     def setupUi(self, NewScenario):
         NewScenario.setObjectName("NewScenario")
@@ -67,10 +53,6 @@ class Ui_NewScenario(object):
         self.exploitBrowseBUTTON = QtWidgets.QPushButton(self.widget)
         self.exploitBrowseBUTTON.setObjectName("exploitBrowseBUTTON")
         self.horizontalLayout.addWidget(self.exploitBrowseBUTTON)
-        
-        # added signal to display manage exploits window 
-        self.exploitBrowseBUTTON.clicked.connect(lambda: self.openWindow("ExploitWindow"))
-
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.verticalLayout_4.addLayout(self.verticalLayout_2)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
@@ -89,10 +71,6 @@ class Ui_NewScenario(object):
         self.vulnerableProgramBrowseBUTTON = QtWidgets.QPushButton(self.widget)
         self.vulnerableProgramBrowseBUTTON.setObjectName("vulnerableProgramBrowseBUTTON")
         self.horizontalLayout_2.addWidget(self.vulnerableProgramBrowseBUTTON)
-
-        # added signal to display vulnerable programs window
-        self.vulnerableProgramBrowseBUTTON.clicked.connect(lambda: self.openWindow("VulnerableProgramsWindow"))
-
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
         self.verticalLayout_4.addLayout(self.verticalLayout_3)
         self.verticalLayout_5.addLayout(self.verticalLayout_4)
