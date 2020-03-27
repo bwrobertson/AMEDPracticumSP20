@@ -146,8 +146,6 @@ class Ui_MainWindow(object):
         #Manage data button##############################
         self.manageDataBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.manageDataBUTTON.setObjectName("manageDataBUTTON")
-        #click function#################################
-        self.manageDataBUTTON.clicked.connect(self.openManageDataWindow)
         #########################################################
         self.horizontalLayout_6.addWidget(self.manageDataBUTTON)
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
