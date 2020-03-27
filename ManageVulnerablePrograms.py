@@ -9,6 +9,16 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_ManageVulnerablePrograms(object):
+
+    # TODO function to get vulnerable programs from exploitDB or stored locally 
+    def getItemsList(self):
+        # dummy objects
+        pr1 = {'name': "p0", "type": "WebApps", "platform": "PHP"}
+        pr2 = {"name": "p1", "type": "Local", "platform": "Hardware"}
+        pr3 = {"name": "Microsoft Word", "type": "WebApps", "platform": "Windows"}
+        lst = [pr1, pr2, pr3]
+        return lst
+
     def setupUi(self, ManageVulnerablePrograms):
         ManageVulnerablePrograms.setObjectName("ManageVulnerablePrograms")
         ManageVulnerablePrograms.resize(600, 320)
@@ -25,9 +35,12 @@ class Ui_ManageVulnerablePrograms(object):
         sizePolicy.setHeightForWidth(self.exploitTABLEWIDGET.sizePolicy().hasHeightForWidth())
         self.exploitTABLEWIDGET.setSizePolicy(sizePolicy)
         self.exploitTABLEWIDGET.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
-        self.exploitTABLEWIDGET.setColumnCount(3)
+        self.exploitTABLEWIDGET.setColumnCount(3) # column size always set to 3
         self.exploitTABLEWIDGET.setObjectName("exploitTABLEWIDGET")
-        self.exploitTABLEWIDGET.setRowCount(0)
+
+        # set num of rows to the actual length of the vuln programs list
+        self.exploitTABLEWIDGET.setRowCount(len(self.getItemsList())) # FIXME 
+
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setBold(True)
@@ -83,13 +96,26 @@ class Ui_ManageVulnerablePrograms(object):
         item = self.exploitTABLEWIDGET.horizontalHeaderItem(0)
         item.setText(_translate("ManageVulnerablePrograms", "Vulnerable Program"))
         item = self.exploitTABLEWIDGET.horizontalHeaderItem(1)
-        item.setText(_translate("ManageVulnerablePrograms", "New Column"))
+        # corrected name of column below from 'New Column' to 'Type'
+        item.setText(_translate("ManageVulnerablePrograms", "Type"))
         item = self.exploitTABLEWIDGET.horizontalHeaderItem(2)
         item.setText(_translate("ManageVulnerablePrograms", "Platform"))
+
+        # Added this function call to fill table 
+        self.fillTable()
+
         self.browseFilesBUTTON.setText(_translate("ManageVulnerablePrograms", "Browse Files"))
         self.openManagerBUTTON.setText(_translate("ManageVulnerablePrograms", "Open Manager"))
         self.selectBUTTON.setText(_translate("ManageVulnerablePrograms", "Select"))
 
+    # function to fill table with content from exploitDB or locally saved vulnerable programs
+    def fillTable(self):
+        itemList = self.getItemsList()
+        num_rows = len(itemList)
+        for row in range(num_rows):
+            self.exploitTABLEWIDGET.setItem(row, 0, QtWidgets.QTableWidgetItem(itemList[row]["name"]))
+            self.exploitTABLEWIDGET.setItem(row, 1, QtWidgets.QTableWidgetItem(itemList[row]["type"]))
+            self.exploitTABLEWIDGET.setItem(row, 2, QtWidgets.QTableWidgetItem(itemList[row]["platform"]))
 
 if __name__ == "__main__":
     import sys
@@ -99,4 +125,3 @@ if __name__ == "__main__":
     ui.setupUi(ManageVulnerablePrograms)
     ManageVulnerablePrograms.show()
     sys.exit(app.exec_())
-
