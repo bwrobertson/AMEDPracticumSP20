@@ -22,6 +22,8 @@ class Ui_ManageData(object):
     def exportButtonStatus(self, path):
         if os.path.exists(path):
             self.exportBUTTON.setEnabled(True)
+        else:
+            self.exportBUTTON.setEnabled(False)
 
     def fileBrowser(self):
         options = QFileDialog.Options()
