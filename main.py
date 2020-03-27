@@ -17,7 +17,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
 class ManageDataWindow(QtWidgets.QDialog, Ui_ManageData):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super(ManageDataWindow, self).__init__(parent)
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
@@ -42,7 +42,7 @@ class NewScenariosWindow(QtWidgets.QDialog, Ui_NewScenario):
 class Controller:
     def __init__(self):
         self.main = MainWindow()
-        self.manageData = ManageDataWindow(self.main)
+        self.manageData = ManageDataWindow()
         self.manageScenarios = ManageScenariosWindow()
         self.newScenario = NewScenariosWindow()
         self.main.manageDataBUTTON.clicked.connect(self.manageData.show)
