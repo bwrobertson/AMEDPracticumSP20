@@ -286,6 +286,7 @@ class Ui_ManageData(object):
         data = db["Demo"]
         self.count = 0
         deletion = ""
+        x=0
         y=0
         id=""
         for collection in data.find():
@@ -297,6 +298,9 @@ class Ui_ManageData(object):
                         data.update_one({'_id': id},{'$unset': {key: ""}}, False)
                         print(key + " deleted from database.")
                     y+=1
+            if(self.tree["parent{0}".format(x)].checkState(0)==QtCore.Qt.Checked):
+                data.delete_one({'_id': id})
+            x+=1
         self.progressBar.setValue(50)
         self.databseTREEWIDGET.clear()
         self.setupTree(ManageData)
