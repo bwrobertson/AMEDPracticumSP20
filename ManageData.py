@@ -114,7 +114,8 @@ class Ui_ManageData(object):
         ############################################
         #           Changes Start Here             #
         ############################################
-        for collection in data.find():
+        self.setupTree(ManageData)
+        """for collection in data.find():
             self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
             self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
             self.tree["parent{0}".format(x)].setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate)
@@ -123,7 +124,7 @@ class Ui_ManageData(object):
                     self.tree["child{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(x)])
                     self.tree["child{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
                     y+=1
-            x+=1
+            x+=1"""
         ############################################
         #           Changes End   Here             #
         ############################################
@@ -206,7 +207,26 @@ class Ui_ManageData(object):
     #           Changes Start Here             #
     ############################################
 
+    def setupTree(self, ManageData):
+        x=0
+        y=0
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Demo"]
+        for collection in data.find():
+            self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
+            self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
+            self.tree["parent{0}".format(x)].setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate)
+            for key in collection:
+                if(key!="_id" and key!="name"):
+                    self.tree["child{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(x)])
+                    self.tree["child{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+                    y+=1
+            x+=1
+        return ManageData
+
     def progress(self):
+        self.progressBar.setValue(0)
         client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Demo"]
@@ -257,7 +277,10 @@ class Ui_ManageData(object):
 
 
     def deleteSelected(self):
-        #Not yet completed
+        self.progressBar.setValue(0)
+        _translate = QtCore.QCoreApplication.translate
+        __sortingEnabled = self.databseTREEWIDGET.isSortingEnabled()
+        self.databseTREEWIDGET.setSortingEnabled(False)
         client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Demo"]
@@ -274,14 +297,11 @@ class Ui_ManageData(object):
                         data.update_one({'_id': id},{'$unset': {key: ""}}, False)
                         print(key + " deleted from database.")
                     y+=1
-        #self.databseTREEWIDGET.update()
-        """Doesn't do anything
-        ManageData.hide()
-        ManageData.show()"""
-
-    ############################################
-    #           Changes End   Here             #
-    ############################################
+        self.progressBar.setValue(50)
+        self.databseTREEWIDGET.clear()
+        self.setupTree(ManageData)
+        self.retranslateUi(ManageData)
+        self.progressBar.setValue(100)
 
 if __name__ == "__main__":
     import sys
