@@ -10,6 +10,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from zipfile import ZipFile
 from datetime import date
+import time
 ############################################
 #           Changes End   Here             #
 ############################################
@@ -29,7 +30,7 @@ class Ui_ManageData(object):
         options = QFileDialog.Options()
         self.dialog = QFileDialog()
         self.dialog.setOptions(options)
-        self.path = str(QFileDialog.getExistingDirectory(self.dialog, "Select Directory")) 
+        self.path = str(QFileDialog.getExistingDirectory(self.dialog, "Select Directory"))
 
         if self.path:
             #If Windows, change the separator
@@ -42,7 +43,7 @@ class Ui_ManageData(object):
             else:
                 self.destinationDirectoryLINEEDIT.setText(self.path)
                 os.chdir(self.path)
-                return self.path    
+                return self.path
         else:
             self.destinationDirectoryLINEEDIT.setText(self.path)
             return ""
@@ -263,14 +264,20 @@ class Ui_ManageData(object):
         self.count = 0
         deletion = ""
         y=0
+        id=""
         for collection in data.find():
             for key in collection:
+                if(key=="_id"):
+                    id = collection[key]
                 if(key!="_id" and key!="name"):
                     if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
-                        deletion = {key: collection[key]}
-                        data.delete_one(deletion)
-                        #ManageData.update()
+                        data.update_one({'_id': id},{'$unset': {key: ""}}, False)
+                        print(key + " deleted from database.")
                     y+=1
+        #self.databseTREEWIDGET.update()
+        """Doesn't do anything
+        ManageData.hide()
+        ManageData.show()"""
 
     ############################################
     #           Changes End   Here             #
