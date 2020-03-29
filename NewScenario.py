@@ -7,8 +7,81 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
+import os, sys
+import base64
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+from zipfile import ZipFile
+from datetime import date
+import time
 
 class Ui_NewScenario(object):
+
+    def exploitBrowser(self):
+        exploitOptions = QFileDialog.Options()
+        self.exploitDialog = QFileDialog()
+        self.exploitDialog.setOptions(exploitOptions)
+        self.exploitPath, __ = QFileDialog.getOpenFileName(self.exploitDialog, "Select Exploit", '/home')
+
+        if self.exploitPath:
+            #If Windows, change the separator
+            if self.exploitPath == 'C:\\':
+                self.exploitPath = self.exploitPath.replace('/', '\\')
+                self.exploitLINEEDIT.setText(self.exploitPath)
+                #os.chdir(self.exploitPath)
+                return self.exploitPath
+            # if Linux-based
+            else:
+                self.exploitLINEEDIT.setText(self.exploitPath)
+                #os.chdir(self.exploitPath)
+                return self.exploitPath
+        else:
+            self.exploitLINEEDIT.setText(self.exploitPath)
+            return ""
+
+    def vulnerableProgramBrowser(self):
+        VPoptions = QFileDialog.Options()
+        self.VPdialog = QFileDialog()
+        self.VPdialog.setOptions(VPoptions)
+        self.vulnerableProgramPath, __ = QFileDialog.getOpenFileName(self.VPdialog, "Select Vulnerable Program", '/home')
+
+        if self.vulnerableProgramPath:
+            #If Windows, change the separator
+            if self.vulnerableProgramPath == 'C:\\':
+                self.vulnerableProgramPath = self.vulnerableProgramPath.replace('/', '\\')
+                self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+                #os.chdir(self.vulnerableProgramPath)
+                return self.vulnerableProgramPath
+            # if Linux-based
+            else:
+                self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+                #os.chdir(self.vulnerableProgramPath)
+                return self.vulnerableProgramPath
+        else:
+            self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+            return ""
+
+    def storeScenario(self):
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
+
+        today = date.today()
+        today = today.strftime("%d%b%Y")
+        scenName = str(today) + self.scenarioLINEEDIT.text()
+        encodedFile = ""
+        #exploitName = self.exploitLINEEDIT.text()
+        exploitName = self.exploitPath
+        #VPname = self.vulnerableProgramLINEEDIT.text()
+        VPname = self.vulnerableProgramPath
+
+        scenarioStore = {"name": scenName}
+        scenarioStore["Exploit"] = exploitName
+        scenarioStore["VulnerableProgram"] = VPname
+
+        print("beginning push")
+        data.insert_one(scenarioStore)
 
     def setupUi(self, NewScenario):
         NewScenario.setObjectName("NewScenario")
@@ -52,6 +125,7 @@ class Ui_NewScenario(object):
         self.horizontalLayout.addWidget(self.exploitLINEEDIT)
         self.exploitBrowseBUTTON = QtWidgets.QPushButton(self.widget)
         self.exploitBrowseBUTTON.setObjectName("exploitBrowseBUTTON")
+        self.exploitBrowseBUTTON.clicked.connect(self.exploitBrowser)
         self.horizontalLayout.addWidget(self.exploitBrowseBUTTON)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.verticalLayout_4.addLayout(self.verticalLayout_2)
@@ -70,6 +144,7 @@ class Ui_NewScenario(object):
         self.horizontalLayout_2.addWidget(self.vulnerableProgramLINEEDIT)
         self.vulnerableProgramBrowseBUTTON = QtWidgets.QPushButton(self.widget)
         self.vulnerableProgramBrowseBUTTON.setObjectName("vulnerableProgramBrowseBUTTON")
+        self.vulnerableProgramBrowseBUTTON.clicked.connect(self.vulnerableProgramBrowser)
         self.horizontalLayout_2.addWidget(self.vulnerableProgramBrowseBUTTON)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
         self.verticalLayout_4.addLayout(self.verticalLayout_3)
@@ -88,6 +163,7 @@ class Ui_NewScenario(object):
         self.horizontalLayout_3.addItem(spacerItem1)
         self.nextBUTTON = QtWidgets.QPushButton(self.widget)
         self.nextBUTTON.setObjectName("nextBUTTON")
+        self.nextBUTTON.clicked.connect(self.storeScenario)
         self.horizontalLayout_3.addWidget(self.nextBUTTON)
         self.verticalLayout_5.addLayout(self.horizontalLayout_3)
 
