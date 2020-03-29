@@ -77,6 +77,7 @@ class Ui_NewScenario(object):
         VPname = self.vulnerableProgramPath
 
         scenarioStore = {"name": scenName}
+        scenarioStore['Date'] = today
         scenarioStore["Exploit"] = exploitName
         scenarioStore["VulnerableProgram"] = VPname
 
