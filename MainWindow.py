@@ -8,6 +8,14 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ManageData import Ui_ManageData
+from PyQt5.QtWidgets import QFileDialog
+import os, sys
+import base64
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+from zipfile import ZipFile
+from datetime import date
+import time
 
 class Ui_MainWindow(object):
     #Opens the manage data window on data button click############################3
@@ -168,33 +176,33 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.searchLABEL.setText(_translate("MainWindow", "Search"))
         self.scenariosLIST.setSortingEnabled(False)
         __sortingEnabled = self.scenariosLIST.isSortingEnabled()
         self.scenariosLIST.setSortingEnabled(False)
-        item = self.scenariosLIST.item(0)
-        item.setText(_translate("MainWindow", "Test_e0"))
-        item = self.scenariosLIST.item(1)
-        item.setText(_translate("MainWindow", "Test_e01"))
-        item = self.scenariosLIST.item(2)
-        item.setText(_translate("MainWindow", "Test_e02"))
-        item = self.scenariosLIST.item(3)
-        item.setText(_translate("MainWindow", "Test_e03"))
-        item = self.scenariosLIST.item(4)
-        item.setText(_translate("MainWindow", "Test_e04"))
+        x = 0
+
+        for collection in data.find():
+            item = self.scenariosLIST.item(x)
+            item.setText(_translate("MainWindow", collection['name']))
+            x+=1
+
         self.scenariosLIST.setSortingEnabled(__sortingEnabled)
         __sortingEnabled = self.scenarioInfoLISTWIDGET.isSortingEnabled()
         self.scenarioInfoLISTWIDGET.setSortingEnabled(False)
         item = self.scenarioInfoLISTWIDGET.item(0)
-        item.setText(_translate("MainWindow", "Date Created:"))
+        item.setText(_translate("MainWindow", "Date Created: " + collection["Date"]))
         item = self.scenarioInfoLISTWIDGET.item(1)
         item.setText(_translate("MainWindow", "Date Modified:"))
         item = self.scenarioInfoLISTWIDGET.item(2)
-        item.setText(_translate("MainWindow", "Exploit:"))
+        item.setText(_translate("MainWindow", "Exploit: " + collection['Exploit']))
         item = self.scenarioInfoLISTWIDGET.item(3)
-        item.setText(_translate("MainWindow", "Vulnerable Program:"))
+        item.setText(_translate("MainWindow", "Vulnerable Program: " + collection['VulnerableProgram']))
         self.scenarioInfoLISTWIDGET.setSortingEnabled(__sortingEnabled)
         self.runBUTTON.setText(_translate("MainWindow", "Run"))
         self.configureBUTTON.setText(_translate("MainWindow", "Configure"))
