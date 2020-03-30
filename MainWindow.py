@@ -186,23 +186,28 @@ class Ui_MainWindow(object):
         __sortingEnabled = self.scenariosLIST.isSortingEnabled()
         self.scenariosLIST.setSortingEnabled(False)
         x = 0
-
+        scen = ""
+        type = ""
+        type2 = ''
         for collection in data.find():
             item = self.scenariosLIST.item(x)
-            item.setText(_translate("MainWindow", collection['name']))
+            scen = collection['scenario']
+            type = scen['exploit']
+            type2 = scen['pov']
+            item.setText(_translate("MainWindow", scen['name']))
             x+=1
 
         self.scenariosLIST.setSortingEnabled(__sortingEnabled)
         __sortingEnabled = self.scenarioInfoLISTWIDGET.isSortingEnabled()
         self.scenarioInfoLISTWIDGET.setSortingEnabled(False)
         item = self.scenarioInfoLISTWIDGET.item(0)
-        item.setText(_translate("MainWindow", "Date Created: " + collection["Date"]))
+        item.setText(_translate("MainWindow", "Date Created: " + scen["date_created"]))
         item = self.scenarioInfoLISTWIDGET.item(1)
-        item.setText(_translate("MainWindow", "Date Modified:"))
+        item.setText(_translate("MainWindow", "Date Modified: " + scen['date_modified']))
         item = self.scenarioInfoLISTWIDGET.item(2)
-        item.setText(_translate("MainWindow", "Exploit: " + collection['Exploit']))
+        item.setText(_translate("MainWindow", "Exploit: " + type['file']))
         item = self.scenarioInfoLISTWIDGET.item(3)
-        item.setText(_translate("MainWindow", "Vulnerable Program: " + collection['VulnerableProgram']))
+        item.setText(_translate("MainWindow", "Vulnerable Program: " + type2['file']))
         self.scenarioInfoLISTWIDGET.setSortingEnabled(__sortingEnabled)
         self.runBUTTON.setText(_translate("MainWindow", "Run"))
         self.configureBUTTON.setText(_translate("MainWindow", "Configure"))
