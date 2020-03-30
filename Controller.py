@@ -96,12 +96,14 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
 # shows window whenever an action is taken by the user via the GUI
 class Controller:
     def __init__(self):
+        self.showSplashScreen()
         self.main = MainWindow()
         self.manageData = ManageDataWindow()
         self.manageScenarios = ManageScenariosWindow()
         self.newScenario = NewScenariosWindow()
         self.manageExploits = ManageExploitsWindow()
         self.manageVulnerablePrograms = ManageVulnerableProgramsWindow()
+        self.splash.close()
         #
         self.main.manageDataBUTTON.clicked.connect(self.manageData.show)
         self.main.manageScenarioBUTTON.clicked.connect(self.manageScenarios.show)
@@ -120,7 +122,13 @@ class Controller:
         self.manageVulnerablePrograms.selectBUTTON.clicked.connect(self.newScenario.show)
         #
         self.main.show()
-
+        
+        
+     def showSplashScreen(self):
+        self.pix = QPixmap("SplashPage.png")
+        self.splash = QSplashScreen(self.pix, Qt.WindowStaysOnTopHint)
+        self.splash.show()    
+        
 if __name__ == '__main__':
     import sys
     app = QtWidgets.QApplication(sys.argv)
