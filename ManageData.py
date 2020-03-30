@@ -23,14 +23,12 @@ class Ui_ManageData(object):
     def exportButtonStatus(self, path):
         if os.path.exists(path):
             self.exportBUTTON.setEnabled(True)
-        else:
-            self.exportBUTTON.setEnabled(False)
 
     def fileBrowser(self):
         options = QFileDialog.Options()
         self.dialog = QFileDialog()
         self.dialog.setOptions(options)
-        self.path = str(QFileDialog.getExistingDirectory(self.dialog, "Select Directory"))
+        self.path = str(QFileDialog.getExistingDirectory(self.dialog, "Select Directory")) 
 
         if self.path:
             #If Windows, change the separator
@@ -43,7 +41,7 @@ class Ui_ManageData(object):
             else:
                 self.destinationDirectoryLINEEDIT.setText(self.path)
                 os.chdir(self.path)
-                return self.path
+                return self.path    
         else:
             self.destinationDirectoryLINEEDIT.setText(self.path)
             return ""
