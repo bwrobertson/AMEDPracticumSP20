@@ -1,3 +1,6 @@
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QSplashScreen
+
 from MainWindow import Ui_MainWindow
 from PyQt5 import QtWidgets
 from ManageData import Ui_ManageData
@@ -124,7 +127,7 @@ class Controller:
         self.main.show()
         
         
-     def showSplashScreen(self):
+    def showSplashScreen(self):
         self.pix = QPixmap("SplashPage.png")
         self.splash = QSplashScreen(self.pix, Qt.WindowStaysOnTopHint)
         self.splash.show()    
