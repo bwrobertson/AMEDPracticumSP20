@@ -17,14 +17,16 @@ from zipfile import ZipFile
 from datetime import date
 import time
 
+
 class Ui_MainWindow(object):
-    #Opens the manage data window on data button click############################3
-    def openManageDataWindow(self):
+
+    # Opens the scenarioRunningWindow on run button click############################3
+    def openScenarioRunningWindow(self):
         self.window = QtWidgets.QWidget()
         self.ui = Ui_ManageData()
         self.ui.setupUi(self.window)
         self.window.show()
-    ##############################################
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
@@ -151,13 +153,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setSpacing(6)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        #Manage data button##############################
+        # Manage data button##############################
         self.manageDataBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.manageDataBUTTON.setObjectName("manageDataBUTTON")
         #########################################################
         self.horizontalLayout_6.addWidget(self.manageDataBUTTON)
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_6.addItem(spacerItem3)
+        # Manage Scenario button##############################
         self.manageScenarioBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -171,7 +174,6 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 

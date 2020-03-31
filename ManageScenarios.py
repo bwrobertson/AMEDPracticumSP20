@@ -8,7 +8,19 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from NewScenario import Ui_NewScenario
+
+
 class Ui_ManageScenarios(object):
+
+    # Opens the scenarioRunningWindow on run button click############################3
+    def openMainWindow(self):
+        self.window = QtWidgets.QWidget()
+        from MainWindow import Ui_MainWindow
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self.window)
+        self.window.show()
+
     def setupUi(self, ManageScenarios):
         ManageScenarios.setObjectName("ManageScenarios")
         ManageScenarios.resize(473, 322)
@@ -40,7 +52,6 @@ class Ui_ManageScenarios(object):
         self.newBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.newBUTTON.setObjectName("newBUTTON")
         self.horizontalLayout.addWidget(self.newBUTTON)
-
         self.retranslateUi(ManageScenarios)
         QtCore.QMetaObject.connectSlotsByName(ManageScenarios)
 
@@ -55,13 +66,4 @@ class Ui_ManageScenarios(object):
         self.deleteBUTTON.setText(_translate("ManageScenarios", "Delete"))
         self.newBUTTON.setText(_translate("ManageScenarios", "New"))
 
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    ManageScenarios = QtWidgets.QWidget()
-    ui = Ui_ManageScenarios()
-    ui.setupUi(ManageScenarios)
-    ManageScenarios.show()
-    sys.exit(app.exec_())
 
