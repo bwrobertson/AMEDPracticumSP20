@@ -15,6 +15,7 @@ from bson.objectid import ObjectId
 from zipfile import ZipFile
 from datetime import date
 import time
+import ScenarioJsonTemplate as template
 
 class Ui_NewScenario(object):
 
@@ -62,7 +63,7 @@ class Ui_NewScenario(object):
             self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
             return ""
 
-    def storeScenario(self):
+    def storeScenario(self, jd):
         client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Scenario"]
@@ -76,13 +77,29 @@ class Ui_NewScenario(object):
         #VPname = self.vulnerableProgramLINEEDIT.text()
         VPname = self.vulnerableProgramPath
 
-        scenarioStore = {"name": scenName}
-        scenarioStore['Date'] = today
-        scenarioStore["Exploit"] = exploitName
-        scenarioStore["VulnerableProgram"] = VPname
+        jd["name"] = scenName
+        jd["date_created"] = today
+        jd["date_modified"] = today
+        jd["exploit"] = {"file" : exploitName}
+        jd["pov"] = {"file" : VPname}
 
+        # scenarioStore = {"name": scenName}
+        # scenarioStore['Date'] = today
+        # scenarioStore["Exploit"] = exploitName
+        # scenarioStore["VulnerableProgram"] = VPname
+
+        jsondata = {"scenario" : jd}
         print("beginning push")
-        data.insert_one(scenarioStore)
+        data.insert_one(jsondata)
+        print("end push")
+        # self.manageExploits = ct.ManageExploitsWindow()
+        # self.manageExploits.show
+
+    def createScenario(self):
+        data = template.ScenarioJsonTemplate.createJson(self)
+        print(data)
+
+        self.storeScenario(data)
 
     def setupUi(self, NewScenario):
         NewScenario.setObjectName("NewScenario")
@@ -164,7 +181,7 @@ class Ui_NewScenario(object):
         self.horizontalLayout_3.addItem(spacerItem1)
         self.nextBUTTON = QtWidgets.QPushButton(self.widget)
         self.nextBUTTON.setObjectName("nextBUTTON")
-        self.nextBUTTON.clicked.connect(self.storeScenario)
+        self.nextBUTTON.clicked.connect(self.createScenario)
         self.horizontalLayout_3.addWidget(self.nextBUTTON)
         self.verticalLayout_5.addLayout(self.horizontalLayout_3)
 
