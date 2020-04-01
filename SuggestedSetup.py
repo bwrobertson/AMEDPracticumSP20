@@ -13,6 +13,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QListWidgetItem
 from pymongo import MongoClient
 import json
+from NewScenario import Ui_NewScenario
+from bson.objectid import ObjectId
 
 
 class Ui_Form(object):
@@ -22,33 +24,39 @@ class Ui_Form(object):
         db = client.Test
         data = db["Scenario"]
 
-        with open('scenario-test.json') as jsonFile:
-            dataJson = json.load(jsonFile)
 
+        scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
+        #scen = data.find_one({'_id': ObjectId("5e840e238a71b65203287a0a")})
+        newScen = scen
 
-        scen = dataJson['scenario']
-        machines = scen['machines']
+        #machines = dictScen['machines']
 
         itemVictims =  [str(self.listWidget_2.item(i).text()) for i in range(self.listWidget_2.count())]
         print(itemVictims)
 
         itemAttackers =  [str(self.listWidget_3.item(i).text()) for i in range(self.listWidget_3.count())]
         print(itemAttackers)
-
+        victims = {}
+        attackers = {}
         x = 1
         for item in itemVictims:
-            machines['victim' + str(x)] = item
+            victims['victim' + str(x)] = item
             x+=1
 
         x = 1
         for item in itemAttackers:
-            machines['attacker' + str(x)] = item
+            attackers['attacker' + str(x)] = item
             x+=1
 
-        """with open('newJsonTest.json', 'w') as jsonFile:
-            json.dump(dataJson, jsonFile)"""
-
-        data.insert_one(dataJson)
+        machines = {'victim': victims}
+        machines['attacker'] = attackers
+        print(machines)
+        thisScen = newScen['scenario']
+        thisScen['machines'] = machines
+        print(newScen)
+        #data.delete_one({'_id': ObjectId("5e840e238a71b65203287a0a")})
+        data.delete_one({'_id': ObjectId(Ui_NewScenario.id)})
+        data.insert_one(newScen)
 
 
 
@@ -109,7 +117,6 @@ class Ui_Form(object):
         self.listWidget.setDragEnabled(True)
         ######Dummy data to fill table with drag and drop PoV and Victim machines
 
-        self.scenid = ""
         vms = ["vm 1", "vm 2", "vm 3", "vm 4"]
         malware = ["malware 1", "malware 2"]
 
@@ -130,10 +137,6 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
-        self.checkScenario()
-
-    def checkScenario(self):
-        print(self.scenid)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
