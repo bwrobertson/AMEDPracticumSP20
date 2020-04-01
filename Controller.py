@@ -14,6 +14,8 @@ from CreateNewVm import Ui_CreateNewVm
 from VmSystemSettings import Ui_VmSystemSettings
 from SuggestedSetup import Ui_Form
 
+import os, subprocess
+
 # instantiation of UI (View) classes and controller class
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
