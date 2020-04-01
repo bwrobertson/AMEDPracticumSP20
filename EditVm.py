@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import os
 
 class Ui_EditVM(object):
     def setupUi(self, EditVM):
@@ -182,11 +183,17 @@ class Ui_EditVM(object):
         self.horizontalLayout_6.addItem(spacerItem2)
         self.saveBUTTON = QtWidgets.QPushButton(self.widget)
         self.saveBUTTON.setObjectName("saveBUTTON")
+        self.saveBUTTON.clicked.connect(self.runVagrant)
         self.horizontalLayout_6.addWidget(self.saveBUTTON)
         self.verticalLayout_8.addLayout(self.horizontalLayout_6)
 
         self.retranslateUi(EditVM)
         QtCore.QMetaObject.connectSlotsByName(EditVM)
+
+    def runVagrant(self):
+        #os.system("vagrant init")
+        os.system("vagrant up --provision")
+        self.hide()
 
     def retranslateUi(self, EditVM):
         _translate = QtCore.QCoreApplication.translate
