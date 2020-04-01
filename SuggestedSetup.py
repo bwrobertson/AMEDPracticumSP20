@@ -48,6 +48,9 @@ class Ui_Form(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget2)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
+        self.backButton = QtWidgets.QPushButton(self.widget2)
+        self.backButton.setObjectName("backButton")
+        self.horizontalLayout.addWidget(self.backButton)
         self.runScenarioBUTTON = QtWidgets.QPushButton(self.widget2)
         self.runScenarioBUTTON.setObjectName("runScenarioBUTTON")
         self.horizontalLayout.addWidget(self.runScenarioBUTTON)
@@ -91,6 +94,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Suggested Setup", "Suggested Setup"))
+        self.backButton.setText(_translate("Form", "Back"))
         self.runScenarioBUTTON.setText(_translate("Form", "Next"))
         self.createVmBUTTON.setText(_translate("Form", "Add Victim || PoV"))
 
