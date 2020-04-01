@@ -11,6 +11,8 @@ from ManageExploits import Ui_ManageExploits
 from ManageVulnerablePrograms import Ui_ManageVulnerablePrograms
 
 # instantiation of UI (View) classes and controller class
+from SuggestedSetup import Ui_Form
+
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
@@ -43,6 +45,7 @@ class NewScenariosWindow(QtWidgets.QDialog, Ui_NewScenario):
         self.exploitBrowseBUTTON.clicked.connect(self.hide)
         self.vulnerableProgramBrowseBUTTON.clicked.connect(self.hide)
         self.cancelBUTTON.clicked.connect(self.close)
+        self.nextBUTTON.clicked.connect(self.close)
 
 class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
     def __init__(self, parent=None):
@@ -101,6 +104,15 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
             self.exploitTABLEWIDGET.setItem(row, 1, QtWidgets.QTableWidgetItem(itemList[row]["type"]))
             self.exploitTABLEWIDGET.setItem(row, 2, QtWidgets.QTableWidgetItem(itemList[row]["platform"]))
 
+class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
+    def __init__(self, parent=None):
+        super(SuggestedSetupWindow, self).__init__(parent)
+        print("printin")
+        self.setupUi(self)
+        # set num of rows to the actual length of the vuln programs list
+
+
+
 # shows window whenever an action is taken by the user via the GUI
 class Controller:
     def __init__(self):
@@ -111,6 +123,7 @@ class Controller:
         self.newScenario = NewScenariosWindow()
         self.manageExploits = ManageExploitsWindow()
         self.manageVulnerablePrograms = ManageVulnerableProgramsWindow()
+        self.suggestedSetup=SuggestedSetupWindow()
         self.splash.close()
         #
         self.main.manageDataBUTTON.clicked.connect(self.manageData.show)
@@ -124,6 +137,7 @@ class Controller:
         self.newScenario.exploitBrowseBUTTON.clicked.connect(self.manageExploits.show)
         self.newScenario.vulnerableProgramBrowseBUTTON.clicked.connect(self.manageVulnerablePrograms.show)
         self.newScenario.cancelBUTTON.clicked.connect(self.manageScenarios.show)
+        self.newScenario.nextBUTTON.clicked.connect(self.suggestedSetup.show)
         #
         self.manageExploits.selectBUTTON.clicked.connect(self.newScenario.show)
         #
