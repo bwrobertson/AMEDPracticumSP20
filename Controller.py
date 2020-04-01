@@ -11,10 +11,10 @@ from ManageExploits import Ui_ManageExploits
 from ManageVulnerablePrograms import Ui_ManageVulnerablePrograms
 from EditVm import Ui_EditVM
 from CreateNewVm import Ui_CreateNewVm
-
-# instantiation of UI (View) classes and controller class
+from VmSystemSettings import Ui_VmSystemSettings
 from SuggestedSetup import Ui_Form
 
+# instantiation of UI (View) classes and controller class
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
@@ -124,6 +124,12 @@ class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
         super(CreateNewVmWindow, self).__init__(parent)
         self.setupUi(self)
         self.discardBUTTON.clicked.connect(self.close)
+        
+class VmSystemSettings(QtWidgets.QDialog, Ui_VmSystemSettings):
+    def __init__(self, parent=None):
+        super(VmSystemSettings, self).__init__(parent)
+        self.setupUi(self)
+        self.cancelBUTTON.clicked.connect(self.close)
 
 
 # shows window whenever an action is taken by the user via the GUI
@@ -138,6 +144,8 @@ class Controller:
         self.manageVulnerablePrograms = ManageVulnerableProgramsWindow()
         self.suggestedSetup=SuggestedSetupWindow()
         self.createNewVm = CreateNewVmWindow()
+        self.vmSystemSettings = VmSystemSettings()
+        self.editVm= EditVmWindow("null")
         self.splash.close()
         #
         self.main.manageDataBUTTON.clicked.connect(self.manageData.show)
@@ -174,6 +182,7 @@ class Controller:
         item.setSelected(False)
         print(item.text())
         self.editVm = EditVmWindow(item.text())
+        self.editVm.settingsBUTTON.clicked.connect(self.vmSystemSettings.show)
         self.editVm.show()
         
 if __name__ == '__main__':
