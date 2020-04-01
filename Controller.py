@@ -10,6 +10,7 @@ from NewScenario import Ui_NewScenario
 from ManageExploits import Ui_ManageExploits
 from ManageVulnerablePrograms import Ui_ManageVulnerablePrograms
 from EditVm import Ui_EditVM
+from CreateNewVm import Ui_CreateNewVm
 
 # instantiation of UI (View) classes and controller class
 from SuggestedSetup import Ui_Form
@@ -108,15 +109,20 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
 class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
     def __init__(self, parent=None):
         super(SuggestedSetupWindow, self).__init__(parent)
-        print("printin")
         self.setupUi(self)
-        # set num of rows to the actual length of the vuln programs list
+        self.backButton.clicked.connect(self.close)
         
 class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
     def __init__(self, text,parent=None):
         super(EditVmWindow, self).__init__(parent)
         self.setupUi(self)
         self.machineNameLINEEDIT.setText(text)
+        
+class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
+    def __init__(self, parent=None):
+        super(CreateNewVmWindow, self).__init__(parent)
+        self.setupUi(self)
+        self.discardBUTTON.clicked.connect(self.close)
 
 
 # shows window whenever an action is taken by the user via the GUI
@@ -131,6 +137,7 @@ class Controller:
         self.manageVulnerablePrograms = ManageVulnerableProgramsWindow()
         self.suggestedSetup=SuggestedSetupWindow()
         self.editVm = EditVmWindow("")
+        self.createNewVm = CreateNewVmWindow()
         self.splash.close()
         #
         self.main.manageDataBUTTON.clicked.connect(self.manageData.show)
@@ -150,6 +157,8 @@ class Controller:
         #
         self.manageVulnerablePrograms.selectBUTTON.clicked.connect(self.newScenario.show)
         #
+        self.suggestedSetup.backButton.clicked.connect(self.newScenario.show)
+        self.suggestedSetup.createVmBUTTON.clicked.connect(self.createNewVm.show)
         self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
         self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
         #
