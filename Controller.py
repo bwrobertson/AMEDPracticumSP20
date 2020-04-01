@@ -22,7 +22,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.manageDataBUTTON.clicked.connect(self.hide)
         self.manageScenarioBUTTON.clicked.connect(self.hide)
-        self.runBUTTON.clicked.connect(self.hide)
 
 
 class ManageDataWindow(QtWidgets.QDialog, Ui_ManageData):
@@ -169,9 +168,33 @@ class Controller:
         self.suggestedSetup.createVmBUTTON.clicked.connect(self.createNewVm.show)
         self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
         self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
+        
+        # Functionality for "Run" button (interval-based collection/
+        # proof of concept)
+        self.main.runBUTTON.clicked.connect(self.runCollectors)
+        
         #
         self.main.show()
         
+        
+     # Run collectors method for an interval of 5 seconds       
+    def runCollectors(self):
+        
+        # Functionality on supported on Windows, need other collectors for that
+        operating_system = os.getcwd()
+        if "C:\\" in operating_system:
+            msg = QMessageBox.about(self.main, "Warning", "Windows operating system not supported on collectors, yet.")
+        else:
+            
+            # Controller.py must be ran in root (i.e. $ sudo su, on Linux)
+            uid = os.getuid()
+            if uid != 0:
+                msg = QMessageBox.about(self.main, "Warning", "Collectors must be ran with root privileges.")
+            else:
+                proc = subprocess.Popen(["python", "ecel/start_stop_collectors.py"])
+                msg = QMessageBox.about(self.main, "Notice", "Collectors have started!")
+                # Need to add functionality to let Dr. Acosta 
+                # know when collectors are done (signal w/ messagebox)   
         
     def showSplashScreen(self):
         self.pix = QPixmap("SplashPage.png")
