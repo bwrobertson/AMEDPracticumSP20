@@ -18,6 +18,7 @@ import time
 import ScenarioJsonTemplate as template
 
 class Ui_NewScenario(object):
+    id = 0
 
     # def exploitBrowser(self):
     #     exploitOptions = QFileDialog.Options()
@@ -83,12 +84,17 @@ class Ui_NewScenario(object):
         jd["exploit"] = {"file" : exploitName}
         jd["pov"] = {"file" : VPname}
 
+        # scenarioStore = {"name": scenName}
+        # scenarioStore['Date'] = today
+        # scenarioStore["Exploit"] = exploitName
+        # scenarioStore["VulnerableProgram"] = VPname
+
         jsondata = {"scenario" : jd}
         print("beginning push")
-        _id = data.insert_one(jsondata)
+        id = data.insert_one(jsondata)
         print("end push")
-
-        self.parentDialog.scenid = _id.inserted_id
+        Ui_NewScenario.id = id.inserted_id
+        print(Ui_NewScenario.id)
         # self.manageExploits = ct.ManageExploitsWindow()
         # self.manageExploits.show
 
@@ -201,6 +207,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     NewScenario = QtWidgets.QWidget()
     ui = Ui_NewScenario()
+    ui.id = ""
     ui.setupUi(NewScenario)
     NewScenario.show()
     #sys.exit(app.exec_())
