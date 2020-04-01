@@ -19,49 +19,49 @@ import ScenarioJsonTemplate as template
 
 class Ui_NewScenario(object):
 
-    def exploitBrowser(self):
-        exploitOptions = QFileDialog.Options()
-        self.exploitDialog = QFileDialog()
-        self.exploitDialog.setOptions(exploitOptions)
-        self.exploitPath, __ = QFileDialog.getOpenFileName(self.exploitDialog, "Select Exploit", '/home')
+    # def exploitBrowser(self):
+    #     exploitOptions = QFileDialog.Options()
+    #     self.exploitDialog = QFileDialog()
+    #     self.exploitDialog.setOptions(exploitOptions)
+    #     self.exploitPath, __ = QFileDialog.getOpenFileName(self.exploitDialog, "Select Exploit", '/home')
 
-        if self.exploitPath:
-            #If Windows, change the separator
-            if self.exploitPath == 'C:\\':
-                self.exploitPath = self.exploitPath.replace('/', '\\')
-                self.exploitLINEEDIT.setText(self.exploitPath)
-                #os.chdir(self.exploitPath)
-                return self.exploitPath
-            # if Linux-based
-            else:
-                self.exploitLINEEDIT.setText(self.exploitPath)
-                #os.chdir(self.exploitPath)
-                return self.exploitPath
-        else:
-            self.exploitLINEEDIT.setText(self.exploitPath)
-            return ""
+    #     if self.exploitPath:
+    #         #If Windows, change the separator
+    #         if self.exploitPath == 'C:\\':
+    #             self.exploitPath = self.exploitPath.replace('/', '\\')
+    #             self.exploitLINEEDIT.setText(self.exploitPath)
+    #             #os.chdir(self.exploitPath)
+    #             return self.exploitPath
+    #         # if Linux-based
+    #         else:
+    #             self.exploitLINEEDIT.setText(self.exploitPath)
+    #             #os.chdir(self.exploitPath)
+    #             return self.exploitPath
+    #     else:
+    #         self.exploitLINEEDIT.setText(self.exploitPath)
+    #         return ""
 
-    def vulnerableProgramBrowser(self):
-        VPoptions = QFileDialog.Options()
-        self.VPdialog = QFileDialog()
-        self.VPdialog.setOptions(VPoptions)
-        self.vulnerableProgramPath, __ = QFileDialog.getOpenFileName(self.VPdialog, "Select Vulnerable Program", '/home')
+    # def vulnerableProgramBrowser(self):
+    #     VPoptions = QFileDialog.Options()
+    #     self.VPdialog = QFileDialog()
+    #     self.VPdialog.setOptions(VPoptions)
+    #     self.vulnerableProgramPath, __ = QFileDialog.getOpenFileName(self.VPdialog, "Select Vulnerable Program", '/home')
 
-        if self.vulnerableProgramPath:
-            #If Windows, change the separator
-            if self.vulnerableProgramPath == 'C:\\':
-                self.vulnerableProgramPath = self.vulnerableProgramPath.replace('/', '\\')
-                self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
-                #os.chdir(self.vulnerableProgramPath)
-                return self.vulnerableProgramPath
-            # if Linux-based
-            else:
-                self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
-                #os.chdir(self.vulnerableProgramPath)
-                return self.vulnerableProgramPath
-        else:
-            self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
-            return ""
+    #     if self.vulnerableProgramPath:
+    #         #If Windows, change the separator
+    #         if self.vulnerableProgramPath == 'C:\\':
+    #             self.vulnerableProgramPath = self.vulnerableProgramPath.replace('/', '\\')
+    #             self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+    #             #os.chdir(self.vulnerableProgramPath)
+    #             return self.vulnerableProgramPath
+    #         # if Linux-based
+    #         else:
+    #             self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+    #             #os.chdir(self.vulnerableProgramPath)
+    #             return self.vulnerableProgramPath
+    #     else:
+    #         self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+    #         return ""
 
     def storeScenario(self, jd):
         client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
@@ -143,7 +143,7 @@ class Ui_NewScenario(object):
         self.horizontalLayout.addWidget(self.exploitLINEEDIT)
         self.exploitBrowseBUTTON = QtWidgets.QPushButton(self.widget)
         self.exploitBrowseBUTTON.setObjectName("exploitBrowseBUTTON")
-        self.exploitBrowseBUTTON.clicked.connect(self.exploitBrowser)
+        #self.exploitBrowseBUTTON.clicked.connect(self.exploitBrowser)
         self.horizontalLayout.addWidget(self.exploitBrowseBUTTON)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.verticalLayout_4.addLayout(self.verticalLayout_2)
@@ -162,7 +162,7 @@ class Ui_NewScenario(object):
         self.horizontalLayout_2.addWidget(self.vulnerableProgramLINEEDIT)
         self.vulnerableProgramBrowseBUTTON = QtWidgets.QPushButton(self.widget)
         self.vulnerableProgramBrowseBUTTON.setObjectName("vulnerableProgramBrowseBUTTON")
-        self.vulnerableProgramBrowseBUTTON.clicked.connect(self.vulnerableProgramBrowser)
+        #self.vulnerableProgramBrowseBUTTON.clicked.connect(self.vulnerableProgramBrowser)
         self.horizontalLayout_2.addWidget(self.vulnerableProgramBrowseBUTTON)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
         self.verticalLayout_4.addLayout(self.verticalLayout_3)
@@ -208,4 +208,4 @@ if __name__ == "__main__":
     ui = Ui_NewScenario()
     ui.setupUi(NewScenario)
     NewScenario.show()
-    sys.exit(app.exec_())
+    #sys.exit(app.exec_())
