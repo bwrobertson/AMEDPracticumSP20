@@ -43,6 +43,7 @@ class ManageScenariosWindow(QtWidgets.QDialog, Ui_ManageScenarios):
 class NewScenariosWindow(QtWidgets.QDialog, Ui_NewScenario):
     def __init__(self, parent=None):
         super(NewScenariosWindow, self).__init__(parent)
+        self.parentDialog = SuggestedSetupWindow(self)
         self.setupUi(self)
         self.exploitBrowseBUTTON.clicked.connect(self.hide)
         self.vulnerableProgramBrowseBUTTON.clicked.connect(self.hide)

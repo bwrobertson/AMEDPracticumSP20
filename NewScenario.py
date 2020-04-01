@@ -83,15 +83,12 @@ class Ui_NewScenario(object):
         jd["exploit"] = {"file" : exploitName}
         jd["pov"] = {"file" : VPname}
 
-        # scenarioStore = {"name": scenName}
-        # scenarioStore['Date'] = today
-        # scenarioStore["Exploit"] = exploitName
-        # scenarioStore["VulnerableProgram"] = VPname
-
         jsondata = {"scenario" : jd}
         print("beginning push")
-        data.insert_one(jsondata)
+        _id = data.insert_one(jsondata)
         print("end push")
+
+        self.parentDialog.scenid = _id.inserted_id
         # self.manageExploits = ct.ManageExploitsWindow()
         # self.manageExploits.show
 

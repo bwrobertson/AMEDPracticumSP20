@@ -70,6 +70,7 @@ class Ui_Form(object):
         self.listWidget.setDragEnabled(True)
         ######Dummy data to fill table with drag and drop PoV and Victim machines
 
+        self.scenid = ""
         vms = ["vm 1", "vm 2", "vm 3", "vm 4"]
         malware = ["malware 1", "malware 2"]
 
@@ -90,6 +91,10 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+        self.checkScenario()
+
+    def checkScenario(self):
+        print(self.scenid)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
