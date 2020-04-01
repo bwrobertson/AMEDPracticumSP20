@@ -97,8 +97,6 @@ class Ui_NewScenario(object):
 
     def createScenario(self):
         data = template.ScenarioJsonTemplate.createJson(self)
-        print(data)
-
         self.storeScenario(data)
 
     def setupUi(self, NewScenario):
