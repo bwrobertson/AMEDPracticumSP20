@@ -55,6 +55,8 @@ class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
         self.exploitTABLEWIDGET.setRowCount(len(self.getExploitsList())) # FIXME 
         self.selectBUTTON.clicked.connect(self.close)
         self.fillTable()
+        self.parentDialog = NewScenariosWindow(self)
+        self.browseFilesBUTTON.clicked.connect(self.exploitBrowser)
 
     def getExploitsList(self):
         # dummy objects
@@ -81,6 +83,8 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
         self.exploitTABLEWIDGET.setRowCount(len(self.getItemsList())) # FIXME 
         self.selectBUTTON.clicked.connect(self.close)
         self.fillTable()
+        self.parentDialog = NewScenariosWindow(self)
+        self.browseFilesBUTTON.clicked.connect(self.vulnerableProgramBrowser)
 
     # TODO function to get vulnerable programs from exploitDB or stored locally 
     def getItemsList(self):

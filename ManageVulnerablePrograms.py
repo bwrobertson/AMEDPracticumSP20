@@ -7,8 +7,37 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
 
 class Ui_ManageVulnerablePrograms(object):
+
+    def vulnerableProgramBrowser(self):
+        VPoptions = QFileDialog.Options()
+        self.VPdialog = QFileDialog()
+        self.VPdialog.setOptions(VPoptions)
+        self.vulnerableProgramPath, __ = QFileDialog.getOpenFileName(self.VPdialog, "Select Vulnerable Program", '/home')
+
+        if self.vulnerableProgramPath:
+            #If Windows, change the separator
+            if self.vulnerableProgramPath == 'C:\\':
+                self.vulnerableProgramPath = self.vulnerableProgramPath.replace('/', '\\')
+                #self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+                #os.chdir(self.vulnerableProgramPath)
+                self.parentDialog.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+                #return self.vulnerableProgramPath
+                self.parentDialog.show()
+            # if Linux-based
+            else:
+                #self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+                self.parentDialog.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+                #os.chdir(self.vulnerableProgramPath)
+                #return self.vulnerableProgramPath
+                self.parentDialog.show()
+        else:
+            #self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+            self.parentDialog.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
+            #return ""
+            self.parentDialog.show()
 
     def setupUi(self, ManageVulnerablePrograms):
         ManageVulnerablePrograms.setObjectName("ManageVulnerablePrograms")
@@ -53,6 +82,7 @@ class Ui_ManageVulnerablePrograms(object):
         self.browseFilesBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.browseFilesBUTTON.setEnabled(True)
         self.browseFilesBUTTON.setObjectName("browseFilesBUTTON")
+        #self.browseFilesBUTTON.clicked.connect(self.vulnerableProgramBrowser)
         self.horizontalLayout.addWidget(self.browseFilesBUTTON)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.horizontalLayout.addItem(spacerItem)
