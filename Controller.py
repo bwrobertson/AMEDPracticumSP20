@@ -136,7 +136,6 @@ class Controller:
         self.manageExploits = ManageExploitsWindow()
         self.manageVulnerablePrograms = ManageVulnerableProgramsWindow()
         self.suggestedSetup=SuggestedSetupWindow()
-        self.editVm = EditVmWindow("")
         self.createNewVm = CreateNewVmWindow()
         self.splash.close()
         #
@@ -159,8 +158,8 @@ class Controller:
         #
         self.suggestedSetup.backButton.clicked.connect(self.newScenario.show)
         self.suggestedSetup.createVmBUTTON.clicked.connect(self.createNewVm.show)
-        self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.editVm.show)
-        self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.editVm.show)
+        self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
+        self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
         #
         self.main.show()
         
@@ -173,6 +172,8 @@ class Controller:
     def handleDoubleClick(self, item):
         item.setSelected(False)
         print(item.text())
+        self.editVm = EditVmWindow(item.text())
+        self.editVm.show()
         
 if __name__ == '__main__':
     import sys
