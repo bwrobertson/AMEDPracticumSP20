@@ -159,8 +159,8 @@ class Controller:
         #
         self.suggestedSetup.backButton.clicked.connect(self.newScenario.show)
         self.suggestedSetup.createVmBUTTON.clicked.connect(self.createNewVm.show)
-        self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
-        self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
+        self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.editVm.show)
+        self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.editVm.show)
         #
         self.main.show()
         
