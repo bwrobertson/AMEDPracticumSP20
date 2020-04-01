@@ -25,19 +25,19 @@ class Ui_ManageVulnerablePrograms(object):
                 #os.chdir(self.vulnerableProgramPath)
                 self.parentDialog.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
                 #return self.vulnerableProgramPath
-                self.parentDialog.show()
+                #self.parentDialog.show()
             # if Linux-based
             else:
                 #self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
                 self.parentDialog.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
                 #os.chdir(self.vulnerableProgramPath)
                 #return self.vulnerableProgramPath
-                self.parentDialog.show()
+                #self.parentDialog.show()
         else:
             #self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
             self.parentDialog.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
             #return ""
-            self.parentDialog.show()
+            #self.parentDialog.show()
 
     def setupUi(self, ManageVulnerablePrograms):
         ManageVulnerablePrograms.setObjectName("ManageVulnerablePrograms")
