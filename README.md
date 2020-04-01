@@ -11,7 +11,7 @@ PyQT5
 
 # Installation of ECEL/Fork (for Linux Guest machine used during the exploit)
 
-$ sudo gcc make curl python-pip python3-pip git
+$ sudo apt-get install gcc make curl python-pip python3-pip git
 
 $ git clone https://github.com/bwrobertson/AMEDPracticumSP20.git
 
