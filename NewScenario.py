@@ -73,9 +73,9 @@ class Ui_NewScenario(object):
         scenName = str(today) + self.scenarioLINEEDIT.text()
         encodedFile = ""
         #exploitName = self.exploitLINEEDIT.text()
-        exploitName = self.exploitPath
+        exploitName = self.exploitLINEEDIT.text()
         #VPname = self.vulnerableProgramLINEEDIT.text()
-        VPname = self.vulnerableProgramPath
+        VPname = self.vulnerableProgramLINEEDIT.text()
 
         jd["name"] = scenName
         jd["date_created"] = today
