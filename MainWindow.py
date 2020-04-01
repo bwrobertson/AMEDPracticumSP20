@@ -196,6 +196,10 @@ class Ui_MainWindow(object):
             scen = collection['scenario']
             type = scen['exploit']
             type2 = scen['pov']
+            
+            # Prevents NoneType Error
+            if not item:
+                continue
             item.setText(_translate("MainWindow", scen['name']))
             x+=1
 

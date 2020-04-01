@@ -11,10 +11,10 @@ from ManageExploits import Ui_ManageExploits
 from ManageVulnerablePrograms import Ui_ManageVulnerablePrograms
 from EditVm import Ui_EditVM
 from CreateNewVm import Ui_CreateNewVm
-
-# instantiation of UI (View) classes and controller class
+from VmSystemSettings import Ui_VmSystemSettings
 from SuggestedSetup import Ui_Form
 
+# instantiation of UI (View) classes and controller class
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
@@ -22,7 +22,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.manageDataBUTTON.clicked.connect(self.hide)
         self.manageScenarioBUTTON.clicked.connect(self.hide)
-        self.runBUTTON.clicked.connect(self.hide)
 
 
 class ManageDataWindow(QtWidgets.QDialog, Ui_ManageData):
@@ -118,12 +117,19 @@ class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
         super(EditVmWindow, self).__init__(parent)
         self.setupUi(self)
         self.machineNameLINEEDIT.setText(text)
+        self.discardBUTTON.clicked.connect(self.close)
         
 class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
     def __init__(self, parent=None):
         super(CreateNewVmWindow, self).__init__(parent)
         self.setupUi(self)
         self.discardBUTTON.clicked.connect(self.close)
+        
+class VmSystemSettings(QtWidgets.QDialog, Ui_VmSystemSettings):
+    def __init__(self, parent=None):
+        super(VmSystemSettings, self).__init__(parent)
+        self.setupUi(self)
+        self.cancelBUTTON.clicked.connect(self.close)
 
 
 # shows window whenever an action is taken by the user via the GUI
@@ -137,8 +143,9 @@ class Controller:
         self.manageExploits = ManageExploitsWindow()
         self.manageVulnerablePrograms = ManageVulnerableProgramsWindow()
         self.suggestedSetup=SuggestedSetupWindow()
-        self.editVm = EditVmWindow("")
         self.createNewVm = CreateNewVmWindow()
+        self.vmSystemSettings = VmSystemSettings()
+        self.editVm= EditVmWindow("null")
         self.splash.close()
         #
         self.main.manageDataBUTTON.clicked.connect(self.manageData.show)
@@ -160,11 +167,35 @@ class Controller:
         #
         self.suggestedSetup.backButton.clicked.connect(self.newScenario.show)
         self.suggestedSetup.createVmBUTTON.clicked.connect(self.createNewVm.show)
-        self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.editVm.show)
-        self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.editVm.show)
+        self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
+        self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
+        
+        # Functionality for "Run" button (interval-based collection/
+        # proof of concept)
+        self.main.runBUTTON.clicked.connect(self.runCollectors)
+        
         #
         self.main.show()
         
+        
+     # Run collectors method for an interval of 5 seconds       
+    def runCollectors(self):
+        
+        # Functionality on supported on Windows, need other collectors for that
+        operating_system = os.getcwd()
+        if "C:\\" in operating_system:
+            msg = QMessageBox.about(self.main, "Warning", "Windows operating system not supported on collectors, yet.")
+        else:
+            
+            # Controller.py must be ran in root (i.e. $ sudo su, on Linux)
+            uid = os.getuid()
+            if uid != 0:
+                msg = QMessageBox.about(self.main, "Warning", "Collectors must be ran with root privileges.")
+            else:
+                proc = subprocess.Popen(["python", "ecel/start_stop_collectors.py"])
+                msg = QMessageBox.about(self.main, "Notice", "Collectors have started!")
+                # Need to add functionality to let Dr. Acosta 
+                # know when collectors are done (signal w/ messagebox)   
         
     def showSplashScreen(self):
         self.pix = QPixmap("SplashPage.png")
@@ -174,6 +205,9 @@ class Controller:
     def handleDoubleClick(self, item):
         item.setSelected(False)
         print(item.text())
+        self.editVm = EditVmWindow(item.text())
+        self.editVm.settingsBUTTON.clicked.connect(self.vmSystemSettings.show)
+        self.editVm.show()
         
 if __name__ == '__main__':
     import sys

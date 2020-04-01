@@ -11,9 +11,47 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QListWidgetItem
+from pymongo import MongoClient
+import json
 
 
 class Ui_Form(object):
+
+    def runScen(self):
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
+
+        with open('scenario-test.json') as jsonFile:
+            dataJson = json.load(jsonFile)
+
+
+        scen = dataJson['scenario']
+        machines = scen['machines']
+
+        itemVictims =  [str(self.listWidget_2.item(i).text()) for i in range(self.listWidget_2.count())]
+        print(itemVictims)
+
+        itemAttackers =  [str(self.listWidget_3.item(i).text()) for i in range(self.listWidget_3.count())]
+        print(itemAttackers)
+
+        x = 1
+        for item in itemVictims:
+            machines['victim' + str(x)] = item
+            x+=1
+
+        x = 1
+        for item in itemAttackers:
+            machines['attacker' + str(x)] = item
+            x+=1
+
+        """with open('newJsonTest.json', 'w') as jsonFile:
+            json.dump(dataJson, jsonFile)"""
+
+        data.insert_one(dataJson)
+
+
+
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(753, 480)
@@ -54,6 +92,7 @@ class Ui_Form(object):
         self.runScenarioBUTTON = QtWidgets.QPushButton(self.widget2)
         self.runScenarioBUTTON.setObjectName("runScenarioBUTTON")
         self.horizontalLayout.addWidget(self.runScenarioBUTTON)
+        self.runScenarioBUTTON.clicked.connect(self.runScen)
         self.gridLayout.addWidget(self.splitter, 0, 0, 1, 1)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)
