@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QSplashScreen
 
 from MainWindow import Ui_MainWindow
 from PyQt5 import QtWidgets
-from QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox
 from ManageData import Ui_ManageData
 from ManageScenarios import Ui_ManageScenarios
 from NewScenario import Ui_NewScenario
