@@ -117,6 +117,7 @@ class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
         super(EditVmWindow, self).__init__(parent)
         self.setupUi(self)
         self.machineNameLINEEDIT.setText(text)
+        self.discardBUTTON.clicked.connect(self.close)
         
 class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
     def __init__(self, parent=None):
