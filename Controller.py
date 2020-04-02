@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QSplashScreen
+from PyQt5.QtWidgets import QSplashScreen, QMenu
 
 from MainWindow import Ui_MainWindow
 from PyQt5 import QtWidgets
@@ -114,6 +114,21 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
         super(SuggestedSetupWindow, self).__init__(parent)
         self.setupUi(self)
         self.backButton.clicked.connect(self.close)
+        
+    def contextMenuEvent(self, event):
+        cmenu = QMenu(self)
+        removeAct = cmenu.addAction("Remove")
+        action = cmenu.exec_(self.mapToGlobal(event.pos()))
+        if action == removeAct:
+          self.removeSelectedItem()
+
+#method responsible for removing an element from the PoV and Victim Lists
+    def removeSelectedItem(self):
+        listItems = self.listWidget_2.selectedItems() + self.listWidget_3.selectedItems()
+        if not listItems: return
+        for item in listItems:
+            self.listWidget_2.takeItem(self.listWidget_2.row(item))
+            self.listWidget_3.takeItem(self.listWidget_3.row(item))
         
 class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
     def __init__(self, text,parent=None):
