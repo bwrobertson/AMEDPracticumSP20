@@ -71,9 +71,7 @@ class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
         self.exploitTABLEWIDGET.setFont(font)
         self.exploitTABLEWIDGET.horizontalHeader().setStyleSheet("QHeaderView { font-size:  16pt};")
         header = self.exploitTABLEWIDGET.horizontalHeader()      
-        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
 
     def getExploitsList(self):
         # dummy objects
@@ -111,9 +109,7 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
         self.exploitTABLEWIDGET.setFont(font)
         self.exploitTABLEWIDGET.horizontalHeader().setStyleSheet("QHeaderView { font-size:  16pt};")
         header = self.exploitTABLEWIDGET.horizontalHeader()      
-        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
 
     # TODO function to get vulnerable programs from exploitDB or stored locally 
     def getItemsList(self):
