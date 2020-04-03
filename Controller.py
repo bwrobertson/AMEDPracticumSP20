@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtWidgets import QSplashScreen, QMenu
 
 from MainWindow import Ui_MainWindow
@@ -60,8 +60,20 @@ class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
         self.exploitTABLEWIDGET.setRowCount(len(self.getExploitsList())) # FIXME 
         self.selectBUTTON.clicked.connect(self.close)
         self.fillTable()
+        self.formatTable()
+        self.exploitTABLEWIDGET.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
         self.parentDialog = NewScenariosWindow(self)
         self.browseFilesBUTTON.clicked.connect(self.exploitBrowser)
+    
+    def formatTable(self):
+        font = QFont()
+        font.setPointSize(13)
+        self.exploitTABLEWIDGET.setFont(font)
+        self.exploitTABLEWIDGET.horizontalHeader().setStyleSheet("QHeaderView { font-size:  16pt};")
+        header = self.exploitTABLEWIDGET.horizontalHeader()      
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
 
     def getExploitsList(self):
         # dummy objects
@@ -88,8 +100,20 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
         self.exploitTABLEWIDGET.setRowCount(len(self.getItemsList())) # FIXME 
         self.selectBUTTON.clicked.connect(self.close)
         self.fillTable()
+        self.formatTable()
+        self.exploitTABLEWIDGET.setSelectionBehavior(QtWidgets.QTableView.SelectRows)        
         self.parentDialog = NewScenariosWindow(self)
         self.browseFilesBUTTON.clicked.connect(self.vulnerableProgramBrowser)
+
+    def formatTable(self):
+        font = QFont()
+        font.setPointSize(13)
+        self.exploitTABLEWIDGET.setFont(font)
+        self.exploitTABLEWIDGET.horizontalHeader().setStyleSheet("QHeaderView { font-size:  16pt};")
+        header = self.exploitTABLEWIDGET.horizontalHeader()      
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
 
     # TODO function to get vulnerable programs from exploitDB or stored locally 
     def getItemsList(self):
@@ -232,3 +256,4 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     controller = Controller()
     sys.exit(app.exec_())
+
