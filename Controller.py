@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QPixmap, QFont, QIcon
 from PyQt5.QtWidgets import QSplashScreen, QMenu
 
 from ImportData import Ui_importData
@@ -24,6 +24,7 @@ import os, subprocess
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.manageScenarioBUTTON.clicked.connect(self.hide)
         self.manageDataBUTTON.clicked.connect(self.hide)
@@ -33,6 +34,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 class ManageDataWindow(QtWidgets.QDialog, Ui_ManageData):
     def __init__(self, parent=None):
         super(ManageDataWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
 
@@ -40,6 +42,7 @@ class ManageDataWindow(QtWidgets.QDialog, Ui_ManageData):
 class ManageScenariosWindow(QtWidgets.QDialog, Ui_ManageScenarios):
     def __init__(self, parent=None):
         super(ManageScenariosWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
         self.newBUTTON.clicked.connect(self.hide)
@@ -48,6 +51,7 @@ class ManageScenariosWindow(QtWidgets.QDialog, Ui_ManageScenarios):
 class NewScenariosWindow(QtWidgets.QDialog, Ui_NewScenario):
     def __init__(self, parent=None):
         super(NewScenariosWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.parentDialog = SuggestedSetupWindow(self)
         self.setupUi(self)
         self.exploitBrowseBUTTON.clicked.connect(self.hide)
@@ -58,6 +62,7 @@ class NewScenariosWindow(QtWidgets.QDialog, Ui_NewScenario):
 class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
     def __init__(self, parent=None):
         super(ManageExploitsWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         # set num of rows to the actual length of the vuln programs list
         self.exploitTABLEWIDGET.setRowCount(len(self.getExploitsList())) # FIXME 
@@ -96,6 +101,7 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
                                 Ui_ManageVulnerablePrograms):
     def __init__(self, parent=None):
         super(ManageVulnerableProgramsWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         # set num of rows to the actual length of the vuln programs list
         self.exploitTABLEWIDGET.setRowCount(len(self.getItemsList())) # FIXME 
@@ -137,6 +143,7 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
         self.editVmWindow = EditVmWindow("null")
         self.vMSystemsSettings=VmSystemSettings()
         super(SuggestedSetupWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backButton.clicked.connect(self.close)
         self.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
@@ -173,6 +180,7 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
 class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
     def __init__(self, text,parent=None):
         super(EditVmWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.machineNameLINEEDIT.setText(text)
         self.discardBUTTON.clicked.connect(self.close)
@@ -180,18 +188,21 @@ class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
 class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
     def __init__(self, parent=None):
         super(CreateNewVmWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.discardBUTTON.clicked.connect(self.close)
         
 class VmSystemSettings(QtWidgets.QDialog, Ui_VmSystemSettings):
     def __init__(self, parent=None):
         super(VmSystemSettings, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.cancelBUTTON.clicked.connect(self.close)
 
 class ManageDataOptionsWindow(QtWidgets.QDialog, Ui_ManageDataOptions):
     def __init__(self, parent=None):
         super(ManageDataOptionsWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
         self.exportBUTTON.clicked.connect(self.close)
@@ -200,6 +211,7 @@ class ManageDataOptionsWindow(QtWidgets.QDialog, Ui_ManageDataOptions):
 class ImportDataWindow(QtWidgets.QDialog, Ui_importData):
     def __init__(self, parent=None):
         super(ImportDataWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.pushButton_2.clicked.connect(self.close)
 
