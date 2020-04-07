@@ -133,7 +133,7 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
             self.exploitTABLEWIDGET.setItem(row, 2, QtWidgets.QTableWidgetItem(itemList[row]["platform"]))
 
 class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
-        def __init__(self, parent=None):
+    def __init__(self, parent=None):
         self.editVmWindow = EditVmWindow("null")
         self.vMSystemsSettings=VmSystemSettings()
         super(SuggestedSetupWindow, self).__init__(parent)
@@ -141,7 +141,7 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
         self.backButton.clicked.connect(self.close)
         self.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
         self.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
-        
+
     def contextMenuEvent(self, event):
         cmenu = QMenu(self)
         infoAct = cmenu.addAction("Info")
@@ -168,7 +168,8 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
         self.editVm = EditVmWindow(item.text())
         self.editVm.settingsBUTTON.clicked.connect(self.vMSystemsSettings.show)
         self.editVm.show()
-        
+
+            
 class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
     def __init__(self, text,parent=None):
         super(EditVmWindow, self).__init__(parent)
