@@ -2,10 +2,12 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtWidgets import QSplashScreen, QMenu
 
+from ImportData import Ui_importData
 from MainWindow import Ui_MainWindow
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from ManageData import Ui_ManageData
+from ManageDataOptions import Ui_ManageDataOptions
 from ManageScenarios import Ui_ManageScenarios
 from NewScenario import Ui_NewScenario
 from ManageExploits import Ui_ManageExploits
@@ -23,8 +25,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.manageDataBUTTON.clicked.connect(self.hide)
         self.manageScenarioBUTTON.clicked.connect(self.hide)
+        self.manageDataBUTTON.clicked.connect(self.hide)
+
 
 
 class ManageDataWindow(QtWidgets.QDialog, Ui_ManageData):
@@ -137,10 +140,16 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
         
     def contextMenuEvent(self, event):
         cmenu = QMenu(self)
+        infoAct = cmenu.addAction("Info")
         removeAct = cmenu.addAction("Remove")
+
+
         action = cmenu.exec_(self.mapToGlobal(event.pos()))
         if action == removeAct:
           self.removeSelectedItem()
+
+        # if action == infoAct():
+        #     print("launch info window")
 
 #method responsible for removing an element from the PoV and Victim Lists
     def removeSelectedItem(self):
@@ -169,6 +178,19 @@ class VmSystemSettings(QtWidgets.QDialog, Ui_VmSystemSettings):
         self.setupUi(self)
         self.cancelBUTTON.clicked.connect(self.close)
 
+class ManageDataOptionsWindow(QtWidgets.QDialog, Ui_ManageDataOptions):
+    def __init__(self, parent=None):
+        super(ManageDataOptionsWindow, self).__init__(parent)
+        self.setupUi(self)
+        self.backBUTTON.clicked.connect(self.close)
+        self.exportBUTTON.clicked.connect(self.close)
+        self.importBUTTON.clicked.connect(self.close)
+
+class ImportDataWindow(QtWidgets.QDialog, Ui_importData):
+    def __init__(self, parent=None):
+        super(ImportDataWindow, self).__init__(parent)
+        self.setupUi(self)
+        self.pushButton_2.clicked.connect(self.close)
 
 # shows window whenever an action is taken by the user via the GUI
 class Controller:
@@ -184,12 +206,21 @@ class Controller:
         self.createNewVm = CreateNewVmWindow()
         self.vmSystemSettings = VmSystemSettings()
         self.editVm= EditVmWindow("null")
+        self.manageDataOptions=ManageDataOptionsWindow()
+        self.importData=ImportDataWindow()
         self.splash.close()
         #
-        self.main.manageDataBUTTON.clicked.connect(self.manageData.show)
+        self.main.manageDataBUTTON.clicked.connect(self.manageDataOptions.show)
+        #
+        self.manageDataOptions.exportBUTTON.clicked.connect(self.manageData.show)
+        self.manageDataOptions.importBUTTON.clicked.connect(self.importData.show)
+        self.manageDataOptions.backBUTTON.clicked.connect(self.main.show)
+        #
         self.main.manageScenarioBUTTON.clicked.connect(self.manageScenarios.show)
         #
         self.manageData.backBUTTON.clicked.connect(self.main.show)
+        #
+        self.importData.pushButton_2.clicked.connect(self.main.show)
         #
         self.manageScenarios.backBUTTON.clicked.connect(self.main.show)
         self.manageScenarios.newBUTTON.clicked.connect(self.newScenario.show)
@@ -211,7 +242,8 @@ class Controller:
         # Functionality for "Run" button (interval-based collection/
         # proof of concept)
         self.main.runBUTTON.clicked.connect(self.runCollectors)
-        
+        #
+
         #
         self.main.show()
         
