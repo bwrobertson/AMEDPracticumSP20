@@ -133,23 +133,26 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
             self.exploitTABLEWIDGET.setItem(row, 2, QtWidgets.QTableWidgetItem(itemList[row]["platform"]))
 
 class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
-    def __init__(self, parent=None):
+        def __init__(self, parent=None):
+        self.editVmWindow = EditVmWindow("null")
+        self.vMSystemsSettings=VmSystemSettings()
         super(SuggestedSetupWindow, self).__init__(parent)
         self.setupUi(self)
         self.backButton.clicked.connect(self.close)
+        self.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
+        self.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
         
     def contextMenuEvent(self, event):
         cmenu = QMenu(self)
         infoAct = cmenu.addAction("Info")
         removeAct = cmenu.addAction("Remove")
 
-
         action = cmenu.exec_(self.mapToGlobal(event.pos()))
         if action == removeAct:
-          self.removeSelectedItem()
-
-        # if action == infoAct():
-        #     print("launch info window")
+            self.removeSelectedItem()
+        if action == infoAct:
+            print("launch info window")
+            #Line where  VM Details Window will open with VM id being passed
 
 #method responsible for removing an element from the PoV and Victim Lists
     def removeSelectedItem(self):
@@ -158,6 +161,13 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
         for item in listItems:
             self.listWidget_2.takeItem(self.listWidget_2.row(item))
             self.listWidget_3.takeItem(self.listWidget_3.row(item))
+
+    def handleDoubleClick(self, item):
+        item.setSelected(False)
+        print(item.text())
+        self.editVm = EditVmWindow(item.text())
+        self.editVm.settingsBUTTON.clicked.connect(self.vMSystemsSettings.show)
+        self.editVm.show()
         
 class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
     def __init__(self, text,parent=None):
@@ -236,9 +246,7 @@ class Controller:
         #
         self.suggestedSetup.backButton.clicked.connect(self.newScenario.show)
         self.suggestedSetup.createVmBUTTON.clicked.connect(self.createNewVm.show)
-        self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
-        self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
-        
+      
         # Functionality for "Run" button (interval-based collection/
         # proof of concept)
         self.main.runBUTTON.clicked.connect(self.runCollectors)
@@ -271,13 +279,6 @@ class Controller:
         self.pix = QPixmap("SplashPage.png")
         self.splash = QSplashScreen(self.pix, Qt.WindowStaysOnTopHint)
         self.splash.show()
-        
-    def handleDoubleClick(self, item):
-        item.setSelected(False)
-        print(item.text())
-        self.editVm = EditVmWindow(item.text())
-        self.editVm.settingsBUTTON.clicked.connect(self.vmSystemSettings.show)
-        self.editVm.show()
         
 if __name__ == '__main__':
     import sys
