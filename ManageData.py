@@ -138,7 +138,6 @@ class Ui_ManageData(object):
         self.horizontalLayout_2.addItem(spacerItem)
         self.deleteBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.deleteBUTTON.setObjectName("deleteBUTTON")
-        self.deleteBUTTON.clicked.connect(self.deleteSelected)
         self.horizontalLayout_2.addWidget(self.deleteBUTTON)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem1)
@@ -301,8 +300,8 @@ class Ui_ManageData(object):
             x+=1
         self.progressBar.setValue(50)
         self.databseTREEWIDGET.clear()
-        self.setupTree(ManageData)
-        self.retranslateUi(ManageData)
+        self.setupTree(self)
+        self.retranslateUi(self)
         self.progressBar.setValue(100)
 
 if __name__ == "__main__":
