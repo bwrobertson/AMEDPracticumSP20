@@ -258,7 +258,7 @@ class Controller:
         self.manageVulnerablePrograms.selectBUTTON.clicked.connect(self.newScenario.show)
         #
         self.suggestedSetup.backButton.clicked.connect(self.newScenario.show)
-        self.suggestedSetup.createVmBUTTON.clicked.connect(self.createNewVm.show)
+        self.suggestedSetup.addVmBUTTON.clicked.connect(self.createNewVm.show)
       
         # Functionality for "Run" button (interval-based collection/
         # proof of concept)
