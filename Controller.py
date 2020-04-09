@@ -37,6 +37,7 @@ class ManageDataWindow(QtWidgets.QDialog, Ui_ManageData):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
+        self.deleteBUTTON.clicked.connect(self.deleteSelected)
 
 
 class ManageScenariosWindow(QtWidgets.QDialog, Ui_ManageScenarios):
