@@ -60,7 +60,7 @@ class Ui_Form(object):
 
 
 
-     def setupUi(self, Form):
+    def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(753, 480)
         Form.setMinimumSize(QtCore.QSize(753, 480))
