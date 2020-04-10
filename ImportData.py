@@ -7,8 +7,51 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
+import time
+from datetime import date
+from pymongo import MongoClient
+import json
 
 class Ui_importData(object):
+
+    def scenarioBrowser(self):
+        scenarioOptions = QFileDialog.Options()
+        self.scenarioDialog = QFileDialog()
+        self.scenarioDialog.setOptions(scenarioOptions)
+        self.scenarioPath, __ = QFileDialog.getOpenFileName(self.scenarioDialog, "Select scenario")
+
+        if self.scenarioPath:
+            #If Windows, change the separator
+            if self.scenarioPath == 'C:\\':
+                self.scenarioPath = self.scenarioPath.replace('/', '\\')
+                self.lineEdit_2.setText(self.scenarioPath)
+                #os.chdir(self.scenarioPath)
+                return self.scenarioPath
+            # if Linux-based
+            else:
+                self.lineEdit_2.setText(self.scenarioPath)
+                #os.chdir(self.scenarioPath)
+                return self.scenarioPath
+        else:
+            self.lineEdit_2.setText(self.scenarioPath)
+            return ""
+
+
+    def pushScenario(self):
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
+        today = date.today()
+        today = today.strftime("%d%b%Y")
+
+        absolutePath = self.scenarioPath
+        with open(absolutePath) as jsonFile:
+            dataJson = json.load(jsonFile)
+        name = str(today) + self.lineEdit.text()
+
+        data.insert_one(dataJson)
+
     def setupUi(self, importData):
         importData.setObjectName("importData")
         importData.resize(523, 390)
@@ -70,6 +113,7 @@ class Ui_importData(object):
         self.horizontalLayout.addWidget(self.lineEdit_2)
         self.pushButton = QtWidgets.QPushButton(self.layoutWidget)
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(self.scenarioBrowser)
         self.horizontalLayout.addWidget(self.pushButton)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.verticalLayout_4.addLayout(self.verticalLayout)
@@ -81,6 +125,7 @@ class Ui_importData(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.pushButton_3 = QtWidgets.QPushButton(self.layoutWidget_2)
         self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_3.clicked.connect(self.pushScenario)
         self.horizontalLayout_2.addWidget(self.pushButton_3)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
@@ -115,4 +160,3 @@ if __name__ == "__main__":
     ui.setupUi(importData)
     importData.show()
     sys.exit(app.exec_())
-
