@@ -28,6 +28,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.manageScenarioBUTTON.clicked.connect(self.hide)
         self.manageDataBUTTON.clicked.connect(self.hide)
+        
+
 
 
 
