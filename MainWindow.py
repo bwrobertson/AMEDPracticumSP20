@@ -151,11 +151,14 @@ class Ui_MainWindow(object):
         # Manage data button##############################
         self.manageDataBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.manageDataBUTTON.setObjectName("manageDataBUTTON")
-        #########################################################
         self.horizontalLayout_6.addWidget(self.manageDataBUTTON)
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_6.addItem(spacerItem3)
-        # Manage Scenario button##############################
+        self.configureDatabaseBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        self.configureDatabaseBUTTON.setObjectName("configureDatabaseBUTTON")
+        self.horizontalLayout_6.addWidget(self.configureDatabaseBUTTON)
+        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_6.addItem(spacerItem4)
         self.manageScenarioBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -230,6 +233,7 @@ class Ui_MainWindow(object):
         self.configureBUTTON.setText(_translate("MainWindow", "Configure"))
         self.setupBUTTON.setText(_translate("MainWindow", "Setup"))
         self.manageDataBUTTON.setText(_translate("MainWindow", "Manage Data"))
+        self.configureDatabaseBUTTON.setText(_translate("MainWindow", "Configure Database"))
         self.manageScenarioBUTTON.setText(_translate("MainWindow", "Manage Scenario"))
 
 
