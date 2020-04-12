@@ -58,6 +58,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout = QtWidgets.QVBoxLayout()
+        font = QtGui.QFont("Helvetica [Cronyx]", 16) # label
+        self.qlabel = QtWidgets.QLabel("List of Scenarios")
+        self.qlabel.setFont(font)
+        self.verticalLayout.addWidget(self.qlabel) # label added 
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -96,16 +100,21 @@ class Ui_MainWindow(object):
         self.scenarioInfoLISTWIDGET = QtWidgets.QListWidget(self.layoutWidget)
         self.scenarioInfoLISTWIDGET.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
         self.scenarioInfoLISTWIDGET.setObjectName("scenarioInfoLISTWIDGET")
-        item = QtWidgets.QListWidgetItem()
+        item = QtWidgets.QListWidgetItem() # item 0
+        item.setTextAlignment(QtCore.Qt.AlignCenter) 
+        font = QtGui.QFont("Helvetica [Cronyx]", 14) 
+        item.setFont(font) 
+        self.scenarioInfoLISTWIDGET.addItem(item) 
+        item = QtWidgets.QListWidgetItem() # item 1
+        item.setFlags(QtCore.Qt.ItemIsEnabled)
+        self.scenarioInfoLISTWIDGET.addItem(item) 
+        item = QtWidgets.QListWidgetItem() # item 2
+        item.setFlags(QtCore.Qt.ItemIsEnabled)
+        self.scenarioInfoLISTWIDGET.addItem(item) 
+        item = QtWidgets.QListWidgetItem() # item 3
         item.setFlags(QtCore.Qt.ItemIsEnabled)
         self.scenarioInfoLISTWIDGET.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        item.setFlags(QtCore.Qt.ItemIsEnabled)
-        self.scenarioInfoLISTWIDGET.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        item.setFlags(QtCore.Qt.ItemIsEnabled)
-        self.scenarioInfoLISTWIDGET.addItem(item)
-        item = QtWidgets.QListWidgetItem()
+        item = QtWidgets.QListWidgetItem() # item 4
         item.setFlags(QtCore.Qt.ItemIsEnabled)
         self.scenarioInfoLISTWIDGET.addItem(item)
         self.horizontalLayout_2.addWidget(self.scenarioInfoLISTWIDGET)
@@ -189,14 +198,15 @@ class Ui_MainWindow(object):
         scen = collections['scenario']
         type = scen['exploit']
         type2 = scen['pov']
-
-        item = self.scenarioInfoLISTWIDGET.item(0)
-        item.setText(_translate("MainWindow", "Date Created: " + scen["date_created"]))
+        item = self.scenarioInfoLISTWIDGET.item(0) # added a new item
+        item.setText(_translate("MainWindow", "Scenario Details"))
         item = self.scenarioInfoLISTWIDGET.item(1)
-        item.setText(_translate("MainWindow", "Date Modified: " + scen['date_modified']))
+        item.setText(_translate("MainWindow", "Date Created: " + scen["date_created"]))
         item = self.scenarioInfoLISTWIDGET.item(2)
-        item.setText(_translate("MainWindow", "Exploit: " + type['file']))
+        item.setText(_translate("MainWindow", "Date Modified: " + scen['date_modified']))
         item = self.scenarioInfoLISTWIDGET.item(3)
+        item.setText(_translate("MainWindow", "Exploit: " + type['file']))
+        item = self.scenarioInfoLISTWIDGET.item(4)
         item.setText(_translate("MainWindow", "Vulnerable Program: " + type2['file']))
 
     def retranslateUi(self, MainWindow):
