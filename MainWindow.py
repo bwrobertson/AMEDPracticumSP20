@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QLabel
 from ManageData import Ui_ManageData
 from PyQt5.QtWidgets import QFileDialog
 import os, sys
@@ -74,6 +75,7 @@ class Ui_MainWindow(object):
         self.DATEEDIT.setObjectName("DATEEDIT")
         self.horizontalLayout.addWidget(self.DATEEDIT)
         self.verticalLayout.addLayout(self.horizontalLayout)
+        ####################################scenariosLIST######################################
         self.scenariosLIST = QtWidgets.QListWidget(self.layoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -87,18 +89,10 @@ class Ui_MainWindow(object):
         self.scenariosLIST.setWordWrap(False)
         self.scenariosLIST.setSelectionRectVisible(False)
         self.scenariosLIST.setObjectName("scenariosLIST")
-        item = QtWidgets.QListWidgetItem()
-        self.scenariosLIST.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        self.scenariosLIST.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        self.scenariosLIST.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        self.scenariosLIST.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        self.scenariosLIST.addItem(item)
         self.verticalLayout.addWidget(self.scenariosLIST)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
+        #################################### END scenariosLIST######################################
+        ####################################scenarioInfoLISTWIDGET######################################
         self.scenarioInfoLISTWIDGET = QtWidgets.QListWidget(self.layoutWidget)
         self.scenarioInfoLISTWIDGET.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
         self.scenarioInfoLISTWIDGET.setObjectName("scenarioInfoLISTWIDGET")
@@ -115,6 +109,7 @@ class Ui_MainWindow(object):
         item.setFlags(QtCore.Qt.ItemIsEnabled)
         self.scenarioInfoLISTWIDGET.addItem(item)
         self.horizontalLayout_2.addWidget(self.scenarioInfoLISTWIDGET)
+        ####################################END scenarioInfoLISTWIDGET######################################
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
@@ -175,7 +170,31 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.retranslateUi(MainWindow)
+        self.scenariosLIST.clicked.connect(self.listViewClicked)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def listViewClicked(self, MainWindow):
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
+        _translate = QtCore.QCoreApplication.translate
+        scen = ""
+        type = ""
+        type2 = ''
+        item = self.scenariosLIST.currentItem()
+        collections = data.find_one({"scenario.name":item.text()})
+        scen = collections['scenario']
+        type = scen['exploit']
+        type2 = scen['pov']
+
+        item = self.scenarioInfoLISTWIDGET.item(0)
+        item.setText(_translate("MainWindow", "Date Created: " + scen["date_created"]))
+        item = self.scenarioInfoLISTWIDGET.item(1)
+        item.setText(_translate("MainWindow", "Date Modified: " + scen['date_modified']))
+        item = self.scenarioInfoLISTWIDGET.item(2)
+        item.setText(_translate("MainWindow", "Exploit: " + type['file']))
+        item = self.scenarioInfoLISTWIDGET.item(3)
+        item.setText(_translate("MainWindow", "Vulnerable Program: " + type2['file']))
 
     def retranslateUi(self, MainWindow):
         client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
@@ -192,6 +211,7 @@ class Ui_MainWindow(object):
         type = ""
         type2 = ''
         for collection in data.find():
+            self.scenariosLIST.addItem(QtWidgets.QListWidgetItem())
             item = self.scenariosLIST.item(x)
             scen = collection['scenario']
             type = scen['exploit']
@@ -200,20 +220,11 @@ class Ui_MainWindow(object):
             # Prevents NoneType Error
             if not item:
                 continue
-            item.setText(_translate("MainWindow", scen['name']))
+            item.setText(_translate("MainWindow", scen['name'])) #SCENARIO NAME IS CHANGED HERE
             x+=1
-
         self.scenariosLIST.setSortingEnabled(__sortingEnabled)
         __sortingEnabled = self.scenarioInfoLISTWIDGET.isSortingEnabled()
         self.scenarioInfoLISTWIDGET.setSortingEnabled(False)
-        item = self.scenarioInfoLISTWIDGET.item(0)
-        item.setText(_translate("MainWindow", "Date Created: " + scen["date_created"]))
-        item = self.scenarioInfoLISTWIDGET.item(1)
-        item.setText(_translate("MainWindow", "Date Modified: " + scen['date_modified']))
-        item = self.scenarioInfoLISTWIDGET.item(2)
-        item.setText(_translate("MainWindow", "Exploit: " + type['file']))
-        item = self.scenarioInfoLISTWIDGET.item(3)
-        item.setText(_translate("MainWindow", "Vulnerable Program: " + type2['file']))
         self.scenarioInfoLISTWIDGET.setSortingEnabled(__sortingEnabled)
         self.runBUTTON.setText(_translate("MainWindow", "Run"))
         self.configureBUTTON.setText(_translate("MainWindow", "Configure"))
