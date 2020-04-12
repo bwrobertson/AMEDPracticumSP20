@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QFont, QIcon
 from PyQt5.QtWidgets import QSplashScreen, QMenu
 
+from ConfigureMongoDB import Ui_ConfigureMongoDB
 from ImportData import Ui_importData
 from MainWindow import Ui_MainWindow
 from PyQt5 import QtWidgets
@@ -217,6 +218,13 @@ class ImportDataWindow(QtWidgets.QDialog, Ui_importData):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.pushButton_2.clicked.connect(self.close)
+   
+class ConfigureDatabaseWindow(QtWidgets.QDialog, Ui_ConfigureMongoDB):
+    def __init__(self, parent=None):
+        super(ConfigureDatabaseWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
+        self.setupUi(self)
+        self.backBUTTON.clicked.connect(self.close)
 
 # shows window whenever an action is taken by the user via the GUI
 class Controller:
@@ -224,6 +232,7 @@ class Controller:
         self.showSplashScreen()
         self.main = MainWindow()
         self.manageData = ManageDataWindow()
+        self.configureDatabase = ConfigureDatabaseWindow()
         self.manageScenarios = ManageScenariosWindow()
         self.newScenario = NewScenariosWindow()
         self.manageExploits = ManageExploitsWindow()
@@ -241,6 +250,9 @@ class Controller:
         self.manageDataOptions.exportBUTTON.clicked.connect(self.manageData.show)
         self.manageDataOptions.importBUTTON.clicked.connect(self.importData.show)
         self.manageDataOptions.backBUTTON.clicked.connect(self.main.show)
+        #
+        self.main.configureDatabaseBUTTON.clicked.connect(self.configureDatabase.show)
+        self.configureDatabase.backBUTTON.clicked.connect(self.main.show)
         #
         self.main.manageScenarioBUTTON.clicked.connect(self.manageScenarios.show)
         #
