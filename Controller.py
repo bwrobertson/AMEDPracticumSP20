@@ -3,6 +3,7 @@ from PyQt5.QtGui import QPixmap, QFont, QIcon
 from PyQt5.QtWidgets import QSplashScreen, QMenu
 
 from ConfigureMongoDB import Ui_ConfigureMongoDB
+from DBConfiguration import Ui_DBConfiguration
 from ImportData import Ui_importData
 from MainWindow import Ui_MainWindow
 from PyQt5 import QtWidgets
@@ -225,12 +226,21 @@ class ConfigureDatabaseWindow(QtWidgets.QDialog, Ui_ConfigureMongoDB):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
+       
+class OpeningDBConfigurationWindow(QtWidgets.QDialog, Ui_DBConfiguration):
+    def __init__(self, parent=None):
+        super(OpeningDBConfigurationWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
+        self.setupUi(self)
+        self.closeBUTTON.clicked.connect(self.close)
+        self.connectBUTTON.clicked.connect(self.close)    
 
 # shows window whenever an action is taken by the user via the GUI
 class Controller:
     def __init__(self):
         self.showSplashScreen()
         self.main = MainWindow()
+         self.openingDBConfiguration = OpeningDBConfigurationWindow()
         self.manageData = ManageDataWindow()
         self.configureDatabase = ConfigureDatabaseWindow()
         self.manageScenarios = ManageScenariosWindow()
@@ -244,6 +254,8 @@ class Controller:
         self.manageDataOptions=ManageDataOptionsWindow()
         self.importData=ImportDataWindow()
         self.splash.close()
+        #
+        self.openingDBConfiguration.connectBUTTON.clicked.connect(self.main.show)
         #
         self.main.manageDataBUTTON.clicked.connect(self.manageDataOptions.show)
         #
@@ -281,7 +293,7 @@ class Controller:
         #
 
         #
-        self.main.show()
+        self.openingDBConfiguration.show()
         
         
      # Run collectors method for an interval of 5 seconds       
