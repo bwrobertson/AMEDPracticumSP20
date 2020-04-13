@@ -3,7 +3,7 @@
 #           Changes Start Here             #
 ############################################
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 import os, sys
 import base64
 from pymongo import MongoClient
@@ -303,6 +303,8 @@ class Ui_ManageData(object):
         self.setupTree(self)
         self.retranslateUi(self)
         self.progressBar.setValue(100)
+        QMessageBox.about(self, "Success", "Items Deleted Succesfully.")
+        self.progressBar.setValue(0)
 
 if __name__ == "__main__":
     import sys
