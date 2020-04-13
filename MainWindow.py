@@ -238,6 +238,8 @@ class Ui_MainWindow(object):
         self.scenariosLIST.setSortingEnabled(__sortingEnabled)
         __sortingEnabled = self.scenarioInfoLISTWIDGET.isSortingEnabled()
         self.scenarioInfoLISTWIDGET.setSortingEnabled(False)
+        item = self.scenarioInfoLISTWIDGET.item(0)  # added a new item
+        item.setText(_translate("MainWindow", "Scenario Details"))
         self.scenarioInfoLISTWIDGET.setSortingEnabled(__sortingEnabled)
         self.runBUTTON.setText(_translate("MainWindow", "Run"))
         self.configureBUTTON.setText(_translate("MainWindow", "Configure"))
