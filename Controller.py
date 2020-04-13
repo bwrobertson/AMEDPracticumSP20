@@ -240,7 +240,7 @@ class Controller:
     def __init__(self):
         self.showSplashScreen()
         self.main = MainWindow()
-         self.openingDBConfiguration = OpeningDBConfigurationWindow()
+        self.openingDBConfiguration = OpeningDBConfigurationWindow()
         self.manageData = ManageDataWindow()
         self.configureDatabase = ConfigureDatabaseWindow()
         self.manageScenarios = ManageScenariosWindow()
