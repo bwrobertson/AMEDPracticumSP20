@@ -7,6 +7,10 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from pymongo import MongoClient
+import pymongo
+import re
+import base64
 
 class Ui_ConfigureMongoDB(object):
     def setupUi(self, ConfigureMongoDB):
@@ -69,12 +73,28 @@ class Ui_ConfigureMongoDB(object):
         self.horizontalLayout.addItem(spacerItem)
         self.connectBUTTON = QtWidgets.QPushButton(self.widget1)
         self.connectBUTTON.setObjectName("connectBUTTON")
+        self.connectBUTTON.clicked.connect(self.pingDB)
         self.horizontalLayout.addWidget(self.connectBUTTON)
 
         self.retranslateUi(ConfigureMongoDB)
         QtCore.QMetaObject.connectSlotsByName(ConfigureMongoDB)
 
     def retranslateUi(self, ConfigureMongoDB):
+
+        try:
+            file = open('mongodbconnectioninfo.txt', 'rb')
+            dbConnection = file.read()
+            dbConnection = base64.decodebytes(dbConnection)
+            dbConnection = dbConnection.decode()
+            self.DBConnectionStringLINEEDIT.setText(dbConnection)
+            user = re.search('://(.*):', dbConnection)
+            password = re.search(user.group(1) + ':(.*)@', dbConnection)
+            self.DBUserNameLINEEDIT.setText(user.group(1))
+            self.DBPasswordLINEEDIT.setText(password.group(1))
+            file.close()
+        except IOError:
+            print('file not found')
+
         _translate = QtCore.QCoreApplication.translate
         ConfigureMongoDB.setWindowTitle(_translate("ConfigureMongoDB", "Configure MongoDB"))
         self.DBConnectionStringLABEL.setText(_translate("ConfigureMongoDB", "Database Connection String:"))
@@ -84,6 +104,32 @@ class Ui_ConfigureMongoDB(object):
         self.connectBUTTON.setText(_translate("ConfigureMongoDB", "Connect"))
 
 
+    def pingDB(self):
+        dbConnection = self.DBConnectionStringLINEEDIT.text()
+        dbUser = self.DBUserNameLINEEDIT.text()
+        dbPass = self.DBPasswordLINEEDIT.text()
+
+        user = re.search('://(.*):', dbConnection)
+        password = re.search(user.group(1) + ':(.*)@', dbConnection)
+        if(dbUser != ""):
+            dbConnection = dbConnection.replace(user.group(1), dbUser)
+        if(dbPass != ""):
+            dbConnection = dbConnection.replace(password.group(1), dbPass)
+        print(dbConnection)
+
+        try:
+            client = MongoClient(dbConnection, 1)
+            client.server_info() # force connection on a request as the
+                                     # connect=True parameter of MongoClient seems
+                                     # to be useless here
+            print('yes')
+            file = open('mongodbconnectioninfo.txt', 'wb')
+            file.write(base64.b64encode(str.encode(dbConnection)))
+            file.close()
+        except pymongo.errors.ServerSelectionTimeoutError as err:
+            # do whatever you need
+            print(err)
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -92,4 +138,3 @@ if __name__ == "__main__":
     ui.setupUi(ConfigureMongoDB)
     ConfigureMongoDB.show()
     sys.exit(app.exec_())
-
