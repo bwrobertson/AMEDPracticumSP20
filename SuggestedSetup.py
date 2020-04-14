@@ -15,12 +15,16 @@ from pymongo import MongoClient
 import json
 from NewScenario import Ui_NewScenario
 from bson.objectid import ObjectId
+from DBConfiguration import Ui_DBConfiguration
 
 
 class Ui_Form(object):
 
     def runScen(self):
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Scenario"]
 
