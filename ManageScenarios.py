@@ -10,6 +10,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from NewScenario import Ui_NewScenario
 from pymongo import MongoClient
+from DBConfiguration import Ui_DBConfiguration
 
 class Ui_ManageScenarios(object):
     def setupUi(self, ManageScenarios):
@@ -84,7 +85,10 @@ class Ui_ManageScenarios(object):
 
     def retranslateUi(self, ManageScenarios):
         ###Changed###
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Scenario"]
         _translate = QtCore.QCoreApplication.translate
