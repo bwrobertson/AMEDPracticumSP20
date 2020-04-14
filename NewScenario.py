@@ -16,6 +16,7 @@ from zipfile import ZipFile
 from datetime import date
 import time
 import ScenarioJsonTemplate as template
+from DBConfiguration import Ui_DBConfiguration
 
 class Ui_NewScenario(object):
     id = 0
@@ -65,7 +66,10 @@ class Ui_NewScenario(object):
     #         return ""
 
     def storeScenario(self, jd):
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Scenario"]
 
