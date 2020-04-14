@@ -11,7 +11,7 @@ from bson.objectid import ObjectId
 from zipfile import ZipFile
 from datetime import date
 import time
-from DBConfiguration import UI_DBConfiguration
+from DBConfiguration import Ui_DBConfiguration
 ############################################
 #           Changes End   Here             #
 ############################################
