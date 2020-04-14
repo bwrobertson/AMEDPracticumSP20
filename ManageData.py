@@ -11,6 +11,7 @@ from bson.objectid import ObjectId
 from zipfile import ZipFile
 from datetime import date
 import time
+from DBConfiguration import UI_DBConfiguration
 ############################################
 #           Changes End   Here             #
 ############################################
@@ -53,7 +54,10 @@ class Ui_ManageData(object):
         ############################################
         #           Changes Start Here             #
         ############################################
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Demo"]
         x=0
@@ -207,7 +211,10 @@ class Ui_ManageData(object):
     def setupTree(self, ManageData):
         x=0
         y=0
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Demo"]
         for collection in data.find():
@@ -224,7 +231,10 @@ class Ui_ManageData(object):
 
     def progress(self):
         self.progressBar.setValue(0)
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Demo"]
         self.count = 0
