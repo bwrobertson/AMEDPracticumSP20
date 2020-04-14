@@ -17,7 +17,7 @@ from bson.objectid import ObjectId
 from zipfile import ZipFile
 from datetime import date
 import time
-
+from DBConfiguration import Ui_DBConfiguration
 
 class Ui_MainWindow(object):
 
@@ -186,7 +186,10 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def listViewClicked(self, MainWindow):
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Scenario"]
         _translate = QtCore.QCoreApplication.translate
@@ -210,7 +213,10 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Vulnerable Program: " + type2['file']))
 
     def retranslateUi(self, MainWindow):
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Scenario"]
         _translate = QtCore.QCoreApplication.translate
