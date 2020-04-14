@@ -278,6 +278,8 @@ class Ui_ManageData(object):
                         y+=1
                 x+=1
             self.progressBar.setValue(100)
+            QMessageBox.about(self, "Success", "Items Exported Succesfully.")
+            self.progressBar.setValue(0)
 
 
         return
