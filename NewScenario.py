@@ -199,7 +199,7 @@ class Ui_NewScenario(object):
         self.scenarioNameLABEL.setText(_translate("NewScenario", "Scenario Name:"))
         self.exploitLABEL.setText(_translate("NewScenario", "Exploit:"))
         self.exploitBrowseBUTTON.setText(_translate("NewScenario", "Browse"))
-        self.vulnerableProgramLABEL.setText(_translate("NewScenario", "Vulnerable Program:"))
+        self.vulnerableProgramLABEL.setText(_translate("NewScenario", "Vulnerable Program (optional):"))
         self.vulnerableProgramBrowseBUTTON.setText(_translate("NewScenario", "Browse"))
         self.cancelBUTTON.setText(_translate("NewScenario", "Cancel"))
         self.addBUTTON.setText(_translate("NewScenario", "Add"))
