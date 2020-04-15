@@ -28,6 +28,11 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.window)
         self.window.show()
 
+    def configureRunSetupButtonStatus(self):
+        self.configureBUTTON.setEnabled(True)
+        self.setupBUTTON.setEnabled(True)
+        self.runBUTTON.setEnabled(True)
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
@@ -93,6 +98,7 @@ class Ui_MainWindow(object):
         self.scenariosLIST.setWordWrap(False)
         self.scenariosLIST.setSelectionRectVisible(False)
         self.scenariosLIST.setObjectName("scenariosLIST")
+        self.scenariosLIST.itemClicked.connect(self.configureRunSetupButtonStatus)
         self.verticalLayout.addWidget(self.scenariosLIST)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
         #################################### END scenariosLIST######################################
@@ -129,6 +135,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.runBUTTON.sizePolicy().hasHeightForWidth())
         self.runBUTTON.setSizePolicy(sizePolicy)
         self.runBUTTON.setObjectName("runBUTTON")
+        self.runBUTTON.setEnabled(False)
         self.horizontalLayout_8.addWidget(self.runBUTTON)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_8.addItem(spacerItem)
@@ -139,10 +146,12 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.configureBUTTON.sizePolicy().hasHeightForWidth())
         self.configureBUTTON.setSizePolicy(sizePolicy)
         self.configureBUTTON.setObjectName("configureBUTTON")
+        self.configureBUTTON.setEnabled(False)
         self.horizontalLayout_8.addWidget(self.configureBUTTON)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_8.addItem(spacerItem1)
         self.setupBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        self.setupBUTTON.setEnabled(False)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
