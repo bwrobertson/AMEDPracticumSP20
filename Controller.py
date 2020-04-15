@@ -240,6 +240,7 @@ class Controller:
         #
         self.suggestedSetup.backButton.clicked.connect(self.newScenario.show)
         self.suggestedSetup.addVmBUTTON.clicked.connect(self.createNewVm.show)
+        self.createNewVm.manageExploitsBUTTON.clicked.connect(self.manageExploits.show)
         self.suggestedSetup.nextBUTTON.clicked.connect(self.networkSetup.show)
         #
         self.networkSetup.backButton.clicked.connect(self.suggestedSetup.show)
