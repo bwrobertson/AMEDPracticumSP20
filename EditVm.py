@@ -7,6 +7,8 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import json
+import VagrantFileTemplate as temp
 import os
 
 class Ui_EditVM(object):
@@ -190,9 +192,29 @@ class Ui_EditVM(object):
         self.retranslateUi(EditVM)
         QtCore.QMetaObject.connectSlotsByName(EditVM)
 
+    def createJson(self):
+        data = temp.VagrantFileTemplate.createJson(self)
+
+        os = ""
+        if self.vmOsCOMBOBOX.currentIndex == 0:
+            os = "kali linux"
+        elif self.vmOsCOMBOBOX.currentIndex == 1:
+            os = "ubuntu/trusty64"
+        elif self.vmOsCOMBOBOX.currentIndex == 2:
+            os = "windows"
+        data['source_path'] = os
+
+        return data
+
+
     def runVagrant(self):
-        #os.system("vagrant init")
-        os.system("vagrant up --provision")
+        data = self.createJson()
+        # data = json.dumps(data)
+        # loaded_data = json.loads(data)
+        # with open('packer_test_vagrant.json', 'w') as f:
+        #     json.dump(data, f)
+        os.system("packer build packer_test_vagrant.json")
+       # os.system("vagrant up --provision")
         self.hide()
 
     def retranslateUi(self, EditVM):

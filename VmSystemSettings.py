@@ -7,8 +7,22 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from NewScenario import Ui_NewScenario
+from pymongo import MongoClient
 
 class Ui_VmSystemSettings(object):
+
+    # def saveMachine(self):
+        # try:
+        #     client = MongoClient(Ui_DBConfiguration.dbConnection)
+        # except:
+        #     client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        # db = client.Test
+        # data = db["Scenario"]
+
+        # scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
+
+
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(500, 659)
@@ -181,6 +195,7 @@ class Ui_VmSystemSettings(object):
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
         self.okBUTTON = QtWidgets.QPushButton(self.widget)
         self.okBUTTON.setObjectName("okBUTTON")
+        # self.okBUTTON.clicked.connect(self.saveMachine())
         self.horizontalLayout_11.addWidget(self.okBUTTON)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_11.addItem(spacerItem)

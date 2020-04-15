@@ -116,6 +116,7 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.listWidget, 1, 7, 1, 1)
         self.nextBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.nextBUTTON.setObjectName("nextBUTTON")
+        #self.nextBUTTON.clicked.connect(runScen())
         self.gridLayout.addWidget(self.nextBUTTON, 4, 3, 1, 1)
         self.line = QtWidgets.QFrame(self.layoutWidget)
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
