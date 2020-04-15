@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Create_New_Vm.ui'
-#
-# Created by: PyQt5 UI code generator 5.11.3
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
 
 class Ui_CreateNewVm(object):
     def setupUi(self, CreateNewVm):
@@ -56,6 +51,10 @@ class Ui_CreateNewVm(object):
         self.horizontalLayout_3.addItem(spacerItem)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        ####CHANGES START: Added a new horizontal Layout####
+        self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_10.setObjectName("horizontalLayout_10")
+        ####CHANGES END####
         self.createVmLABEL = QtWidgets.QLabel(self.layoutWidget)
         font = QtGui.QFont()
         font.setBold(True)
@@ -71,6 +70,9 @@ class Ui_CreateNewVm(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.vmOsLABEL = QtWidgets.QLabel(self.layoutWidget)
+        ####CHANGE START####
+        self.vmFilesLABEL = QtWidgets.QLabel(self.layoutWidget)
+         ####CHANGE END####
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -89,59 +91,64 @@ class Ui_CreateNewVm(object):
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.malwareLABEL = QtWidgets.QLabel(self.layoutWidget)
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
-        self.malwareLABEL.setFont(font)
-        self.malwareLABEL.setObjectName("malwareLABEL")
-        self.verticalLayout_4.addWidget(self.malwareLABEL)
+        ####CHANGE START: Added Label####
+        self.vmFilesLABEL.setFont(font)
+        self.vmFilesLABEL.setObjectName("vmFilesLABEL")
+        self.verticalLayout_4.addWidget(self.vmFilesLABEL)
+        ####CHANGED END####
+        ####CHANGED START: Added additional ComboBox####
+        self.vmFilesCOMBOBOX = QtWidgets.QComboBox(self.layoutWidget)
+        self.vmFilesCOMBOBOX.setObjectName("vmFilesCOMBOBOX")
+        self.vmFilesCOMBOBOX.addItem("")
+        self.vmFilesCOMBOBOX.addItem("")
+        self.vmFilesCOMBOBOX.addItem("")
+        self.verticalLayout_4.addWidget(self.vmFilesCOMBOBOX)
+        ####CHANGED END####
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.malwareLINEEDIT = QtWidgets.QLineEdit(self.layoutWidget)
         self.malwareLINEEDIT.setObjectName("malwareLINEEDIT")
         self.horizontalLayout_4.addWidget(self.malwareLINEEDIT)
-        self.malwareBrowseBUTTON = QtWidgets.QPushButton(self.layoutWidget)
-        self.malwareBrowseBUTTON.setObjectName("malwareBrowseBUTTON")
-        self.horizontalLayout_4.addWidget(self.malwareBrowseBUTTON)
+        self.vmFilesBrowseBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        self.vmFilesBrowseBUTTON.setObjectName("vmFilesBrowseBUTTON")
+        self.horizontalLayout_4.addWidget(self.vmFilesBrowseBUTTON)
+        ####CHANGES START####
+        self.vmFilesAddBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        self.vmFilesAddBUTTON.setObjectName("vmFilesAddBUTTON")
+        self.vmFilesDeleteBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        self.vmFilesDeleteBUTTON.setObjectName("vmFilesDeleteBUTTON")
+        self.horizontalLayout_4.addWidget(self.vmFilesAddBUTTON)
+        ####CHANGES END####
         self.verticalLayout_4.addLayout(self.horizontalLayout_4)
+        ####CHANGES START####
+        self.vmFilesLISTWIDGET = QtWidgets.QListWidget(self.layoutWidget)
+        self.vmFilesLISTWIDGET.setSelectionRectVisible(False)
+        self.vmFilesLISTWIDGET.setObjectName("vmFilesLISTWIDGET")
+        self.horizontalLayout_10.addWidget(self.vmFilesLISTWIDGET)
+        self.horizontalLayout_10.addWidget(self.vmFilesDeleteBUTTON)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_10)
+        ####CHANGES END####
         self.verticalLayout_8.addLayout(self.verticalLayout_4)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.metasploitLABEL = QtWidgets.QLabel(self.layoutWidget)
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
-        self.metasploitLABEL.setFont(font)
-        self.metasploitLABEL.setObjectName("metasploitLABEL")
-        self.verticalLayout_5.addWidget(self.metasploitLABEL)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.metasploitLINEEDIT = QtWidgets.QLineEdit(self.layoutWidget)
-        self.metasploitLINEEDIT.setObjectName("metasploitLINEEDIT")
-        self.horizontalLayout_5.addWidget(self.metasploitLINEEDIT)
-        self.metasploitBrowseBUTTON = QtWidgets.QPushButton(self.layoutWidget)
-        self.metasploitBrowseBUTTON.setObjectName("metasploitBrowseBUTTON")
-        self.horizontalLayout_5.addWidget(self.metasploitBrowseBUTTON)
         self.verticalLayout_5.addLayout(self.horizontalLayout_5)
         self.verticalLayout_8.addLayout(self.verticalLayout_5)
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
-        self.scriptLABEL = QtWidgets.QLabel(self.layoutWidget)
+        #self.scriptLABEL = QtWidgets.QLabel(self.layoutWidget)
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
-        self.scriptLABEL.setFont(font)
-        self.scriptLABEL.setObjectName("scriptLABEL")
-        self.verticalLayout_7.addWidget(self.scriptLABEL)
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.scriptLINEEDIT = QtWidgets.QLineEdit(self.layoutWidget)
-        self.scriptLINEEDIT.setObjectName("scriptLINEEDIT")
-        self.horizontalLayout_9.addWidget(self.scriptLINEEDIT)
-        self.scriptBrowseBUTTON = QtWidgets.QPushButton(self.layoutWidget)
-        self.scriptBrowseBUTTON.setObjectName("scriptBrowseBUTTON")
-        self.horizontalLayout_9.addWidget(self.scriptBrowseBUTTON)
         self.verticalLayout_7.addLayout(self.horizontalLayout_9)
         self.verticalLayout_8.addLayout(self.verticalLayout_7)
         self.verticalLayout_9.addLayout(self.verticalLayout_8)
@@ -182,9 +189,48 @@ class Ui_CreateNewVm(object):
         self.saveBUTTON.setObjectName("saveBUTTON")
         self.horizontalLayout_6.addWidget(self.saveBUTTON)
         self.verticalLayout_9.addLayout(self.horizontalLayout_6)
-
+        ####CHANGES START####
+        self.vmFilesBrowseBUTTON.clicked.connect(self.exploitBrowser) #BROWSE BUTTON CALL
+        self.vmFilesAddBUTTON.clicked.connect(self.addVmFiles) #Add BUTTON CALL
+        self.vmFilesDeleteBUTTON.clicked.connect(self.removeVmFiles) #Add BUTTON CALL
+        ####CHANGES END####
         self.retranslateUi(CreateNewVm)
         QtCore.QMetaObject.connectSlotsByName(CreateNewVm)
+
+    ####Add file to the list####
+    def addVmFiles(self):
+        lastIndex = self.vmFilesLISTWIDGET.count()
+        if len(self.malwareLINEEDIT.text())>0:
+            self.vmFilesLISTWIDGET.addItem(QtWidgets.QListWidgetItem())
+            item = self.vmFilesLISTWIDGET.item(lastIndex)
+            filename = self.malwareLINEEDIT.text()
+            stringList = filename.split('/')
+            item.setText(stringList[-1])
+            ##TODO fix the clear to make it clear right away
+            self.malwareLINEEDIT.clear()
+
+    ####Remove file from the list####
+    def removeVmFiles(self):
+        item = self.vmFilesLISTWIDGET.currentItem()
+        self.vmFilesLISTWIDGET.takeItem(self.vmFilesLISTWIDGET.row(item))
+
+    ####Browse button functionality####
+    def exploitBrowser(self):
+        exploitOptions = QFileDialog.Options()
+        self.exploitDialog = QFileDialog()
+        self.exploitDialog.setOptions(exploitOptions)
+        self.exploitPath, __ = QFileDialog.getOpenFileName(self.exploitDialog, "Select Exploit", '/home')
+
+        if self.exploitPath:
+            #If Windows, change the separator
+            if self.exploitPath == 'C:\\':
+                self.exploitPath = self.exploitPath.replace('/', '\\')
+                self.malwareLINEEDIT.setText(self.exploitPath)
+            # if Linux-based
+            else:
+                self.malwareLINEEDIT.setText(self.exploitPath)
+        else:
+            self.malwareLINEEDIT.setText(self.exploitPath)
 
     def retranslateUi(self, CreateNewVm):
         _translate = QtCore.QCoreApplication.translate
@@ -196,15 +242,20 @@ class Ui_CreateNewVm(object):
         self.createVmLABEL.setText(_translate("CreateNewVm", "Create From Existing VM:"))
         self.openExitstingBUTTON.setText(_translate("CreateNewVm", "Open Existing"))
         self.vmOsLABEL.setText(_translate("CreateNewVm", "VM OS:"))
+        #####CHANGES START####
+        self.vmFilesLABEL.setText(_translate("CreateNewVm", "VM Files:"))
+        #####CHANGES END####
         self.vmOsCOMBOBOX.setItemText(0, _translate("CreateNewVm", "Kali Linux"))
         self.vmOsCOMBOBOX.setItemText(1, _translate("CreateNewVm", "Ubuntu"))
         self.vmOsCOMBOBOX.setItemText(2, _translate("CreateNewVm", "Windows"))
-        self.malwareLABEL.setText(_translate("CreateNewVm", "Malware/Binary:"))
-        self.malwareBrowseBUTTON.setText(_translate("CreateNewVm", "Browse"))
-        self.metasploitLABEL.setText(_translate("CreateNewVm", "MetaSploit Module:"))
-        self.metasploitBrowseBUTTON.setText(_translate("CreateNewVm", "Browse"))
-        self.scriptLABEL.setText(_translate("CreateNewVm", "Script:"))
-        self.scriptBrowseBUTTON.setText(_translate("CreateNewVm", "Browse"))
+        ####CHANGED START####
+        self.vmFilesCOMBOBOX.setItemText(0, _translate("CreateNewVm", "Malware/Binary"))
+        self.vmFilesCOMBOBOX.setItemText(1, _translate("CreateNewVm", "MetaSploit Module"))
+        self.vmFilesCOMBOBOX.setItemText(2, _translate("CreateNewVm", "Script"))
+        ####CHANGED END####
+        self.vmFilesBrowseBUTTON.setText(_translate("CreateNewVm", "Browse"))
+        self.vmFilesAddBUTTON.setText(_translate("CreateNewVm", "Add"))
+        self.vmFilesDeleteBUTTON.setText(_translate("CreateNewVm", "Delete"))
         self.softwareLABEL.setText(_translate("CreateNewVm", "Software:"))
         __sortingEnabled = self.softwareTREEWIDGET.isSortingEnabled()
         self.softwareTREEWIDGET.setSortingEnabled(False)
@@ -228,4 +279,3 @@ if __name__ == "__main__":
     ui.setupUi(CreateNewVm)
     CreateNewVm.show()
     sys.exit(app.exec_())
-
