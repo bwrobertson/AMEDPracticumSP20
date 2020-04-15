@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'New_Scenario.ui'
-#
-# Created by: PyQt5 UI code generator 5.11.3
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 import os, sys
@@ -201,7 +195,7 @@ class Ui_NewScenario(object):
         self.exploitBrowseBUTTON.setText(_translate("NewScenario", "Browse"))
         self.vulnerableProgramLABEL.setText(_translate("NewScenario", "Vulnerable Program (optional):"))
         self.vulnerableProgramBrowseBUTTON.setText(_translate("NewScenario", "Browse"))
-        self.cancelBUTTON.setText(_translate("NewScenario", "Cancel"))
+        self.cancelBUTTON.setText(_translate("NewScenario", "Back"))
         self.addBUTTON.setText(_translate("NewScenario", "Add"))
         self.nextBUTTON.setText(_translate("NewScenario", "Next"))
 
