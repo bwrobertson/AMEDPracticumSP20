@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'ManageScenarios.ui'
-#
-# Created by: PyQt5 UI code generator 5.14.1
-#
-# WARNING! All changes made in this file will be lost!
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from NewScenario import Ui_NewScenario
 from pymongo import MongoClient
@@ -26,9 +18,11 @@ class Ui_ManageScenarios(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        #self.checkBox = QtWidgets.QCheckBox(self.layoutWidget)
-        #self.checkBox.setObjectName("checkBox")
-        #self.verticalLayout_2.addWidget(self.checkBox)
+        ####Select all checkbox
+        self.checkBox = QtWidgets.QCheckBox(self.layoutWidget)
+        self.checkBox.setObjectName("checkBox")
+        self.verticalLayout_2.addWidget(self.checkBox)
+        ###
         self.scenariosLISTWIDGET = QtWidgets.QListWidget(self.layoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -37,9 +31,6 @@ class Ui_ManageScenarios(object):
         self.scenariosLISTWIDGET.setSizePolicy(sizePolicy)
         self.scenariosLISTWIDGET.setSelectionRectVisible(False)
         self.scenariosLISTWIDGET.setObjectName("scenariosLISTWIDGET")
-        #item = QtWidgets.QListWidgetItem()
-        #item.setCheckState(QtCore.Qt.Unchecked)
-        #self.scenariosLISTWIDGET.addItem(item)
         self.verticalLayout_2.addWidget(self.scenariosLISTWIDGET)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -70,18 +61,16 @@ class Ui_ManageScenarios(object):
         self.retranslateUi(ManageScenarios)
         QtCore.QMetaObject.connectSlotsByName(ManageScenarios)
 
-    ###Changed - Not working yet###
-    def selectAll(self, state = True):
-        print("selected")
-        x = 0
-        for checkBox in self.scenariosLISTWIDGET:
-            checkBox.blockSignals(True)
-            item = self.checkBox.item(x)
-            #item.setCheckState(QtCore.Qt.Unchecked)
-            checkBox.setCheckState(state)
-            checkBox.blockSignals(False)
-            x+=1
-    ###End Changed###
+    ###Method to check all box or uncheck all boxes###
+    def selectAll(self):
+        if self.checkBox.isChecked():
+            for i in range(self.scenariosLISTWIDGET.count()):
+                item = self.scenariosLISTWIDGET.item(i)
+                item.setCheckState(QtCore.Qt.Checked)
+        else:
+            for i in range(self.scenariosLISTWIDGET.count()):
+                item = self.scenariosLISTWIDGET.item(i)
+                item.setCheckState(QtCore.Qt.Unchecked)
 
     def retranslateUi(self, ManageScenarios):
         ###Changed###
@@ -108,9 +97,11 @@ class Ui_ManageScenarios(object):
 
         _translate = QtCore.QCoreApplication.translate
         ManageScenarios.setWindowTitle(_translate("ManageScenarios", "Manage Scenarios"))
-        #self.checkBox.setText(_translate("ManageScenarios", "Select All"))
-        #self.checkBox.setChecked(False)
-        #self.checkBox.stateChanged.connect(self.selectAll) ##CHANGE HERE
+        ###More select all stuff
+        self.checkBox.setText(_translate("ManageScenarios", "Select All"))
+        self.checkBox.setChecked(False)
+        self.checkBox.stateChanged.connect(self.selectAll)
+        #########
         self.scenariosLISTWIDGET.setSortingEnabled(False)
         __sortingEnabled = self.scenariosLISTWIDGET.isSortingEnabled()
         self.scenariosLISTWIDGET.setSortingEnabled(False)
