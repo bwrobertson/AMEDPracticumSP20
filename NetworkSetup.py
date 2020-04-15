@@ -1,16 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'networkSetup.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.2
-#
-# WARNING! All changes made in this file will be lost!
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Form(object):
+class Ui_NetworkSetup(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(753, 480)
@@ -102,7 +95,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui = Ui_Form()
+    ui = Ui_NetworkSetup()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
