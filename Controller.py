@@ -133,7 +133,11 @@ class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
         super(CreateNewVmWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
-        self.discardBUTTON.clicked.connect(self.close)
+        self.discardBUTTON.clicked.connect(self.closeWindow)
+
+    def closeWindow(self):
+        self.vmFilesLISTWIDGET.clear()
+        self.close()
         
 class VmSystemSettings(QtWidgets.QDialog, Ui_VmSystemSettings):
     def __init__(self, parent=None):
