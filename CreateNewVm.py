@@ -54,6 +54,8 @@ class Ui_CreateNewVm(object):
         ####CHANGES START: Added a new horizontal Layout####
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_10.setObjectName("verticalLayout_10")
         ####CHANGES END####
         self.createVmLABEL = QtWidgets.QLabel(self.layoutWidget)
         font = QtGui.QFont()
@@ -97,38 +99,51 @@ class Ui_CreateNewVm(object):
         ####CHANGE START: Added Label####
         self.vmFilesLABEL.setFont(font)
         self.vmFilesLABEL.setObjectName("vmFilesLABEL")
-        self.verticalLayout_4.addWidget(self.vmFilesLABEL)
+        
         ####CHANGED END####
         ####CHANGED START: Added additional ComboBox####
-        self.vmFilesCOMBOBOX = QtWidgets.QComboBox(self.layoutWidget)
-        self.vmFilesCOMBOBOX.setObjectName("vmFilesCOMBOBOX")
-        self.vmFilesCOMBOBOX.addItem("")
-        self.vmFilesCOMBOBOX.addItem("")
-        self.vmFilesCOMBOBOX.addItem("")
-        self.verticalLayout_4.addWidget(self.vmFilesCOMBOBOX)
+        #self.vmFilesCOMBOBOX = QtWidgets.QComboBox(self.layoutWidget)
+        #self.vmFilesCOMBOBOX.setObjectName("vmFilesCOMBOBOX")
+        #self.vmFilesCOMBOBOX.addItem("")
+        #self.vmFilesCOMBOBOX.addItem("")
+        #self.vmFilesCOMBOBOX.addItem("")
+        #self.verticalLayout_4.addWidget(self.vmFilesCOMBOBOX)
         ####CHANGED END####
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.malwareLINEEDIT = QtWidgets.QLineEdit(self.layoutWidget)
-        self.malwareLINEEDIT.setObjectName("malwareLINEEDIT")
-        self.horizontalLayout_4.addWidget(self.malwareLINEEDIT)
-        self.vmFilesBrowseBUTTON = QtWidgets.QPushButton(self.layoutWidget)
-        self.vmFilesBrowseBUTTON.setObjectName("vmFilesBrowseBUTTON")
-        self.horizontalLayout_4.addWidget(self.vmFilesBrowseBUTTON)
+        #self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        #self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        #self.malwareLINEEDIT = QtWidgets.QLineEdit(self.layoutWidget)
+        #self.malwareLINEEDIT.setObjectName("malwareLINEEDIT")
+        #self.horizontalLayout_4.addWidget(self.malwareLINEEDIT)
+        #self.vmFilesBrowseBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        #self.vmFilesBrowseBUTTON.setObjectName("vmFilesBrowseBUTTON")
+        #self.horizontalLayout_4.addWidget(self.vmFilesBrowseBUTTON)
         ####CHANGES START####
-        self.vmFilesAddBUTTON = QtWidgets.QPushButton(self.layoutWidget)
-        self.vmFilesAddBUTTON.setObjectName("vmFilesAddBUTTON")
-        self.vmFilesDeleteBUTTON = QtWidgets.QPushButton(self.layoutWidget)
-        self.vmFilesDeleteBUTTON.setObjectName("vmFilesDeleteBUTTON")
-        self.horizontalLayout_4.addWidget(self.vmFilesAddBUTTON)
+        #self.vmFilesAddBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        #self.vmFilesAddBUTTON.setObjectName("vmFilesAddBUTTON")
+        #self.vmFilesDeleteBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        #self.vmFilesDeleteBUTTON.setObjectName("vmFilesDeleteBUTTON")
+        self.vmFilesAddToVMBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        self.vmFilesAddToVMBUTTON.setObjectName("vmFilesAddToVMBUTTON")
+
+        self.manageExploitsBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        self.manageExploitsBUTTON.setObjectName("manageExploitsBUTTON")
+    
+        self.verticalLayout_4.addWidget(self.vmFilesLABEL)
+       
+
+        #self.horizontalLayout_4.addWidget(self.vmFilesAddBUTTON)
         ####CHANGES END####
-        self.verticalLayout_4.addLayout(self.horizontalLayout_4)
+        #self.verticalLayout_4.addLayout(self.horizontalLayout_4)
         ####CHANGES START####
         self.vmFilesLISTWIDGET = QtWidgets.QListWidget(self.layoutWidget)
         self.vmFilesLISTWIDGET.setSelectionRectVisible(False)
         self.vmFilesLISTWIDGET.setObjectName("vmFilesLISTWIDGET")
+
+        self.verticalLayout_10.addWidget(self.manageExploitsBUTTON)
+        self.verticalLayout_10.addWidget(self.vmFilesAddToVMBUTTON)
+        #self.verticalLayout_10.addWidget(self.vmFilesDeleteBUTTON)
         self.horizontalLayout_10.addWidget(self.vmFilesLISTWIDGET)
-        self.horizontalLayout_10.addWidget(self.vmFilesDeleteBUTTON)
+        self.horizontalLayout_10.addLayout(self.verticalLayout_10)
         self.verticalLayout_4.addLayout(self.horizontalLayout_10)
         ####CHANGES END####
         self.verticalLayout_8.addLayout(self.verticalLayout_4)
@@ -190,9 +205,10 @@ class Ui_CreateNewVm(object):
         self.horizontalLayout_6.addWidget(self.saveBUTTON)
         self.verticalLayout_9.addLayout(self.horizontalLayout_6)
         ####CHANGES START####
-        self.vmFilesBrowseBUTTON.clicked.connect(self.exploitBrowser) #BROWSE BUTTON CALL
-        self.vmFilesAddBUTTON.clicked.connect(self.addVmFiles) #Add BUTTON CALL
-        self.vmFilesDeleteBUTTON.clicked.connect(self.removeVmFiles) #Add BUTTON CALL
+        #self.vmFilesBrowseBUTTON.clicked.connect(self.exploitBrowser) #BROWSE BUTTON CALL
+        #self.vmFilesAddBUTTON.clicked.connect(self.addVmFiles) #Add BUTTON CALL
+        #self.vmFilesDeleteBUTTON.clicked.connect(self.removeVmFiles) #Add BUTTON CALL
+        #self.manageExploitsBUTTON.clicked.connect(self.removeVmFiles)
         ####CHANGES END####
         self.retranslateUi(CreateNewVm)
         QtCore.QMetaObject.connectSlotsByName(CreateNewVm)
@@ -249,13 +265,16 @@ class Ui_CreateNewVm(object):
         self.vmOsCOMBOBOX.setItemText(1, _translate("CreateNewVm", "Ubuntu"))
         self.vmOsCOMBOBOX.setItemText(2, _translate("CreateNewVm", "Windows"))
         ####CHANGED START####
-        self.vmFilesCOMBOBOX.setItemText(0, _translate("CreateNewVm", "Malware/Binary"))
-        self.vmFilesCOMBOBOX.setItemText(1, _translate("CreateNewVm", "MetaSploit Module"))
-        self.vmFilesCOMBOBOX.setItemText(2, _translate("CreateNewVm", "Script"))
+        #self.vmFilesCOMBOBOX.setItemText(0, _translate("CreateNewVm", "Malware/Binary"))
+        #self.vmFilesCOMBOBOX.setItemText(1, _translate("CreateNewVm", "MetaSploit Module"))
+        #self.vmFilesCOMBOBOX.setItemText(2, _translate("CreateNewVm", "Script"))
         ####CHANGED END####
-        self.vmFilesBrowseBUTTON.setText(_translate("CreateNewVm", "Browse"))
-        self.vmFilesAddBUTTON.setText(_translate("CreateNewVm", "Add"))
-        self.vmFilesDeleteBUTTON.setText(_translate("CreateNewVm", "Delete"))
+        #self.vmFilesBrowseBUTTON.setText(_translate("CreateNewVm", "Browse"))
+        #self.vmFilesAddBUTTON.setText(_translate("CreateNewVm", "Add"))
+        #self.vmFilesDeleteBUTTON.setText(_translate("CreateNewVm", "Delete"))
+        self.vmFilesAddToVMBUTTON.setText(_translate("CreateNewVm", "Add to VM"))
+        self.manageExploitsBUTTON.setText(_translate("CreateNewVm", "Manage Files"))
+
         self.softwareLABEL.setText(_translate("CreateNewVm", "Software:"))
         __sortingEnabled = self.softwareTREEWIDGET.isSortingEnabled()
         self.softwareTREEWIDGET.setSortingEnabled(False)
@@ -266,7 +285,7 @@ class Ui_CreateNewVm(object):
         self.softwareTREEWIDGET.topLevelItem(2).setText(0, _translate("CreateNewVm", "Windows Specific"))
         self.softwareTREEWIDGET.topLevelItem(2).child(0).setText(0, _translate("CreateNewVm", "example"))
         self.softwareTREEWIDGET.setSortingEnabled(__sortingEnabled)
-        self.softwareAddBUTTON.setText(_translate("CreateNewVm", "Add"))
+        self.softwareAddBUTTON.setText(_translate("CreateNewVm", "Add to VM"))
         self.discardBUTTON.setText(_translate("CreateNewVm", "Discard"))
         self.saveBUTTON.setText(_translate("CreateNewVm", "Save"))
 
