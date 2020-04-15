@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import QMessageBox
 from ManageData import Ui_ManageData
 from ManageDataOptions import Ui_ManageDataOptions
 from ManageScenarios import Ui_ManageScenarios
+from NetworkSetup import Ui_NetworkSetup
 from NewScenario import Ui_NewScenario
 from ManageExploits import Ui_ManageExploits
 from ManageVulnerablePrograms import Ui_ManageVulnerablePrograms
@@ -69,38 +70,7 @@ class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
         super(ManageExploitsWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
-        # set num of rows to the actual length of the vuln programs list
-        self.exploitTABLEWIDGET.setRowCount(len(self.getExploitsList())) # FIXME 
-        self.selectBUTTON.clicked.connect(self.close)
-        self.fillTable()
-        self.formatTable()
-        self.exploitTABLEWIDGET.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
-        self.parentDialog = NewScenariosWindow(self)
-        self.browseFilesBUTTON.clicked.connect(self.exploitBrowser)
-    
-    def formatTable(self):
-        font = QFont()
-        font.setPointSize(13)
-        self.exploitTABLEWIDGET.setFont(font)
-        self.exploitTABLEWIDGET.horizontalHeader().setStyleSheet("QHeaderView { font-size:  16pt};")
-        header = self.exploitTABLEWIDGET.horizontalHeader()      
-        header.setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
-
-    def getExploitsList(self):
-        # dummy objects
-        ex1 = {'name': "Cross-Site Request Forgery", "type": "WebApps", "platform": "PHP"}
-        ex2 = {"name": "CSV Injection", "type": "WebApps", "platform": "Windows"}
-        ex3 = {"name": "ex1", "type": "SQL Inj", "platform": ""}
-        lst = [ex1, ex2, ex3]
-        return lst
-
-    def fillTable(self):
-        itemsList = self.getExploitsList()
-        num_rows = len(itemsList)
-        for row in range(num_rows):
-            self.exploitTABLEWIDGET.setItem(row, 0, QtWidgets.QTableWidgetItem(itemsList[row]["name"]))
-            self.exploitTABLEWIDGET.setItem(row, 1, QtWidgets.QTableWidgetItem(itemsList[row]["type"]))
-            self.exploitTABLEWIDGET.setItem(row, 2, QtWidgets.QTableWidgetItem(itemsList[row]["platform"]))
+        self.backBUTTON.clicked.connect(self.close)
 
 class ManageVulnerableProgramsWindow(QtWidgets.QWidget, 
                                 Ui_ManageVulnerablePrograms):
@@ -108,40 +78,7 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
         super(ManageVulnerableProgramsWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
-        # set num of rows to the actual length of the vuln programs list
-        self.exploitTABLEWIDGET.setRowCount(len(self.getItemsList())) # FIXME 
-        self.selectBUTTON.clicked.connect(self.close)
-        self.fillTable()
-        self.formatTable()
-        self.exploitTABLEWIDGET.setSelectionBehavior(QtWidgets.QTableView.SelectRows)        
-        self.parentDialog = NewScenariosWindow(self)
-        self.browseFilesBUTTON.clicked.connect(self.vulnerableProgramBrowser)
-
-    def formatTable(self):
-        font = QFont()
-        font.setPointSize(13)
-        self.exploitTABLEWIDGET.setFont(font)
-        self.exploitTABLEWIDGET.horizontalHeader().setStyleSheet("QHeaderView { font-size:  16pt};")
-        header = self.exploitTABLEWIDGET.horizontalHeader()      
-        header.setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
-
-    # TODO function to get vulnerable programs from exploitDB or stored locally 
-    def getItemsList(self):
-        # dummy objects
-        pr1 = {'name': "p0", "type": "WebApps", "platform": "PHP"}
-        pr2 = {"name": "p1", "type": "Local", "platform": "Hardware"}
-        pr3 = {"name": "Microsoft Word", "type": "WebApps", "platform": "Windows"}
-        lst = [pr1, pr2, pr3]
-        return lst
-
-    # function to fill table with content from exploitDB or locally saved vulnerable programs
-    def fillTable(self):
-        itemList = self.getItemsList()
-        num_rows = len(itemList)
-        for row in range(num_rows):
-            self.exploitTABLEWIDGET.setItem(row, 0, QtWidgets.QTableWidgetItem(itemList[row]["name"]))
-            self.exploitTABLEWIDGET.setItem(row, 1, QtWidgets.QTableWidgetItem(itemList[row]["type"]))
-            self.exploitTABLEWIDGET.setItem(row, 2, QtWidgets.QTableWidgetItem(itemList[row]["platform"]))
+        self.backBUTTON.clicked.connect(self.close)
 
 class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
     def __init__(self, parent=None):
@@ -151,6 +88,7 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backButton.clicked.connect(self.close)
+        self.nextBUTTON.clicked.connect(self.close)
         self.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
         self.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
 
@@ -233,9 +171,17 @@ class OpeningDBConfigurationWindow(QtWidgets.QDialog, Ui_DBConfiguration):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.closeBUTTON.clicked.connect(self.close)
-        self.connectBUTTON.clicked.connect(self.close)    
+        self.connectBUTTON.clicked.connect(self.close)
 
-# shows window whenever an action is taken by the user via the GUI
+class NetworkSetupWindow(QtWidgets.QDialog, Ui_NetworkSetup):
+    def __init__(self, parent=None):
+        super(NetworkSetupWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
+        self.setupUi(self)
+        self.backButton.clicked.connect(self.close)
+
+
+        # shows window whenever an action is taken by the user via the GUI
 class Controller:
     def __init__(self):
         self.showSplashScreen()
@@ -253,11 +199,15 @@ class Controller:
         self.editVm= EditVmWindow("null")
         self.manageDataOptions=ManageDataOptionsWindow()
         self.importData=ImportDataWindow()
+        self.networkSetup=NetworkSetupWindow()
         self.splash.close()
         #
         self.openingDBConfiguration.connectBUTTON.clicked.connect(self.main.show)
         #
         self.main.manageDataBUTTON.clicked.connect(self.manageDataOptions.show)
+        #
+        self.main.setupBUTTON.clicked.connect(self.suggestedSetup.show)
+        self.main.configureBUTTON.clicked.connect(self.networkSetup.show)
         #
         self.manageDataOptions.exportBUTTON.clicked.connect(self.manageData.show)
         self.manageDataOptions.importBUTTON.clicked.connect(self.importData.show)
@@ -280,13 +230,16 @@ class Controller:
         self.newScenario.cancelBUTTON.clicked.connect(self.manageScenarios.show)
         self.newScenario.nextBUTTON.clicked.connect(self.suggestedSetup.show)
         #
-        self.manageExploits.selectBUTTON.clicked.connect(self.newScenario.show)
+        self.manageExploits.backBUTTON.clicked.connect(self.newScenario.show)
         #
-        self.manageVulnerablePrograms.selectBUTTON.clicked.connect(self.newScenario.show)
+        self.manageVulnerablePrograms.backBUTTON.clicked.connect(self.newScenario.show)
         #
         self.suggestedSetup.backButton.clicked.connect(self.newScenario.show)
         self.suggestedSetup.addVmBUTTON.clicked.connect(self.createNewVm.show)
-      
+        self.suggestedSetup.nextBUTTON.clicked.connect(self.networkSetup.show)
+        #
+        self.networkSetup.backButton.clicked.connect(self.suggestedSetup.show)
+        #
         # Functionality for "Run" button (interval-based collection/
         # proof of concept)
         self.main.runBUTTON.clicked.connect(self.runCollectors)
@@ -325,4 +278,5 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     controller = Controller()
     sys.exit(app.exec_())
+
 
