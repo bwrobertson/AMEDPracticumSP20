@@ -8,7 +8,7 @@ apt-get update
 apt-get install -y gcc make curl python-pip python3-pip git expect
 pip3 install pymongo dnspython
 pip install pymongo dnspython
-apt-get install python3-pyqt5
+apt-get install -y python3-pyqt5
 git clone https://github.com/kevinHonsaker01/ecel.git
 cd ecel
 echo ECEL_HOME="\"${PWD}\"" >> /etc/environment
