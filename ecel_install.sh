@@ -6,8 +6,8 @@
 kill -9 $(ps aux | grep -i apt | grep usr | cut -d" " -f7) # removes the lock on update
 apt-get update
 apt-get install -y gcc make curl python-pip python3-pip git expect
-pip3 install pymongo dnspython
-pip install pymongo dnspython
+pip3 install pymongo dnspython python-magic
+pip install pymongo dnspython python-magic
 apt-get install -y python3-pyqt5
 git clone https://github.com/kevinHonsaker01/ecel.git
 cd ecel
