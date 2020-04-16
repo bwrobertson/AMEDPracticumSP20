@@ -9,13 +9,12 @@ apt-get install -y gcc make curl python-pip python3-pip git expect
 pip3 install pymongo dnspython
 pip install pymongo dnspython
 apt-get install python3-pyqt5
-sleep 3
 git clone https://github.com/kevinHonsaker01/ecel.git
 cd ecel
 echo ECEL_HOME="\"${PWD}\"" >> /etc/environment
 source /etc/environment
 
-chmod 755 collectors
+chmod 755 collectors.sh
 chmod 755 script.exp
 ./script.exp 
 
