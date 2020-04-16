@@ -14,7 +14,8 @@ cd ecel
 echo ECEL_HOME="\"${PWD}\"" >> /etc/environment
 source /etc/environment
 
-chmod 755 collectors.sh
+chown root:root collectors.sh
+chmod 4755 collectors.sh
 chmod 755 script.exp
 ./script.exp 
 
