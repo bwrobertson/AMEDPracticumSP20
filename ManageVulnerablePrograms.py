@@ -12,6 +12,7 @@ from zipfile import ZipFile
 from datetime import date
 import time
 from DBConfiguration import Ui_DBConfiguration
+import magic
 
 class Ui_ManageVulnerablePrograms(object):
 
@@ -83,6 +84,35 @@ class Ui_ManageVulnerablePrograms(object):
         with open(file, 'rb') as eFile:
             encoded_img = base64.b64encode(eFile.read())
         scenario['File'] = encoded_img
+
+        #print(magic.from_file(file, mime=True))
+        scenario['Information'] = magic.from_file(file)
+
+        """Platform = ['Windows', 'Mac', 'Linux', 'Unix']
+        netCon = ['Local', 'Remote']
+
+        scenario['Platform'] = ''
+        scenario['Type'] = ''
+        try:
+            with open(file) as f:
+                scenario['Type'] = next((x for x in netCon if x in f.read()), False)
+            f.close()
+        except:
+            scenario['Type'] = "Unknown"
+
+        try:
+            with open(file) as f:
+                scenario['Platform'] = next((x for x in Platform if x in f.read()), False)
+            f.close()
+        except:
+            scenario['Platform'] = 'Unknown'
+
+        if(scenario['Platform']==False):
+            scenario['Platform']='Multiple'
+
+        if(scenario['Type']==False):
+            scenario['Type']='Unknown'"""
+
 
         print("beginning push of " + fileName)
         data.insert_one(scenario)
