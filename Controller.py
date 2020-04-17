@@ -183,7 +183,7 @@ class NetworkSetupWindow(QtWidgets.QDialog, Ui_NetworkSetup):
         super(NetworkSetupWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
-        self.backButton.clicked.connect(self.close)
+        self.backBUTTON.clicked.connect(self.close)
         
 class NetworkSetupAdvancedWindow(QtWidgets.QDialog, Ui_NetworkSetupAdvanced):
     def __init__(self, parent=None):
