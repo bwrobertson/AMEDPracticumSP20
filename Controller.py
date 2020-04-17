@@ -12,6 +12,7 @@ from ManageData import Ui_ManageData
 from ManageDataOptions import Ui_ManageDataOptions
 from ManageScenarios import Ui_ManageScenarios
 from NetworkSetup import Ui_NetworkSetup
+from NetworkSetupAdvanced import Ui_NetworkSetupAdvanced
 from NewScenario import Ui_NewScenario
 from ManageExploits import Ui_ManageExploits
 from ManageVulnerablePrograms import Ui_ManageVulnerablePrograms
@@ -183,7 +184,13 @@ class NetworkSetupWindow(QtWidgets.QDialog, Ui_NetworkSetup):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backButton.clicked.connect(self.close)
-
+        
+class NetworkSetupAdvancedWindow(QtWidgets.QDialog, Ui_NetworkSetupAdvanced):
+    def __init__(self, parent=None):
+        super(NetworkSetupAdvancedWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
+        self.setupUi(self)
+        self.backButton.clicked.connect(self.close)
 
         # shows window whenever an action is taken by the user via the GUI
 class Controller:
@@ -204,6 +211,7 @@ class Controller:
         self.manageDataOptions=ManageDataOptionsWindow()
         self.importData=ImportDataWindow()
         self.networkSetup=NetworkSetupWindow()
+        self.advancedNetworkSetup=NetworkSetupAdvancedWindow()
         self.splash.close()
         #
         self.openingDBConfiguration.connectBUTTON.clicked.connect(self.main.show)
@@ -244,6 +252,7 @@ class Controller:
         self.suggestedSetup.nextBUTTON.clicked.connect(self.networkSetup.show)
         #
         self.networkSetup.backButton.clicked.connect(self.suggestedSetup.show)
+        self.networkSetup.advancedSettingsBUTTON.clicked.connect(self.advancedNetworkSetup.show)
         #
         # Functionality for "Run" button (interval-based collection/
         # proof of concept)
