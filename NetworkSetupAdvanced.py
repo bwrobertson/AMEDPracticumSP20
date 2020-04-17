@@ -10,7 +10,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Dialog(object):
+class Ui_NetworkSetupAdvanced(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.setEnabled(True)
@@ -549,7 +549,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Advanced Network Setup", "Advanced Network Setup"))
         self.label_9.setText(_translate("Dialog", "Virtual Machines"))
         __sortingEnabled = self.vmLIST.isSortingEnabled()
         self.vmLIST.setSortingEnabled(False)
@@ -709,7 +709,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
+    ui = Ui_NetworkSetupAdvanced()
     ui.setupUi(Dialog)
     Dialog.show()
     sys.exit(app.exec_())
