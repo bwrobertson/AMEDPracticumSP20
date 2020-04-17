@@ -254,6 +254,8 @@ class Controller:
         self.networkSetup.backButton.clicked.connect(self.suggestedSetup.show)
         self.networkSetup.advancedSettingsBUTTON.clicked.connect(self.advancedNetworkSetup.show)
         #
+        self.advancedNetworkSetup.backBUTTON.clicked.connect(self.networkSetup.show)
+        #
         # Functionality for "Run" button (interval-based collection/
         # proof of concept)
         self.main.runBUTTON.clicked.connect(self.runCollectors)
