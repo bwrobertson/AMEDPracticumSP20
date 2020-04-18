@@ -11,6 +11,135 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_NetworkSetupAdvanced(object):
+    
+#####Enables Network Adapter Buttons
+    def enableNetworkAdapterButtons(self):
+        #Adapter 1
+        if self.enableNetworkAdapterCHECKBOX.isChecked():
+            self.attachedToCOMBO.setEnabled(True)
+            self.nameCombo.setEnabled(True)
+            self.label.setEnabled(True)
+            self.label_10.setEnabled(True)
+            self.enableAdvancedSettingsCHECK.setEnabled(True)
+        else:
+            self.attachedToCOMBO.setEnabled(False)
+            self.nameCombo.setEnabled(False)
+            self.label.setEnabled(False)
+            self.label_10.setEnabled(False)
+            self.enableAdvancedSettingsCHECK.setEnabled(False)
+        # Adapter 2
+        if self.enableNetworkAdapterCHECKBOX_2.isChecked():
+            self.attachedToCOMBO_3.setEnabled(True)
+            self.nameCombo_3.setEnabled(True)
+            self.label_22.setEnabled(True)
+            self.label_25.setEnabled(True)
+            self.enableAdvancedSettingsCHECK_2.setEnabled(True)
+        else:
+            self.attachedToCOMBO_3.setEnabled(False)
+            self.nameCombo_3.setEnabled(False)
+            self.label_22.setEnabled(False)
+            self.label_25.setEnabled(False)
+            self.enableAdvancedSettingsCHECK_2.setEnabled(False)
+        # Adapter 3
+        if self.enableNetworkAdapterCHECKBOX_3.isChecked():
+            self.attachedToCOMBO_4.setEnabled(True)
+            self.nameCombo_4.setEnabled(True)
+            self.label_27.setEnabled(True)
+            self.label_30.setEnabled(True)
+            self.enableAdvancedSettingsCHECK_3.setEnabled(True)
+        else:
+            self.attachedToCOMBO_4.setEnabled(False)
+            self.nameCombo_4.setEnabled(False)
+            self.label_27.setEnabled(False)
+            self.label_30.setEnabled(False)
+            self.enableAdvancedSettingsCHECK_3.setEnabled(False)
+        # Adapter 4
+        if self.enableNetworkAdapterCHECKBOX_4.isChecked():
+            self.attachedToCOMBO_5.setEnabled(True)
+            self.nameCombo_5.setEnabled(True)
+            self.label_32.setEnabled(True)
+            self.label_35.setEnabled(True)
+            self.enableAdvancedSettingsCHECK_4.setEnabled(True)
+        else:
+            self.attachedToCOMBO_5.setEnabled(False)
+            self.nameCombo_5.setEnabled(False)
+            self.label_32.setEnabled(False)
+            self.label_35.setEnabled(False)
+            self.enableAdvancedSettingsCHECK_4.setEnabled(False)
+
+########enable the advanced settings options of each adapter
+    def enableAdvancedSettings(self):
+        #Adapter 1
+        if self.enableAdvancedSettingsCHECK.isChecked():
+            self.label_13.setEnabled(True)
+            self.adapterTypeCOMBO.setEnabled(True)
+            self.label_14.setEnabled(True)
+            self.promiscuousCOMBO.setEnabled(True)
+            self.macAddressLINEEDIT.setEnabled(True)
+            self.label_15.setEnabled(True)
+            self.cableConnectedCHECK.setEnabled(True)
+
+        else:
+            self.label_13.setEnabled(False)
+            self.adapterTypeCOMBO.setEnabled(False)
+            self.label_14.setEnabled(False)
+            self.promiscuousCOMBO.setEnabled(False)
+            self.macAddressLINEEDIT.setEnabled(False)
+            self.label_15.setEnabled(False)
+            self.cableConnectedCHECK.setEnabled(False)
+
+        # Adapter 2
+        if self.enableAdvancedSettingsCHECK_2.isChecked():
+            self.label_21.setEnabled(True)
+            self.adapterTypeCOMBO_3.setEnabled(True)
+            self.label_23.setEnabled(True)
+            self.promiscuousCOMBO_3.setEnabled(True)
+            self.macAddressLINEEDIT_3.setEnabled(True)
+            self.label_24.setEnabled(True)
+            self.cableConnectedCHECK_2.setEnabled(True)
+        else:
+            self.label_21.setEnabled(False)
+            self.adapterTypeCOMBO_3.setEnabled(False)
+            self.label_23.setEnabled(False)
+            self.promiscuousCOMBO_3.setEnabled(False)
+            self.macAddressLINEEDIT_3.setEnabled(False)
+            self.label_24.setEnabled(False)
+            self.cableConnectedCHECK_2.setEnabled(False)
+        # Adapter 3
+        if self.enableAdvancedSettingsCHECK_3.isChecked():
+            self.label_26.setEnabled(True)
+            self.adapterTypeCOMBO_4.setEnabled(True)
+            self.label_28.setEnabled(True)
+            self.promiscuousCOMBO_4.setEnabled(True)
+            self.macAddressLINEEDIT_4.setEnabled(True)
+            self.label_29.setEnabled(True)
+            self.cableConnectedCHECK_3.setEnabled(True)
+        else:
+            self.label_26.setEnabled(False)
+            self.adapterTypeCOMBO_4.setEnabled(False)
+            self.label_28.setEnabled(False)
+            self.promiscuousCOMBO_4.setEnabled(False)
+            self.macAddressLINEEDIT_4.setEnabled(False)
+            self.label_29.setEnabled(False)
+            self.cableConnectedCHECK_3.setEnabled(False)
+        # Adapter 4
+        if self.enableAdvancedSettingsCHECK_4.isChecked():
+            self.label_31.setEnabled(True)
+            self.adapterTypeCOMBO_5.setEnabled(True)
+            self.label_33.setEnabled(True)
+            self.promiscuousCOMBO_5.setEnabled(True)
+            self.macAddressLINEEDIT.setEnabled(True)
+            self.label_34.setEnabled(True)
+            self.cableConnectedCHECK_4.setEnabled(True)
+        else:
+            self.label_31.setEnabled(False)
+            self.adapterTypeCOMBO_5.setEnabled(False)
+            self.label_33.setEnabled(False)
+            self.promiscuousCOMBO_5.setEnabled(False)
+            self.macAddressLINEEDIT.setEnabled(False)
+            self.label_34.setEnabled(False)
+            self.cableConnectedCHECK_4.setEnabled(False)
+    
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.setEnabled(True)
