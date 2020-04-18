@@ -191,6 +191,14 @@ class NetworkSetupAdvancedWindow(QtWidgets.QDialog, Ui_NetworkSetupAdvanced):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
+        self.enableNetworkAdapterCHECKBOX.stateChanged.connect(self.enableNetworkAdapterButtons)
+        self.enableNetworkAdapterCHECKBOX_2.stateChanged.connect(self.enableNetworkAdapterButtons)
+        self.enableNetworkAdapterCHECKBOX_3.stateChanged.connect(self.enableNetworkAdapterButtons)
+        self.enableNetworkAdapterCHECKBOX_4.stateChanged.connect(self.enableNetworkAdapterButtons)
+        self.enableAdvancedSettingsCHECK.stateChanged.connect(self.enableAdvancedSettings)
+        self.enableAdvancedSettingsCHECK_2.stateChanged.connect(self.enableAdvancedSettings)
+        self.enableAdvancedSettingsCHECK_3.stateChanged.connect(self.enableAdvancedSettings)
+        self.enableAdvancedSettingsCHECK_4.stateChanged.connect(self.enableAdvancedSettings)
 
         # shows window whenever an action is taken by the user via the GUI
 class Controller:
