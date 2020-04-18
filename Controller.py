@@ -183,14 +183,14 @@ class NetworkSetupWindow(QtWidgets.QDialog, Ui_NetworkSetup):
         super(NetworkSetupWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
-        self.backBUTTON.clicked.connect(self.close)
+        self.backButton.clicked.connect(self.close)
         
 class NetworkSetupAdvancedWindow(QtWidgets.QDialog, Ui_NetworkSetupAdvanced):
     def __init__(self, parent=None):
         super(NetworkSetupAdvancedWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
-        self.backButton.clicked.connect(self.close)
+        self.backBUTTON.clicked.connect(self.close)
 
         # shows window whenever an action is taken by the user via the GUI
 class Controller:
