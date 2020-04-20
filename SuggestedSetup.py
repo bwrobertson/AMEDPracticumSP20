@@ -140,7 +140,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Suggested Setup", "Suggested Setup"))
         self.addVmBUTTON.setText(_translate("Form", "Add Victim || PoV"))
         self.label_2.setText(_translate("Form", "Victim"))
         self.nextBUTTON.setText(_translate("Form", "Next"))
