@@ -1,9 +1,11 @@
 #!/bin/bash
 
-# Needs to have chmod 755 ecel_install
-# remember to sudo su
+# Script is used to install ECEL collectors on guest
+# machine for AMED scenario analysis
 
-kill -9 $(ps aux | grep -i apt | grep usr | cut -d" " -f7) # removes the lock on update
+# Needs to have chmod 755 ecel_install
+# remember to sudo su command (Vagrant does this by default)
+
 apt-get update
 apt-get install -y gcc make curl python-pip python3-pip git expect
 pip3 install pymongo dnspython python-magic
@@ -21,3 +23,6 @@ chmod 755 script.exp
 ./script.exp 
 
 # to run collectors ./collectors (inside the ecel folder; exports data to Ben's DB)
+# Need an interface to deliver the DB info user wants as their DB
+# Possible way is to ask for this information at the VM install level and pass to 
+# the Vagrantfile
