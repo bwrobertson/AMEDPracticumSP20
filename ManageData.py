@@ -268,7 +268,7 @@ class Ui_ManageData(object):
                         if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
                             fileName = collection["name"] + key
                             fileContent = collection[key]
-                            fileName = fileName.replace(";",".").split('_')[2]
+                            fileName = fileName.replace(";",".")
                             with open(fileName, "wb") as decoded_image:
                                 decoded_content = base64.decodebytes(fileContent)
                                 decoded_image.write(decoded_content)
