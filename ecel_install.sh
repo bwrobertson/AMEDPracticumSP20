@@ -7,6 +7,7 @@
 # remember to sudo su command (Vagrant does this by default)
 
 apt-get update
+apt install net-tools
 apt-get install -y gcc make curl python-pip python3-pip git expect
 pip3 install pymongo dnspython python-magic
 pip install pymongo dnspython python-magic
