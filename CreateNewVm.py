@@ -2,6 +2,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
+from pymongo import MongoClient
+from DBConfiguration import Ui_DBConfiguration
 
 class Ui_CreateNewVm(object):
     def setupUi(self, CreateNewVm):
@@ -64,9 +66,9 @@ class Ui_CreateNewVm(object):
         self.createVmLABEL.setFont(font)
         self.createVmLABEL.setObjectName("createVmLABEL")
         self.horizontalLayout_2.addWidget(self.createVmLABEL)
-        self.openExitstingBUTTON = QtWidgets.QPushButton(self.layoutWidget)
-        self.openExitstingBUTTON.setObjectName("openExitstingBUTTON")
-        self.horizontalLayout_2.addWidget(self.openExitstingBUTTON)
+        self.openExistingBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        self.openExistingBUTTON.setObjectName("openExistingBUTTON")
+        self.horizontalLayout_2.addWidget(self.openExistingBUTTON)
         self.horizontalLayout_3.addLayout(self.horizontalLayout_2)
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
@@ -105,17 +107,6 @@ class Ui_CreateNewVm(object):
         self.manageExploitsBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.manageExploitsBUTTON.setObjectName("manageExploitsBUTTON")
         self.verticalLayout_4.addWidget(self.vmFilesLABEL)
-        ####CHANGES START####
-        self.vmFilesLISTWIDGET = QtWidgets.QListWidget(self.layoutWidget)
-        self.vmFilesLISTWIDGET.setSelectionRectVisible(False)
-        self.vmFilesLISTWIDGET.setObjectName("vmFilesLISTWIDGET")
-
-        self.verticalLayout_10.addWidget(self.manageExploitsBUTTON)
-        self.verticalLayout_10.addWidget(self.vmFilesAddToVMBUTTON)
-        self.horizontalLayout_10.addWidget(self.vmFilesLISTWIDGET)
-        self.horizontalLayout_10.addLayout(self.verticalLayout_10)
-        self.verticalLayout_4.addLayout(self.horizontalLayout_10)
-        ####CHANGES END####
         self.verticalLayout_8.addLayout(self.verticalLayout_4)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
         self.verticalLayout_5.setObjectName("verticalLayout_5")
@@ -157,6 +148,21 @@ class Ui_CreateNewVm(object):
         item_1 = QtWidgets.QTreeWidgetItem(item_0)
         self.softwareTREEWIDGET.header().setVisible(False)
         self.horizontalLayout_8.addWidget(self.softwareTREEWIDGET)
+
+        ####VM FILES QTREE WIDGET START####
+        self.vmFilesTREEWIDGET = QtWidgets.QTreeWidget(self.layoutWidget)
+        self.vmFilesTREEWIDGET.setObjectName("vmFilesTREEWIDGET")
+        self.vmFilesTREEWIDGET.headerItem().setText(0, "1")
+        self.setupTree(CreateNewVm) ###Method Call
+
+        self.vmFilesTREEWIDGET.header().setVisible(False)
+        self.verticalLayout_10.addWidget(self.manageExploitsBUTTON)
+        self.verticalLayout_10.addWidget(self.vmFilesAddToVMBUTTON)
+        self.horizontalLayout_10.addWidget(self.vmFilesTREEWIDGET)
+        self.horizontalLayout_10.addLayout(self.verticalLayout_10)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_10)
+        ####VM FILES QTREE WIDGET END####
+
         self.softwareAddBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.softwareAddBUTTON.setObjectName("softwareAddBUTTON")
         self.horizontalLayout_8.addWidget(self.softwareAddBUTTON)
@@ -219,10 +225,28 @@ class Ui_CreateNewVm(object):
         self.typeCOMBOBOX.setItemText(0, _translate("CreateNewVm", "POV Entity"))
         self.typeCOMBOBOX.setItemText(1, _translate("CreateNewVm", "Victim Entity"))
         self.createVmLABEL.setText(_translate("CreateNewVm", "Create From Existing VM:"))
-        self.openExitstingBUTTON.setText(_translate("CreateNewVm", "Open Existing"))
+        self.openExistingBUTTON.setText(_translate("CreateNewVm", "Open Existing"))
         self.vmOsLABEL.setText(_translate("CreateNewVm", "VM OS:"))
         #####CHANGES START####
         self.vmFilesLABEL.setText(_translate("CreateNewVm", "VM Files:"))
+        j = 0
+        i = 0
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Exploits"]
+        _translate = QtCore.QCoreApplication.translate
+        __sortingEnabled = self.vmFilesTREEWIDGET.isSortingEnabled()
+        self.vmFilesTREEWIDGET.setSortingEnabled(False)
+        for collection in data.find():
+            j=0
+            self.vmFilesTREEWIDGET.topLevelItem(i).setText(0, _translate("Export", collection['name']))
+            for key in collection:
+                if(key!="_id" and key!="name" and key!='File'):
+                    self.vmFilesTREEWIDGET.topLevelItem(i).child(j).setText(0, _translate("Export", key + ' : ' + collection[key]))
+                    j+=1
+            i+=1
+        self.vmFilesTREEWIDGET.setSortingEnabled(__sortingEnabled)
+
         #####CHANGES END####
 
         self.vmOsCOMBOBOX.setItemText(0, _translate("CreateNewVm", "Kali Linux"))
@@ -243,6 +267,29 @@ class Ui_CreateNewVm(object):
         self.softwareAddBUTTON.setText(_translate("CreateNewVm", "Add to VM"))
         self.discardBUTTON.setText(_translate("CreateNewVm", "Discard"))
         self.saveBUTTON.setText(_translate("CreateNewVm", "Save"))
+
+
+    def setupTree(self, CreateNewVm):
+            x=0
+            y=0
+            self.tree={}
+            try:
+                client = MongoClient(Ui_DBConfiguration.dbConnection)
+            except:
+                client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+            db = client.Test
+            data = db["Exploits"]
+            for collection in data.find():
+                self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
+                self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
+                #self.tree["parent{0}".format(x)].setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate)
+                for key in collection:
+                    if(key!="_id" and key!="name" and key!='File'):
+                        self.tree["child{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(x)])
+                        #self.tree["child{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+                        y+=1
+                x+=1
+            return CreateNewVm
 
 
 if __name__ == "__main__":
