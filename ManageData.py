@@ -266,14 +266,16 @@ class Ui_ManageData(object):
                 for key in collection:
                     if(key!="_id" and key!="name"):
                         if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
-                            fileName = collection["name"] + key
-                            fileContent = collection[key]
-                            fileName = fileName.replace(";",".")
-                            with open(fileName, "wb") as decoded_image:
-                                decoded_image.write(base64.decodebytes(fileContent))
-                                print(fileName + " written to " + self.path)
-                                newzip.write(fileName)
-                            os.remove(fileName)
+                                fileName = collection["name"] + key
+                                fileContent = collection[key]
+                                fileName = fileName.replace(";",".").split('_')[2]
+                                with open(fileName, "wb") as decoded_image:
+                                    decoded_content = base64.decodebytes(fileContent)
+                                    decoded_image.write(decoded_content)
+                                    decoded_image.close()
+                                    print(fileName + " written to " + self.path)
+                                    newzip.write(fileName)
+                                os.remove(fileName)
                             self.count+=tickSize
                             print(self.count)
                             self.progressBar.setValue(self.count)
