@@ -12,6 +12,7 @@ import VagrantFileTemplate as temp
 import os
 from pymongo import MongoClient
 from DBConfiguration import Ui_DBConfiguration
+from bson.objectid import ObjectId
 
 class Ui_EditVM(object):
     def setupUi(self, EditVM):
@@ -85,7 +86,7 @@ class Ui_EditVM(object):
         font.setWeight(75)
         self.vmOsLABEL.setFont(font)
         self.vmOsLABEL.setObjectName("vmOsLABEL")
-        
+
         self.verticalLayout_2.addWidget(self.vmOsLABEL)
         self.vmOsCOMBOBOX = QtWidgets.QComboBox(self.widget)
         self.vmOsCOMBOBOX.setObjectName("vmOsCOMBOBOX")
@@ -265,7 +266,48 @@ class Ui_EditVM(object):
         self.vmFilesAddToVMBUTTON.setText(_translate("CreateNewVm", "Add to VM"))
         self.manageExploitsBUTTON.setText(_translate("CreateNewVm", "Manage Exploits"))
         self.softwareLABEL.setText(_translate("EditVM", "Software:"))
+        j=0
+        i=0
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
+        EXPLOITS = db['Exploits']
+        POVS = db['VulnerablePrograms']
+        _translate = QtCore.QCoreApplication.translate
         __sortingEnabled = self.softwareTREEWIDGET.isSortingEnabled()
+        for collection in data.find({'_id': ObjectId('5e89003d2da10a05adcbf77a')}):
+            scen = collection['scenario']
+            j=0
+            for key in scen:
+                exploit = scen['exploit']
+                pov = scen['pov']
+                if (key == 'exploit'):
+                    for item in exploit:
+                        self.vmFilesTREEWIDGET.topLevelItem(j).setText(0, _translate("Export", exploit['file']))
+                        #print(exploit['file'])
+                        try:
+                            temp = EXPLOITS.find_one({'name': exploit['file']})
+                            self.vmFilesTREEWIDGET.topLevelItem(j).child(0).setText(0, _translate("Export", 'Lauguage : ' + temp['Language']))
+                            self.vmFilesTREEWIDGET.topLevelItem(j).child(1).setText(0, _translate("Export", 'Platform : ' + temp['Platform']))
+                            self.vmFilesTREEWIDGET.topLevelItem(j).child(2).setText(0, _translate("Export", 'Type : ' + temp['Type']))
+                        except:
+                            self.vmFilesTREEWIDGET.topLevelItem(j).child(0).setText(0, _translate("Export", 'Lauguage : UNK'))
+                            self.vmFilesTREEWIDGET.topLevelItem(j).child(1).setText(0, _translate("Export", 'Platform : UNK'))
+                            self.vmFilesTREEWIDGET.topLevelItem(j).child(2).setText(0, _translate("Export", 'Type : UNK'))
+                        j+=1
+                if (key == 'pov'):
+                    for item in pov:
+                        self.vmFilesTREEWIDGET.topLevelItem(j).setText(0, _translate("Export", pov['file']))
+                        try:
+                            temp = POVS.find_one({'name': pov['file']})
+                            self.vmFilesTREEWIDGET.topLevelItem(j).child(0).setText(0, _translate("Export", 'Information : ' + temp['Information']))
+                        except:
+                            self.vmFilesTREEWIDGET.topLevelItem(j).child(0).setText(0, _translate("Export", 'Information : UNK'))
+                        j+=1
+            i+=1
         self.softwareTREEWIDGET.setSortingEnabled(False)
         self.softwareTREEWIDGET.topLevelItem(0).setText(0, _translate("EditVM", "All"))
         self.softwareTREEWIDGET.topLevelItem(0).child(0).setText(0, _translate("EditVM", "example"))
@@ -278,7 +320,7 @@ class Ui_EditVM(object):
         self.discardBUTTON.setText(_translate("EditVM", "Discard"))
         self.settingsBUTTON.setText(_translate("EditVM", "System Settings"))
         self.saveBUTTON.setText(_translate("EditVM", "Save"))
-    
+
     def setupTree(self, CreateNewVm):
             x=0
             y=0
@@ -288,16 +330,29 @@ class Ui_EditVM(object):
             except:
                 client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
             db = client.Test
-            data = db["Exploits"]
-            for collection in data.find():
-                self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
-                self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
+            data = db["Scenario"]
+            EXPLOITS = db['Exploits']
+            POVS = db['VulnerablePrograms']
+            for collection in data.find({'_id': ObjectId('5e89003d2da10a05adcbf77a')}):
+                scen = collection['scenario']
                 #self.tree["parent{0}".format(x)].setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate)
-                for key in collection:
-                    if(key!="_id" and key!="name" and key!='File'):
-                        self.tree["child{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(x)])
-                        #self.tree["child{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
-                        y+=1
+                for key in scen:
+                    exploit = scen['exploit']
+                    pov = scen['pov']
+                    if (key == 'exploit'):
+                        for item in exploit:
+                            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
+                            self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+                            self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+                            self.tree["child{0}".format(1)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+                            self.tree["child{0}".format(2)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+                            y+=1
+                    if(key=='pov'):
+                        for item in pov:
+                            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
+                            self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+                            self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+                            y+=1
                 x+=1
             return CreateNewVm
 
@@ -309,4 +364,3 @@ if __name__ == "__main__":
     ui.setupUi(EditVM)
     EditVM.show()
     sys.exit(app.exec_())
-
