@@ -185,13 +185,14 @@ class Ui_EditVM(object):
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.softwareTREEWIDGET = QtWidgets.QTreeWidget(self.widget)
         self.softwareTREEWIDGET.setObjectName("softwareTREEWIDGET")
-        item_0 = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
-        item_0 = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
-        item_0 = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
+        #item_0 = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
+        #item_1 = QtWidgets.QTreeWidgetItem(item_0)
+        #item_0 = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
+        #item_1 = QtWidgets.QTreeWidgetItem(item_0)
+        #item_0 = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
+        #item_1 = QtWidgets.QTreeWidgetItem(item_0)
         self.softwareTREEWIDGET.header().setVisible(False)
+        self.setupSoftware(EditVM)
         self.horizontalLayout_8.addWidget(self.softwareTREEWIDGET)
         self.softwareAddBUTTON = QtWidgets.QPushButton(self.widget)
         self.softwareAddBUTTON.setObjectName("softwareAddBUTTON")
@@ -309,19 +310,51 @@ class Ui_EditVM(object):
                         j+=1
             i+=1
         self.softwareTREEWIDGET.setSortingEnabled(False)
-        self.softwareTREEWIDGET.topLevelItem(0).setText(0, _translate("EditVM", "All"))
-        self.softwareTREEWIDGET.topLevelItem(0).child(0).setText(0, _translate("EditVM", "example"))
-        self.softwareTREEWIDGET.topLevelItem(1).setText(0, _translate("EditVM", "Linux Specific"))
-        self.softwareTREEWIDGET.topLevelItem(1).child(0).setText(0, _translate("EditVM", "example"))
-        self.softwareTREEWIDGET.topLevelItem(2).setText(0, _translate("EditVM", "Windows Specific"))
-        self.softwareTREEWIDGET.topLevelItem(2).child(0).setText(0, _translate("EditVM", "example"))
+        i=0
+        for collection in EXPLOITS.find():
+            self.softwareTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
+            self.softwareTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Language : ' + collection['Language']))
+            self.softwareTREEWIDGET.topLevelItem(i).child(1).setText(0, _translate("EditVM", 'Platform : ' + collection['Platform']))
+            self.softwareTREEWIDGET.topLevelItem(i).child(2).setText(0, _translate("EditVM", 'Type : ' + collection['Type']))
+            i+=1
+        for collection in POVS.find():
+            self.softwareTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
+            self.softwareTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Information : ' + collection['Information']))
+            i+=1
         self.softwareTREEWIDGET.setSortingEnabled(__sortingEnabled)
         self.softwareAddBUTTON.setText(_translate("EditVM", "Add to VM"))
         self.discardBUTTON.setText(_translate("EditVM", "Discard"))
         self.settingsBUTTON.setText(_translate("EditVM", "System Settings"))
         self.saveBUTTON.setText(_translate("EditVM", "Save"))
 
-    def setupTree(self, CreateNewVm):
+    def setupSoftware(self, EditVM):
+        x=0
+        y=0
+        self.tree={}
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
+        EXPLOITS = db['Exploits']
+        POVS = db['VulnerablePrograms']
+        for collection in EXPLOITS.find():
+            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
+            self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+            self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+            self.tree["child{0}".format(1)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+            self.tree["child{0}".format(2)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+            y+=1
+        for collection in POVS.find():
+            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
+            self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+            self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+            y+=1
+
+        return EditVM
+
+    def setupTree(self, EditVM):
             x=0
             y=0
             self.tree={}
@@ -354,7 +387,7 @@ class Ui_EditVM(object):
                             self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
                             y+=1
                 x+=1
-            return CreateNewVm
+            return EditVM
 
 if __name__ == "__main__":
     import sys
