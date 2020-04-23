@@ -83,6 +83,7 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
 
 class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
     def __init__(self, parent=None):
+        self.nav=0
         self.editVmWindow = EditVmWindow("null")
         self.vMSystemsSettings=VmSystemSettings()
         super(SuggestedSetupWindow, self).__init__(parent)
@@ -180,6 +181,7 @@ class OpeningDBConfigurationWindow(QtWidgets.QDialog, Ui_DBConfiguration):
 
 class NetworkSetupWindow(QtWidgets.QDialog, Ui_NetworkSetup):
     def __init__(self, parent=None):
+        self.nav=0
         super(NetworkSetupWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
@@ -226,8 +228,8 @@ class Controller:
         #
         self.main.manageDataBUTTON.clicked.connect(self.manageDataOptions.show)
         #
-        self.main.setupBUTTON.clicked.connect(self.suggestedSetup.show)
-        self.main.configureBUTTON.clicked.connect(self.networkSetup.show)
+        self.main.setupBUTTON.clicked.connect(self.setupButtonNav)
+        self.main.configureBUTTON.clicked.connect(self.configureButtonNav)
         #
         self.manageDataOptions.exportBUTTON.clicked.connect(self.manageData.show)
         self.manageDataOptions.importBUTTON.clicked.connect(self.importData.show)
@@ -254,12 +256,12 @@ class Controller:
         #
         self.manageVulnerablePrograms.backBUTTON.clicked.connect(self.newScenario.show)
         #
-        self.suggestedSetup.backButton.clicked.connect(self.newScenario.show)
+        self.suggestedSetup.backButton.clicked.connect(self.alternateNavSuggestedSetup)
         self.suggestedSetup.addVmBUTTON.clicked.connect(self.createNewVm.show)
         self.createNewVm.manageExploitsBUTTON.clicked.connect(self.manageExploits.show)
         self.suggestedSetup.nextBUTTON.clicked.connect(self.networkSetup.show)
         #
-        self.networkSetup.backButton.clicked.connect(self.suggestedSetup.show)
+        self.networkSetup.backButton.clicked.connect(self.alternateNavNetworkSetup)
         self.networkSetup.advancedSettingsBUTTON.clicked.connect(self.advancedNetworkSetup.show)
         #
         self.advancedNetworkSetup.backBUTTON.clicked.connect(self.networkSetup.show)
@@ -296,6 +298,28 @@ class Controller:
         self.pix = QPixmap("SplashPage.png")
         self.splash = QSplashScreen(self.pix, Qt.WindowStaysOnTopHint)
         self.splash.show()
+        
+            def setupButtonNav(self):
+        self.suggestedSetup.nav = 1
+        self.suggestedSetup.show()
+
+    def configureButtonNav(self):
+        self.networkSetup.nav = 1
+        self.networkSetup.show()
+
+    def alternateNavNetworkSetup(self):
+        if self.networkSetup.nav == 1:
+            self.networkSetup.nav = 0
+            self.main.show()
+        else:
+            self.suggestedSetup.show()
+
+    def alternateNavSuggestedSetup(self):
+        if self.suggestedSetup.nav == 1:
+            self.suggestedSetup.nav = 0
+            self.main.show()
+        else:
+            self.newScenario.show()
         
 if __name__ == '__main__':
     import sys
