@@ -140,13 +140,8 @@ class Ui_CreateNewVm(object):
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.softwareTREEWIDGET = QtWidgets.QTreeWidget(self.layoutWidget)
         self.softwareTREEWIDGET.setObjectName("softwareTREEWIDGET")
-        item_0 = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
-        item_0 = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
-        item_0 = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
-        item_1 = QtWidgets.QTreeWidgetItem(item_0)
         self.softwareTREEWIDGET.header().setVisible(False)
+        self.setupSoftware(CreateNewVm)
         self.horizontalLayout_8.addWidget(self.softwareTREEWIDGET)
 
         ####VM FILES QTREE WIDGET START####
@@ -234,6 +229,7 @@ class Ui_CreateNewVm(object):
         client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Exploits"]
+        POVS = db['VulnerablePrograms']
         _translate = QtCore.QCoreApplication.translate
         __sortingEnabled = self.vmFilesTREEWIDGET.isSortingEnabled()
         self.vmFilesTREEWIDGET.setSortingEnabled(False)
@@ -244,6 +240,17 @@ class Ui_CreateNewVm(object):
                 if(key!="_id" and key!="name" and key!='File'):
                     self.vmFilesTREEWIDGET.topLevelItem(i).child(j).setText(0, _translate("Export", key + ' : ' + collection[key]))
                     j+=1
+            i+=1
+        i=0
+        for collection in data.find():
+            self.softwareTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
+            self.softwareTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Language : ' + collection['Language']))
+            self.softwareTREEWIDGET.topLevelItem(i).child(1).setText(0, _translate("EditVM", 'Platform : ' + collection['Platform']))
+            self.softwareTREEWIDGET.topLevelItem(i).child(2).setText(0, _translate("EditVM", 'Type : ' + collection['Type']))
+            i+=1
+        for collection in POVS.find():
+            self.softwareTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
+            self.softwareTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Information : ' + collection['Information']))
             i+=1
         self.vmFilesTREEWIDGET.setSortingEnabled(__sortingEnabled)
 
@@ -268,6 +275,32 @@ class Ui_CreateNewVm(object):
         self.discardBUTTON.setText(_translate("CreateNewVm", "Discard"))
         self.saveBUTTON.setText(_translate("CreateNewVm", "Save"))
 
+
+    def setupSoftware(self, CreatNewVm):
+        x=0
+        y=0
+        self.tree={}
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
+        EXPLOITS = db['Exploits']
+        POVS = db['VulnerablePrograms']
+        for collection in EXPLOITS.find():
+            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
+            self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+            self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+            self.tree["child{0}".format(1)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+            self.tree["child{0}".format(2)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+            y+=1
+        for collection in POVS.find():
+            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
+            self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+            self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+            y+=1
+        return CreateNewVm
 
     def setupTree(self, CreateNewVm):
             x=0
