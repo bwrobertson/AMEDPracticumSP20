@@ -148,7 +148,7 @@ class Ui_CreateNewVm(object):
         self.vmFilesTREEWIDGET = QtWidgets.QTreeWidget(self.layoutWidget)
         self.vmFilesTREEWIDGET.setObjectName("vmFilesTREEWIDGET")
         self.vmFilesTREEWIDGET.headerItem().setText(0, "1")
-        self.setupTree(CreateNewVm) ###Method Call
+        #self.setupTree(CreateNewVm) ###Method Call
 
         self.vmFilesTREEWIDGET.header().setVisible(False)
         self.verticalLayout_10.addWidget(self.manageExploitsBUTTON)
@@ -233,14 +233,14 @@ class Ui_CreateNewVm(object):
         _translate = QtCore.QCoreApplication.translate
         __sortingEnabled = self.vmFilesTREEWIDGET.isSortingEnabled()
         self.vmFilesTREEWIDGET.setSortingEnabled(False)
-        for collection in data.find():
+        """for collection in data.find():
             j=0
             self.vmFilesTREEWIDGET.topLevelItem(i).setText(0, _translate("Export", collection['name']))
             for key in collection:
                 if(key!="_id" and key!="name" and key!='File'):
                     self.vmFilesTREEWIDGET.topLevelItem(i).child(j).setText(0, _translate("Export", key + ' : ' + collection[key]))
                     j+=1
-            i+=1
+            i+=1"""
         i=0
         for collection in data.find():
             self.softwareTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
