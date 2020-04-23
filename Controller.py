@@ -299,7 +299,7 @@ class Controller:
         self.splash = QSplashScreen(self.pix, Qt.WindowStaysOnTopHint)
         self.splash.show()
         
-            def setupButtonNav(self):
+    def setupButtonNav(self):
         self.suggestedSetup.nav = 1
         self.suggestedSetup.show()
 
