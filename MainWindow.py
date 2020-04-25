@@ -82,6 +82,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.horizontalLayout_3)
         self.DATEEDIT = QtWidgets.QDateEdit(self.layoutWidget)
         self.DATEEDIT.setObjectName("DATEEDIT")
+        self.DATEEDIT.setDate(QtCore.QDate.currentDate())
         self.horizontalLayout.addWidget(self.DATEEDIT)
         self.verticalLayout.addLayout(self.horizontalLayout)
         ####################################scenariosLIST######################################
@@ -193,6 +194,34 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.scenariosLIST.clicked.connect(self.listViewClicked)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.searchEDITBOX.returnPressed.connect(self.searchfunction)
+
+    def searchfunction(self):
+        oldscenariosList = self.scenariosLIST
+        line = self.searchEDITBOX.text()
+        if line == "" or line.isspace():
+            self.searchEDITBOX.clear()
+            print("empty string")
+            return
+
+        itemsFound = self.scenariosLIST.findItems(line,QtCore.Qt.MatchContains)
+        if not itemsFound:
+            print("No matches") ##change this to a pop up message.
+            self.searchEDITBOX.clear()
+            return
+            
+        count = 0
+        x = self.scenariosLIST.count()
+        for item in itemsFound:
+            self.scenariosLIST.addItem(QtWidgets.QListWidgetItem())
+            update = self.scenariosLIST.item(x)
+            update.setText(item.text())
+            count+=1
+            x+=1
+        index = self.scenariosLIST.count()-1
+        index = index - count
+        for i in range(index,-1,-1):
+            self.scenariosLIST.takeItem(i)
 
     def listViewClicked(self, MainWindow):
         try:
