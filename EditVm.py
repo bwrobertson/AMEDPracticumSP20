@@ -13,6 +13,8 @@ import os
 from pymongo import MongoClient
 from DBConfiguration import Ui_DBConfiguration
 from bson.objectid import ObjectId
+import threading
+import subprocess
 
 class Ui_EditVM(object):
     def setupUi(self, EditVM):
@@ -241,7 +243,9 @@ class Ui_EditVM(object):
         # loaded_data = json.loads(data)
         # with open('packer_test_vagrant.json', 'w') as f:
         #     json.dump(data, f)
-        os.system("packer build packer_test_vagrant.json")
+        # t = threading.Thread(os.system("packer build packer_test_vagrant.json"))
+        subprocess.Popen("packer build packer_test_vagrant.json")
+        # os.system("packer build packer_test_vagrant.json")
        # os.system("vagrant up --provision")
         self.hide()
 

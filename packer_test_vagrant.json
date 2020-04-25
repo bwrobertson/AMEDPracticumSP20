@@ -23,6 +23,16 @@
                 "execute_command": "echo 'packer' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
               }
             }
+        },
+
+        {
+          "type":"shell",
+          "inline":[
+            "sudo apt update",
+            "sudo apt install snapd",
+            "y",
+            "sudo snap install --classic code"
+          ]
         }
     ]
   }

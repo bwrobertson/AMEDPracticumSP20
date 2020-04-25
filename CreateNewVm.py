@@ -276,7 +276,7 @@ class Ui_CreateNewVm(object):
         self.saveBUTTON.setText(_translate("CreateNewVm", "Save"))
 
 
-    def setupSoftware(self, CreatNewVm):
+    def setupSoftware(self, CreateNewVm):
         x=0
         y=0
         self.tree={}
