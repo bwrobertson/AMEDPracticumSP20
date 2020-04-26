@@ -12,9 +12,11 @@ apt-get install -y gcc make curl python-pip python3-pip git expect
 pip3 install pymongo dnspython python-magic
 pip install pymongo dnspython python-magic
 apt-get install -y python3-pyqt5
+git clone https://github.com/bwrobertson/AMEDPracticumSP20.git
+cd AMEDPracticumSP20
 git clone https://github.com/kevinHonsaker01/ecel.git
-chown $HOSTNAME:$HOSTNAME -R ecel/
 cd ecel
+chown $HOSTNAME:$HOSTNAME -R ~/AMEDPracticumSP20
 echo ECEL_HOME="\"${PWD}\"" >> /etc/environment
 source /etc/environment
 
