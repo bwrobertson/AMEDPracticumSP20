@@ -22,6 +22,8 @@ from VmSystemSettings import Ui_VmSystemSettings
 from SuggestedSetup import Ui_Form
 
 import os, subprocess
+import qtmodern.styles
+import qtmodern.windows
 
 # instantiation of UI (View) classes and controller class
 
@@ -324,6 +326,7 @@ class Controller:
 if __name__ == '__main__':
     import sys
     app = QtWidgets.QApplication(sys.argv)
+    qtmodern.styles.dark(app)
     controller = Controller()
     sys.exit(app.exec_())
 
