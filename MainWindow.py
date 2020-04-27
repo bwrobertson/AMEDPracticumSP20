@@ -80,10 +80,9 @@ class Ui_MainWindow(object):
         self.searchEDITBOX.setObjectName("searchEDITBOX")
         self.horizontalLayout_3.addWidget(self.searchEDITBOX)
         self.horizontalLayout.addLayout(self.horizontalLayout_3)
-        self.DATEEDIT = QtWidgets.QDateEdit(self.layoutWidget)
-        self.DATEEDIT.setObjectName("DATEEDIT")
-        self.DATEEDIT.setDate(QtCore.QDate.currentDate())
-        self.horizontalLayout.addWidget(self.DATEEDIT)
+        self.cancelSearchBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        self.cancelSearchBUTTON.setObjectName("cancelSearchBUTTON")
+        self.horizontalLayout.addWidget(self.cancelSearchBUTTON)
         self.verticalLayout.addLayout(self.horizontalLayout)
         ####################################scenariosLIST######################################
         self.scenariosLIST = QtWidgets.QListWidget(self.layoutWidget)
@@ -196,8 +195,32 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.searchEDITBOX.returnPressed.connect(self.searchfunction)
 
+    def resetScenarios(self):
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
+        _translate = QtCore.QCoreApplication.translate
+        x = 0
+        scen = ""
+        type = ""
+        type2 = ''
+        for collection in data.find():
+            self.scenariosLIST.addItem(QtWidgets.QListWidgetItem())
+            item = self.scenariosLIST.item(x)
+            scen = collection['scenario']
+            type = scen['exploit']
+            type2 = scen['pov']
+            
+            # Prevents NoneType Error
+            if not item:
+                continue
+            item.setText(_translate("MainWindow", scen['name'])) #SCENARIO NAME IS CHANGED HERE
+            x+=1
+
     def searchfunction(self):
-        oldscenariosList = self.scenariosLIST
         line = self.searchEDITBOX.text()
         if line == "" or line.isspace():
             self.searchEDITBOX.clear()
@@ -209,7 +232,7 @@ class Ui_MainWindow(object):
             print("No matches") ##change this to a pop up message.
             self.searchEDITBOX.clear()
             return
-            
+
         count = 0
         x = self.scenariosLIST.count()
         for item in itemsFound:
@@ -291,6 +314,7 @@ class Ui_MainWindow(object):
         self.manageDataBUTTON.setText(_translate("MainWindow", "Manage Data"))
         self.configureDatabaseBUTTON.setText(_translate("MainWindow", "Configure Database"))
         self.manageScenarioBUTTON.setText(_translate("MainWindow", "Manage Scenario"))
+        self.cancelSearchBUTTON.setText(_translate("MainWindow","Clear Search"))
 
 
 if __name__ == "__main__":
