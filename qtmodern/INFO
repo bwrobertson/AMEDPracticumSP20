@@ -1,0 +1,25 @@
+Original Styles and skins that are being used are from the project on GitHUB
+https://github.com/gmarull/qtmodern
+MIT License was applied 
+Some changes including new button colors and text colors were used
+
+
+
+
+In order to use ``qtmodern``, simply apply the style you want to your
+application and then, create a ``ModernWindow`` enclosing the window you want to
+*modernize*::
+
+    import qtmodern.styles
+    import qtmodern.windows
+
+    ...
+
+    app = QApplication()
+    win = YourWindow()
+
+    qtmodern.styles.dark(app)
+    mw = qtmodern.windows.ModernWindow(win)
+    mw.show()
+
+    ...
