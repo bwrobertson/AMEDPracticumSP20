@@ -194,8 +194,14 @@ class Ui_MainWindow(object):
         self.scenariosLIST.clicked.connect(self.listViewClicked)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.searchEDITBOX.returnPressed.connect(self.searchfunction)
+        self.cancelSearchBUTTON.clicked.connect(self.resetScenarios)
 
     def resetScenarios(self):
+        line = self.searchEDITBOX.text()
+        if line == "" or line.isspace():
+            self.searchEDITBOX.clear()
+            return
+        self.searchEDITBOX.clear()
         try:
             client = MongoClient(Ui_DBConfiguration.dbConnection)
         except:
