@@ -42,9 +42,6 @@ sleep 0.3
 echo ECEL_HOME="\"${PWD}\"" >> /etc/environment
 sleep 0.3
 
-source /etc/environment
-sleep 0.3
-
 # start/stop collectors from ECEL project (tshark/snoopy)
 chown root:root standalone.sh
 sleep 0.3
@@ -64,8 +61,6 @@ sleep 0.3
 ./script.exp 
 sleep 3
 
-# Check this
-source /etc/environment
 
 # Need to disable updates 
 
