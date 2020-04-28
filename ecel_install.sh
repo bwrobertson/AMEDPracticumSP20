@@ -6,8 +6,8 @@
 # Needs to have chmod 755 ecel_install
 # remember to sudo su command (Vagrant does this by default)
 
-# apt-get update
-sleep 0.3
+# kill any and all updates
+kill -9 $(ps aux | grep update | cut -d" " -f7)
 
 apt install -y net-tools
 sleep 0.3
