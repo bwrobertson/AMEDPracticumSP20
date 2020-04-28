@@ -269,7 +269,6 @@ class Controller:
         #
         self.suggestedSetup.backButton.clicked.connect(self.alternateNavSuggestedSetup)
         self.suggestedSetup.addVmBUTTON.clicked.connect(self.createNewVm.show)
-        self.createNewVm.manageExploitsBUTTON.clicked.connect(self.manageExploits.show)
         self.suggestedSetup.nextBUTTON.clicked.connect(self.networkSetup.show)
         self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
         self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
