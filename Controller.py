@@ -87,7 +87,14 @@ class AlternateManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
         self.nextButton.clicked.connect(self.addMethod)
 
     def addMethod(self):
-        print("alternate manage exploits add method")
+        for item in self.databseTREEWIDGET.findItems("", Qt.MatchContains | Qt.MatchRecursive):
+            if (item.checkState(0)==QtCore.Qt.Checked):
+                print (item.text(0))
+                
+                """lastIndex = CreateNewVmWindow.vmFilesTREEWIDGET.count()
+                CreateNewVmWindow.vmFilesTREEWIDGET.addItem(QtWidgets.QListWidgetItem())
+                newitem = CreateNewVmWindow.vmFilesTREEWIDGET.item(lastIndex)
+                newitem.setText(item.text(0))"""
 
 
 class ManageVulnerableProgramsWindow(QtWidgets.QWidget, 
@@ -146,6 +153,7 @@ class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.discardBUTTON.clicked.connect(self.closeWindow)
+        
 
     def closeWindow(self):
         self.vmFilesLISTWIDGET.clear()
