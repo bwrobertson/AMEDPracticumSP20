@@ -62,7 +62,10 @@ mkdir /root/.config/autostart
 sleep 0.3
 
 ./script.exp 
-sleep 0.3
+sleep 3
+
+# Check this
+source /etc/environment
 
 # Need to disable updates 
 
