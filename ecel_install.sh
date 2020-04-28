@@ -20,8 +20,8 @@ chown $HOSTNAME:$HOSTNAME -R ~/AMEDPracticumSP20
 echo ECEL_HOME="\"${PWD}\"" >> /etc/environment
 source /etc/environment
 
-chown root:root collectors.sh
-chmod 4755 collectors.sh
+chown root:root standalone.sh
+chmod 4755 standalone.sh
 chmod 755 script.exp
 mkdir /root/.config
 mkdir /root/.config/autostart
