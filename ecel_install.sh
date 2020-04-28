@@ -35,6 +35,9 @@ git clone https://github.com/kevinHonsaker01/ecel.git
 sleep 0.3
 
 cd ecel
+# this needs to be tied to the Controller.py
+sed -i -e 's/\r$//' standalone.sh
+echo "mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test" >> database_configuration.txt
 sleep 0.3
 
 chown $HOSTNAME:$HOSTNAME -R ~/AMEDPracticumSP20
