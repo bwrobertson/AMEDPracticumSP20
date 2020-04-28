@@ -82,6 +82,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.horizontalLayout_3)
         self.cancelSearchBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.cancelSearchBUTTON.setObjectName("cancelSearchBUTTON")
+        self.cancelSearchBUTTON.setDisabled(True)
         self.horizontalLayout.addWidget(self.cancelSearchBUTTON)
         self.verticalLayout.addLayout(self.horizontalLayout)
         ####################################scenariosLIST######################################
@@ -194,13 +195,10 @@ class Ui_MainWindow(object):
         self.scenariosLIST.clicked.connect(self.listViewClicked)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.searchEDITBOX.returnPressed.connect(self.searchfunction)
-        self.cancelSearchBUTTON.clicked.connect(self.resetScenarios)
+        self.cancelSearchBUTTON.clicked.connect(self.displayScenarios)
 
-    def resetScenarios(self):
-        line = self.searchEDITBOX.text()
-        if line == "" or line.isspace():
-            self.searchEDITBOX.clear()
-            return
+    def displayScenarios(self):
+        self.cancelSearchBUTTON.setDisabled(True)
         self.searchEDITBOX.clear()
         try:
             client = MongoClient(Ui_DBConfiguration.dbConnection)
@@ -251,6 +249,7 @@ class Ui_MainWindow(object):
         index = index - count
         for i in range(index,-1,-1):
             self.scenariosLIST.takeItem(i)
+        self.cancelSearchBUTTON.setEnabled(True)
 
     def listViewClicked(self, MainWindow):
         try:
