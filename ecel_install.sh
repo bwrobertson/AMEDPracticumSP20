@@ -45,6 +45,7 @@ sleep 0.3
 source /etc/environment
 sleep 0.3
 
+# start/stop collectors from ECEL project (tshark/snoopy)
 chown root:root standalone.sh
 sleep 0.3
 
