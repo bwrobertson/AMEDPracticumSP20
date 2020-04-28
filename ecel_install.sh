@@ -64,6 +64,12 @@ sleep 0.3
 ./script.exp 
 sleep 0.3
 
+# Need to disable updates 
+
+# Disable login
+
+# auto-assign a $HOSTNAME for scripts depend on knowledge of this
+
 # to run collectors ./collectors (inside the ecel folder; exports data to Ben's DB)
 # Need an interface to deliver the DB info user wants as their DB
 # Possible way is to ask for this information at the VM install level and pass to 
