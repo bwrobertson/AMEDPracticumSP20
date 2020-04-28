@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QFont, QIcon
-from PyQt5.QtWidgets import QSplashScreen, QMenu
+from PyQt5.QtWidgets import QSplashScreen, QMenu, QApplication
+from qtpy import QtCore
 
 from ConfigureMongoDB import Ui_ConfigureMongoDB
 from DBConfiguration import Ui_DBConfiguration
@@ -74,6 +75,20 @@ class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
+     
+class AlternateManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
+    def __init__(self, parent=None):
+        super(AlternateManageExploitsWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
+        self.setupUi(self)
+        _translate = QtCore.QCoreApplication.translate
+        self.nextButton.setText(_translate("ManageExploits", "Add"))
+        self.backBUTTON.clicked.connect(self.close)
+        self.nextButton.clicked.connect(self.addMethod)
+
+    def addMethod(self):
+        print("alternate manage exploits add method")
+
 
 class ManageVulnerableProgramsWindow(QtWidgets.QWidget, 
                                 Ui_ManageVulnerablePrograms):
@@ -93,9 +108,7 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
         self.setupUi(self)
         self.backButton.clicked.connect(self.close)
         self.nextBUTTON.clicked.connect(self.close)
-        self.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
-        self.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
-
+ 
     def contextMenuEvent(self, event):
         cmenu = QMenu(self)
         infoAct = cmenu.addAction("Info")
@@ -116,21 +129,16 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
             self.listWidget_2.takeItem(self.listWidget_2.row(item))
             self.listWidget_3.takeItem(self.listWidget_3.row(item))
 
-    def handleDoubleClick(self, item):
-        item.setSelected(False)
-        print(item.text())
-        self.editVm = EditVmWindow(item.text())
-        self.editVm.settingsBUTTON.clicked.connect(self.vMSystemsSettings.show)
-        self.editVm.show()
-
-            
+    
 class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
     def __init__(self, text,parent=None):
+        self.alternateManageExploits=AlternateManageExploitsWindow()
         super(EditVmWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.machineNameLINEEDIT.setText(text)
         self.discardBUTTON.clicked.connect(self.close)
+        self.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
         
 class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
     def __init__(self, parent=None):
@@ -215,6 +223,7 @@ class Controller:
         self.manageScenarios = ManageScenariosWindow()
         self.newScenario = NewScenariosWindow()
         self.manageExploits = ManageExploitsWindow()
+        self.alternateManageExploits = AlternateManageExploitsWindow()
         self.manageVulnerablePrograms = ManageVulnerableProgramsWindow()
         self.suggestedSetup=SuggestedSetupWindow()
         self.createNewVm = CreateNewVmWindow()
@@ -262,6 +271,13 @@ class Controller:
         self.suggestedSetup.addVmBUTTON.clicked.connect(self.createNewVm.show)
         self.createNewVm.manageExploitsBUTTON.clicked.connect(self.manageExploits.show)
         self.suggestedSetup.nextBUTTON.clicked.connect(self.networkSetup.show)
+        self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
+        self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
+        #
+        #########---ALTERNATE MANAGE EXPLOITS---##################
+        self.createNewVm.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
+        self.editVm.settingsBUTTON.clicked.connect(self.vmSystemSettings.show)
+        ################################################
         #
         self.networkSetup.backButton.clicked.connect(self.alternateNavNetworkSetup)
         self.networkSetup.advancedSettingsBUTTON.clicked.connect(self.advancedNetworkSetup.show)
@@ -322,6 +338,12 @@ class Controller:
             self.main.show()
         else:
             self.newScenario.show()
+            
+    def handleDoubleClick(self, item):
+        item.setSelected(False)
+        print(item.text())
+        self.editVm = EditVmWindow(item.text())
+        self.editVm.show()
         
 if __name__ == '__main__':
     import sys
