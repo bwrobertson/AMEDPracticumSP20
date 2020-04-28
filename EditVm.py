@@ -52,6 +52,9 @@ class Ui_EditVM(object):
         self.typeLABEL.setFont(font)
         self.typeLABEL.setObjectName("typeLABEL")
         self.horizontalLayout.addWidget(self.typeLABEL)
+        self.vmFilesLABEL = QtWidgets.QLabel(self.widget)
+        self.vmFilesLABEL.setFont(font)
+        self.vmFilesLABEL.setObjectName("vmFilesLABEL")
         self.typeCOMBOBOX = QtWidgets.QComboBox(self.widget)
         self.typeCOMBOBOX.setObjectName("typeCOMBOBOX")
         self.typeCOMBOBOX.addItem("")
@@ -108,6 +111,7 @@ class Ui_EditVM(object):
         #self.malwareLABEL.setFont(font)
         #self.malwareLABEL.setObjectName("malwareLABEL")
         #self.verticalLayout_4.addWidget(self.malwareLABEL)
+        self.verticalLayout_4.addWidget(self.vmFilesLABEL)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         #self.malwareLINEEDIT = QtWidgets.QLineEdit(self.widget)
@@ -270,6 +274,7 @@ class Ui_EditVM(object):
         #self.scriptBrowseBUTTON.setText(_translate("EditVM", "Browse"))
         self.vmFilesAddToVMBUTTON.setText(_translate("CreateNewVm", "Add to VM"))
         self.manageExploitsBUTTON.setText(_translate("CreateNewVm", "Manage Exploits"))
+        self.vmFilesLABEL.setText(_translate("CreateNewVm", "VM Files:"))
         self.softwareLABEL.setText(_translate("EditVM", "Software:"))
         j=0
         i=0
