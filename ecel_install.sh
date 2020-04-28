@@ -7,7 +7,7 @@
 # remember to sudo su command (Vagrant does this by default)
 
 # kill any and all updates
-kill -9 $(ps aux | grep update | cut -d" " -f6)
+kill -9 $(ps aux | grep update | grep apt | cut -d" " -f7)
 
 apt install -y net-tools
 sleep 0.3
