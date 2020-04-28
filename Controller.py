@@ -347,7 +347,7 @@ class Controller:
 if __name__ == '__main__':
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    qtmodern.styles.dark(app)
+    qtmodern.styles.light(app)
     controller = Controller()
     sys.exit(app.exec_())
 
