@@ -40,6 +40,7 @@ chown $HOSTNAME:$HOSTNAME -R ~/AMEDPracticumSP20
 sleep 0.3
 
 echo ECEL_HOME="\"${PWD}\"" >> /etc/environment
+export ECEL_HOME="\"${PWD}\""
 sleep 0.3
 
 # start/stop collectors from ECEL project (tshark/snoopy)
