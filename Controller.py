@@ -145,7 +145,7 @@ class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
         self.setupUi(self)
         self.machineNameLINEEDIT.setText(text)
         self.discardBUTTON.clicked.connect(self.close)
-        self.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
+        #self.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
         
 class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
     def __init__(self, parent=None):
@@ -316,7 +316,7 @@ class Controller:
         self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
         #
         #########---ALTERNATE MANAGE EXPLOITS---##################
-        self.createNewVm.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
+        #self.createNewVm.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
         self.editVm.settingsBUTTON.clicked.connect(self.vmSystemSettings.show)
         ################################################
         #

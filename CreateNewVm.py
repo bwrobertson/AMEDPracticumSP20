@@ -8,9 +8,9 @@ from DBConfiguration import Ui_DBConfiguration
 class Ui_CreateNewVm(object):
     def setupUi(self, CreateNewVm):
         CreateNewVm.setObjectName("CreateNewVm")
-        CreateNewVm.resize(567, 686)
-        CreateNewVm.setMinimumSize(QtCore.QSize(567, 607))
-        CreateNewVm.setMaximumSize(QtCore.QSize(567, 686))
+        CreateNewVm.resize(560, 686)
+        CreateNewVm.setMinimumSize(QtCore.QSize(560, 679))
+        CreateNewVm.setMaximumSize(QtCore.QSize(560, 679))
         self.layoutWidget = QtWidgets.QWidget(CreateNewVm)
         self.layoutWidget.setGeometry(QtCore.QRect(30, 20, 522, 651))
         self.layoutWidget.setObjectName("layoutWidget")
@@ -102,10 +102,6 @@ class Ui_CreateNewVm(object):
         self.vmFilesLABEL.setFont(font)
         self.vmFilesLABEL.setObjectName("vmFilesLABEL")
         ####CHANGED END####
-        self.vmFilesAddToVMBUTTON = QtWidgets.QPushButton(self.layoutWidget)
-        self.vmFilesAddToVMBUTTON.setObjectName("vmFilesAddToVMBUTTON")
-        self.manageExploitsBUTTON = QtWidgets.QPushButton(self.layoutWidget)
-        self.manageExploitsBUTTON.setObjectName("manageExploitsBUTTON")
         self.verticalLayout_4.addWidget(self.vmFilesLABEL)
         self.verticalLayout_8.addLayout(self.verticalLayout_4)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
@@ -151,16 +147,10 @@ class Ui_CreateNewVm(object):
         #self.setupTree(CreateNewVm) ###Method Call
 
         self.vmFilesTREEWIDGET.header().setVisible(False)
-        self.verticalLayout_10.addWidget(self.manageExploitsBUTTON)
-        self.verticalLayout_10.addWidget(self.vmFilesAddToVMBUTTON)
         self.horizontalLayout_10.addWidget(self.vmFilesTREEWIDGET)
         self.horizontalLayout_10.addLayout(self.verticalLayout_10)
         self.verticalLayout_4.addLayout(self.horizontalLayout_10)
         ####VM FILES QTREE WIDGET END####
-
-        self.softwareAddBUTTON = QtWidgets.QPushButton(self.layoutWidget)
-        self.softwareAddBUTTON.setObjectName("softwareAddBUTTON")
-        self.horizontalLayout_8.addWidget(self.softwareAddBUTTON)
         self.verticalLayout_6.addLayout(self.horizontalLayout_8)
         self.verticalLayout_9.addLayout(self.verticalLayout_6)
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
@@ -259,13 +249,11 @@ class Ui_CreateNewVm(object):
         self.vmOsCOMBOBOX.setItemText(0, _translate("CreateNewVm", "Kali Linux"))
         self.vmOsCOMBOBOX.setItemText(1, _translate("CreateNewVm", "Ubuntu"))
         self.vmOsCOMBOBOX.setItemText(2, _translate("CreateNewVm", "Windows"))
-        self.vmFilesAddToVMBUTTON.setText(_translate("CreateNewVm", "Add to VM"))
-        self.manageExploitsBUTTON.setText(_translate("CreateNewVm", "Manage Exploits"))
         self.softwareLABEL.setText(_translate("CreateNewVm", "Software:"))
         __sortingEnabled = self.softwareTREEWIDGET.isSortingEnabled()
         self.softwareTREEWIDGET.setSortingEnabled(False)
         self.softwareTREEWIDGET.setSortingEnabled(__sortingEnabled)
-        self.softwareAddBUTTON.setText(_translate("CreateNewVm", "Add to VM"))
+        
         self.discardBUTTON.setText(_translate("CreateNewVm", "Discard"))
         self.saveBUTTON.setText(_translate("CreateNewVm", "Save"))
 
