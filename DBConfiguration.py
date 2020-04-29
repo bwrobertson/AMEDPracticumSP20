@@ -106,6 +106,22 @@ class Ui_DBConfiguration(object):
 
     def pingDB(self):
         Ui_DBConfiguration.dbConnection = self.DBConnectionStringLINEEDIT.text()
+        
+        # Added April 29 2020 #
+        db_config = str(Ui_DBConfiguration.dbConnection)
+        path = os.getcwd()
+        # Used to create a file that has the user's credentials
+        # This is used by the hailCesar.py module to 
+        # determine which DB to send data to
+        if "C:\\" in path:
+            file = path+"\\"+"database_configuration.txt"
+            if os.path.exists(file):
+                print("%s exists already.", str(file))
+            else:
+                fd = open(file,'w')
+                fd.write(db_config)
+                fd.close()        
+        
         dbUser = self.DBUserNameLINEEDIT.text()
         dbPass = self.DBPasswordLINEEDIT.text()
 
