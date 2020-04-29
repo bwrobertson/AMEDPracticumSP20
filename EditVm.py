@@ -185,7 +185,7 @@ class Ui_EditVM(object):
         #item_0 = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
         #item_1 = QtWidgets.QTreeWidgetItem(item_0)
         self.softwareTREEWIDGET.header().setVisible(False)
-        self.setupSoftware(EditVM)
+        self.setupVMFiles(EditVM)
         self.horizontalLayout_8.addWidget(self.softwareTREEWIDGET)
         self.verticalLayout_3.addLayout(self.horizontalLayout_8)
         self.verticalLayout_8.addLayout(self.verticalLayout_3)
@@ -313,7 +313,7 @@ class Ui_EditVM(object):
         self.settingsBUTTON.setText(_translate("EditVM", "System Settings"))
         self.saveBUTTON.setText(_translate("EditVM", "Save"))
 
-    def setupSoftware(self, EditVM):
+    def setupVMFiles(self, EditVM):
         x=0
         y=0
         self.tree={}
