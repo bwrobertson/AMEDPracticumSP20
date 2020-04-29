@@ -161,7 +161,6 @@ class Ui_EditVM(object):
         self.vmFilesTREEWIDGET = QtWidgets.QTreeWidget(self.widget)
         self.vmFilesTREEWIDGET.setObjectName("vmFilesTREEWIDGET")
         self.vmFilesTREEWIDGET.headerItem().setText(0, "1")
-        self.setupTree(EditVM) ###Method Call
 
         self.vmFilesTREEWIDGET.header().setVisible(False)
         self.horizontalLayout_10.addWidget(self.vmFilesTREEWIDGET)
@@ -265,7 +264,7 @@ class Ui_EditVM(object):
         POVS = db['VulnerablePrograms']
         _translate = QtCore.QCoreApplication.translate
         __sortingEnabled = self.softwareTREEWIDGET.isSortingEnabled()
-        for collection in data.find({'_id': ObjectId('5e89003d2da10a05adcbf77a')}):
+        """for collection in data.find({'_id': ObjectId('5e89003d2da10a05adcbf77a')}):
             scen = collection['scenario']
             j=0
             for key in scen:
@@ -295,19 +294,21 @@ class Ui_EditVM(object):
                             self.vmFilesTREEWIDGET.topLevelItem(j).child(0).setText(0, _translate("Export", 'Information : UNK'))
                         j+=1
             i+=1
+        """
         self.softwareTREEWIDGET.setSortingEnabled(False)
         i=0
         for collection in EXPLOITS.find():
-            self.softwareTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
-            self.softwareTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Language : ' + collection['Language']))
-            self.softwareTREEWIDGET.topLevelItem(i).child(1).setText(0, _translate("EditVM", 'Platform : ' + collection['Platform']))
-            self.softwareTREEWIDGET.topLevelItem(i).child(2).setText(0, _translate("EditVM", 'Type : ' + collection['Type']))
+            self.vmFilesTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
+            self.vmFilesTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Language : ' + collection['Language']))
+            self.vmFilesTREEWIDGET.topLevelItem(i).child(1).setText(0, _translate("EditVM", 'Platform : ' + collection['Platform']))
+            self.vmFilesTREEWIDGET.topLevelItem(i).child(2).setText(0, _translate("EditVM", 'Type : ' + collection['Type']))
             i+=1
         for collection in POVS.find():
-            self.softwareTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
-            self.softwareTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Information : ' + collection['Information']))
+            self.vmFilesTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
+            self.vmFilesTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Information : ' + collection['Information']))
             i+=1
-        self.softwareTREEWIDGET.setSortingEnabled(__sortingEnabled)
+
+        self.vmFilesTREEWIDGET.setSortingEnabled(__sortingEnabled)
         self.discardBUTTON.setText(_translate("EditVM", "Discard"))
         self.settingsBUTTON.setText(_translate("EditVM", "System Settings"))
         self.saveBUTTON.setText(_translate("EditVM", "Save"))
@@ -322,18 +323,30 @@ class Ui_EditVM(object):
             client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
         db = client.Test
         data = db["Scenario"]
+        thisVM = data.find_one({'_id': ObjectId('5e89003d2da10a05adcbf77a')})
+        thisScen = thisVM['scenario']
+        print(thisVM)
+        thisExploit = thisScen['exploit']
+        thisPOV = thisScen['pov']
         EXPLOITS = db['Exploits']
         POVS = db['VulnerablePrograms']
         for collection in EXPLOITS.find():
-            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
-            self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
+            #print(collection['name'])
+            if(collection['name'] in thisExploit.values()):
+                self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Checked)
+            else:
+                self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
             self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
             self.tree["child{0}".format(1)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
             self.tree["child{0}".format(2)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
             y+=1
         for collection in POVS.find():
-            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.softwareTREEWIDGET)
-            self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
+            if(collection['name'] in thisPOV.values()):
+                self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Checked)
+            else:
+                self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
             self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
             y+=1
 
