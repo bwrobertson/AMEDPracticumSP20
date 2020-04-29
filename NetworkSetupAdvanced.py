@@ -835,7 +835,7 @@ class Ui_NetworkSetupAdvanced(object):
             self.networkTrafficCHECKBOX.setText(_translate("Dialog", "Network Traffic"))
             self.systemLogsCHECKBOX.setText(_translate("Dialog", "System Logs"))
             self.label_2.setText(_translate("Dialog", "IP Adress"))
-            self.collectorCOMBO.setItemText(0, _translate("Dialog", "ECELd"))
+            self.collectorCOMBO.setItemText(0, _translate("Dialog", "ECEL"))
             self.label_8.setText(_translate("Dialog", "Seconds"))
 
 
