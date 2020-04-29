@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QFont, QIcon
-from PyQt5.QtWidgets import QSplashScreen, QMenu, QApplication
+from PyQt5.QtWidgets import QSplashScreen, QMenu, QApplication, QProgressBar
 from qtpy import QtCore
 
 from ConfigureMongoDB import Ui_ConfigureMongoDB
@@ -225,22 +225,56 @@ class Controller:
     def __init__(self):
         self.showSplashScreen()
         self.main = MainWindow()
+        self.progressBar.setValue(1)
+        QApplication.processEvents()
         self.openingDBConfiguration = OpeningDBConfigurationWindow()
+        self.progressBar.setValue(2)
+        QApplication.processEvents()
         self.manageData = ManageDataWindow()
+        self.progressBar.setValue(3)
+        QApplication.processEvents()
         self.configureDatabase = ConfigureDatabaseWindow()
+        self.progressBar.setValue(4)
+        QApplication.processEvents()
         self.manageScenarios = ManageScenariosWindow()
+        self.progressBar.setValue(5)
+        QApplication.processEvents()
         self.newScenario = NewScenariosWindow()
+        self.progressBar.setValue(6)
+        QApplication.processEvents()
         self.manageExploits = ManageExploitsWindow()
+        self.progressBar.setValue(7)
+        QApplication.processEvents()
         self.alternateManageExploits = AlternateManageExploitsWindow()
+        self.progressBar.setValue(8)
+        QApplication.processEvents()
         self.manageVulnerablePrograms = ManageVulnerableProgramsWindow()
+        self.progressBar.setValue(9)
+        QApplication.processEvents()
         self.suggestedSetup=SuggestedSetupWindow()
+        self.progressBar.setValue(10)
+        QApplication.processEvents()
         self.createNewVm = CreateNewVmWindow()
+        self.progressBar.setValue(11)
+        QApplication.processEvents()
         self.vmSystemSettings = VmSystemSettings()
+        self.progressBar.setValue(12)
+        QApplication.processEvents()
         self.editVm= EditVmWindow("null")
+        self.progressBar.setValue(13)
+        QApplication.processEvents()
         self.manageDataOptions=ManageDataOptionsWindow()
+        self.progressBar.setValue(14)
+        QApplication.processEvents()
         self.importData=ImportDataWindow()
+        self.progressBar.setValue(15)
+        QApplication.processEvents()
         self.networkSetup=NetworkSetupWindow()
+        self.progressBar.setValue(16)
+        QApplication.processEvents()
         self.advancedNetworkSetup=NetworkSetupAdvancedWindow()
+        self.progressBar.setValue(17)
+        QApplication.processEvents()
         self.splash.close()
         #
         self.openingDBConfiguration.connectBUTTON.clicked.connect(self.main.show)
@@ -322,6 +356,11 @@ class Controller:
     def showSplashScreen(self):
         self.pix = QPixmap("SplashPage.png")
         self.splash = QSplashScreen(self.pix, Qt.WindowStaysOnTopHint)
+        # adding progress bar
+        self.progressBar = QProgressBar(self.splash)
+        self.progressBar.setMaximum(17)
+        self.progressBar.setGeometry(0, self.pix.height() - 15, 834, 20)
+        self.splash.show()
         self.splash.show()
         
     def setupButtonNav(self):
