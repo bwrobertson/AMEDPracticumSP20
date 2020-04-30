@@ -21,6 +21,7 @@ from EditVm import Ui_EditVM
 from CreateNewVm import Ui_CreateNewVm
 from VmSystemSettings import Ui_VmSystemSettings
 from SuggestedSetup import Ui_Form
+from runWindow import Ui_runWindow
 
 import os, subprocess
 import qtmodern.styles
@@ -37,7 +38,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.manageDataBUTTON.clicked.connect(self.hide)
         
 
+class RunWindow(QtWidgets.QWidget, Ui_runWindow):
+    def __init__(self, parent=None):
+        super(RunWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
+        self.setupUi(self)
+        self.okPushBUTTON.clicked.connect(self.okayClicked)
+        self.cancelPushBUTTON.clicked.connect(self.close)
 
+    def okayClicked(self):
+        ###### use the pollowing line  minus the print() to retrieve the value that is curerntly inside the spinbox
+        print(self.intervalSPINBOX.value())
+        print("Kevin method for Run")
 
 
 class ManageDataWindow(QtWidgets.QDialog, Ui_ManageData):
@@ -225,6 +237,7 @@ class Controller:
     def __init__(self):
         self.showSplashScreen()
         self.main = MainWindow()
+        self.runWindow =RunWindow()
         self.progressBar.setValue(1)
         QApplication.processEvents()
         self.openingDBConfiguration = OpeningDBConfigurationWindow()
@@ -280,6 +293,7 @@ class Controller:
         self.openingDBConfiguration.connectBUTTON.clicked.connect(self.main.show)
         #
         self.main.manageDataBUTTON.clicked.connect(self.manageDataOptions.show)
+        self.main.runBUTTON.clicked.connect(self.runWindow.show)
         #
         self.main.setupBUTTON.clicked.connect(self.setupButtonNav)
         self.main.configureBUTTON.clicked.connect(self.configureButtonNav)
