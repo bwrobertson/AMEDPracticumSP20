@@ -11,6 +11,7 @@ from pymongo import MongoClient
 import pymongo
 import re
 import base64
+import os
 
 class Ui_DBConfiguration(object):
     dbConnection = ""
