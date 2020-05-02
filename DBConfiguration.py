@@ -132,14 +132,14 @@ class Ui_DBConfiguration(object):
             Ui_DBConfiguration.dbConnection = Ui_DBConfiguration.dbConnection.replace(user.group(1), dbUser)
         if(dbPass != ""):
             Ui_DBConfiguration.dbConnection = Ui_DBConfiguration.dbConnection.replace(password.group(1), dbPass)
-        print(Ui_DBConfiguration.dbConnection)
+        #print(Ui_DBConfiguration.dbConnection)
 
         try:
             client = MongoClient(Ui_DBConfiguration.dbConnection, 1)
             client.server_info() # force connection on a request as the
                                      # connect=True parameter of MongoClient seems
                                      # to be useless here
-            print('yes')
+            #print('yes')
             file = open('mongodbconnectioninfo.txt', 'wb')
             file.write(base64.b64encode(str.encode(Ui_DBConfiguration.dbConnection)))
             file.close()
