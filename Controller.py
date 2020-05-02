@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QFont, QIcon
 from PyQt5.QtWidgets import QSplashScreen, QMenu, QApplication, QProgressBar
 from qtpy import QtCore
+
 from ConfigureMongoDB import Ui_ConfigureMongoDB
 from DBConfiguration import Ui_DBConfiguration
 from ImportData import Ui_importData
@@ -25,7 +26,9 @@ from runWindow import Ui_runWindow
 import os, subprocess
 import qtmodern.styles
 import qtmodern.windows
+
 # instantiation of UI (View) classes and controller class
+
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -33,7 +36,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.manageScenarioBUTTON.clicked.connect(self.hide)
         self.manageDataBUTTON.clicked.connect(self.hide)
-
 
 class RunWindow(QtWidgets.QWidget, Ui_runWindow):
     def __init__(self, parent=None):
@@ -57,6 +59,8 @@ class ManageDataWindow(QtWidgets.QDialog, Ui_ManageData):
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
         self.deleteBUTTON.clicked.connect(self.deleteSelected)
+
+
 class ManageScenariosWindow(QtWidgets.QDialog, Ui_ManageScenarios):
     def __init__(self, parent=None):
         super(ManageScenariosWindow, self).__init__(parent)
@@ -64,6 +68,8 @@ class ManageScenariosWindow(QtWidgets.QDialog, Ui_ManageScenarios):
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
         self.newBUTTON.clicked.connect(self.hide)
+
+
 class NewScenariosWindow(QtWidgets.QDialog, Ui_NewScenario):
     def __init__(self, parent=None):
         super(NewScenariosWindow, self).__init__(parent)
@@ -74,13 +80,13 @@ class NewScenariosWindow(QtWidgets.QDialog, Ui_NewScenario):
         self.vulnerableProgramBrowseBUTTON.clicked.connect(self.hide)
         self.cancelBUTTON.clicked.connect(self.close)
         self.nextBUTTON.clicked.connect(self.close)
+
 class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
     def __init__(self, parent=None):
         super(ManageExploitsWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
-     
 
 class AlternateManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
     def __init__(self, parent=None):
@@ -91,11 +97,11 @@ class AlternateManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
         self.nextButton.setText(_translate("ManageExploits", "Add"))
         self.backBUTTON.clicked.connect(self.close)
         self.nextButton.clicked.connect(self.addMethod)
+
     def addMethod(self):
         for item in self.databseTREEWIDGET.findItems("", Qt.MatchContains | Qt.MatchRecursive):
             if (item.checkState(0)==QtCore.Qt.Checked):
                 print (item.text(0))
-                
 
                 """lastIndex = CreateNewVmWindow.vmFilesTREEWIDGET.count()
                 CreateNewVmWindow.vmFilesTREEWIDGET.addItem(QtWidgets.QListWidgetItem())
@@ -103,7 +109,6 @@ class AlternateManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
                 newitem.setText(item.text(0))"""
 
 
-class ManageVulnerableProgramsWindow(QtWidgets.QWidget, 
 class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
                                 Ui_ManageVulnerablePrograms):
     def __init__(self, parent=None):
@@ -111,6 +116,7 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
+
 class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
     def __init__(self, parent=None):
         self.nav=0
@@ -121,18 +127,19 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
         self.setupUi(self)
         self.backButton.clicked.connect(self.close)
         self.nextBUTTON.clicked.connect(self.close)
- 
 
     def contextMenuEvent(self, event):
         cmenu = QMenu(self)
         infoAct = cmenu.addAction("Info")
         removeAct = cmenu.addAction("Remove")
+
         action = cmenu.exec_(self.mapToGlobal(event.pos()))
         if action == removeAct:
             self.removeSelectedItem()
         if action == infoAct:
             print("launch info window")
             #Line where  VM Details Window will open with VM id being passed
+
 #method responsible for removing an element from the PoV and Victim Lists
     def removeSelectedItem(self):
         listItems = self.listWidget_2.selectedItems() + self.listWidget_3.selectedItems()
@@ -141,7 +148,6 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
             self.listWidget_2.takeItem(self.listWidget_2.row(item))
             self.listWidget_3.takeItem(self.listWidget_3.row(item))
 
-    
 
 class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
     def __init__(self, text,parent=None):
@@ -152,7 +158,6 @@ class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
         self.machineNameLINEEDIT.setText(text)
         self.discardBUTTON.clicked.connect(self.close)
         #self.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
-        
 
 class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
     def __init__(self, parent=None):
@@ -160,13 +165,11 @@ class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.discardBUTTON.clicked.connect(self.closeWindow)
-        
 
 
     def closeWindow(self):
         self.vmFilesLISTWIDGET.clear()
         self.close()
-        
 
 class VmSystemSettings(QtWidgets.QDialog, Ui_VmSystemSettings):
     def __init__(self, parent=None):
@@ -174,6 +177,7 @@ class VmSystemSettings(QtWidgets.QDialog, Ui_VmSystemSettings):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.cancelBUTTON.clicked.connect(self.close)
+
 class ManageDataOptionsWindow(QtWidgets.QDialog, Ui_ManageDataOptions):
     def __init__(self, parent=None):
         super(ManageDataOptionsWindow, self).__init__(parent)
@@ -182,13 +186,13 @@ class ManageDataOptionsWindow(QtWidgets.QDialog, Ui_ManageDataOptions):
         self.backBUTTON.clicked.connect(self.close)
         self.exportBUTTON.clicked.connect(self.close)
         self.importBUTTON.clicked.connect(self.close)
+
 class ImportDataWindow(QtWidgets.QDialog, Ui_importData):
     def __init__(self, parent=None):
         super(ImportDataWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.pushButton_2.clicked.connect(self.close)
-   
 
 class ConfigureDatabaseWindow(QtWidgets.QDialog, Ui_ConfigureMongoDB):
     def __init__(self, parent=None):
@@ -196,7 +200,6 @@ class ConfigureDatabaseWindow(QtWidgets.QDialog, Ui_ConfigureMongoDB):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
-       
 
 class OpeningDBConfigurationWindow(QtWidgets.QDialog, Ui_DBConfiguration):
     def __init__(self, parent=None):
@@ -205,6 +208,7 @@ class OpeningDBConfigurationWindow(QtWidgets.QDialog, Ui_DBConfiguration):
         self.setupUi(self)
         self.closeBUTTON.clicked.connect(self.close)
         self.connectBUTTON.clicked.connect(self.close)
+
 class NetworkSetupWindow(QtWidgets.QDialog, Ui_NetworkSetup):
     def __init__(self, parent=None):
         self.nav=0
@@ -212,7 +216,6 @@ class NetworkSetupWindow(QtWidgets.QDialog, Ui_NetworkSetup):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backButton.clicked.connect(self.close)
-        
 
 class NetworkSetupAdvancedWindow(QtWidgets.QDialog, Ui_NetworkSetupAdvanced):
     def __init__(self, parent=None):
@@ -228,6 +231,7 @@ class NetworkSetupAdvancedWindow(QtWidgets.QDialog, Ui_NetworkSetupAdvanced):
         self.enableAdvancedSettingsCHECK_2.stateChanged.connect(self.enableAdvancedSettings)
         self.enableAdvancedSettingsCHECK_3.stateChanged.connect(self.enableAdvancedSettings)
         self.enableAdvancedSettingsCHECK_4.stateChanged.connect(self.enableAdvancedSettings)
+
         # shows window whenever an action is taken by the user via the GUI
 class Controller:
     def __init__(self):
@@ -344,21 +348,16 @@ class Controller:
 
         #
         self.openingDBConfiguration.show()
-        
-        
-     # Run collectors method for an interval of 5 seconds       
 
 
      # Run collectors method for an interval of 5 seconds
     def runCollectors(self):
-        
 
         # Functionality on supported on Windows, need other collectors for that
         operating_system = os.getcwd()
         if "C:\\" in operating_system:
             msg = QMessageBox.about(self.main, "Warning", "Windows operating system not supported on collectors, yet.")
         else:
-            
 
             # Controller.py must be ran in root (i.e. $ sudo su, on Linux)
             uid = os.getuid()
@@ -367,9 +366,6 @@ class Controller:
             else:
                 proc = subprocess.Popen(["python", "ecel/start_stop_collectors.py"])
                 msg = QMessageBox.about(self.main, "Notice", "Collectors have started!")
-                # Need to add functionality to let Dr. Acosta 
-                # know when collectors are done (signal w/ messagebox)   
-        
                 # Need to add functionality to let Dr. Acosta
                 # know when collectors are done (signal w/ messagebox)
 
@@ -382,7 +378,6 @@ class Controller:
         self.progressBar.setGeometry(0, self.pix.height() - 15, 834, 20)
         self.splash.show()
         self.splash.show()
-        
 
     def setupButtonNav(self):
         self.suggestedSetup.nav = 1
@@ -392,26 +387,26 @@ class Controller:
     def configureButtonNav(self):
         self.networkSetup.nav = 1
         self.networkSetup.show()
+
     def alternateNavNetworkSetup(self):
         if self.networkSetup.nav == 1:
             self.networkSetup.nav = 0
             self.main.show()
         else:
             self.suggestedSetup.show()
+
     def alternateNavSuggestedSetup(self):
         if self.suggestedSetup.nav == 1:
             self.suggestedSetup.nav = 0
             self.main.show()
         else:
             self.newScenario.show()
-            
 
     def handleDoubleClick(self, item):
         item.setSelected(False)
         print(item.text())
         self.editVm = EditVmWindow(item.text())
         self.editVm.show()
-        
 
 if __name__ == '__main__':
     import sys
