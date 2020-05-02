@@ -21,7 +21,7 @@ from MainWindow import Ui_MainWindow
 
 class Ui_Form(object):
 
-    id = 0
+    id = "5e9801a1e6c7aa9190f814dc"
     vmList = []
 
     def runScen(self):
@@ -107,52 +107,7 @@ class Ui_Form(object):
         self.listWidget.setAcceptDrops(False)
         self.listWidget.setDragEnabled(True)
 
-        ######Dummy data to fill table with drag and drop PoV and Victim machines
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Scenario"]
-        try:
-            #
-            thisData = data.find_one({'_id': ObjectId('5e89003d2da10a05adcbf77a')})
-            try:
-                thisScen = thisData['scenario']
-                thisMach = thisScen['machines']
-                thisVic = thisMach['victim']
-                thisAtt = thisMach['attacker']
-                x=1
-                temp = ""
-                vms = []
-                malware = []
-                for item in thisVic:
-                    vms.append(thisVic.get(item))
-                    Ui_Form.vmList.append(thisVic.get(item))
-                for item in thisAtt:
-                    malware.append(thisAtt.get(item))
-                    Ui_Form.vmList.append(thisAtt.get(item))
-
-                Ui_Form.vmList.sort()
-                for x in Ui_Form.vmList:
-                    if('vm' in x):
-                        self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
-                    else:
-                        self.listWidget.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
-
-                for x in vms:
-                    self.listWidget_3.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
-
-                for x in malware:
-                    if('vm' in x):
-                        self.listWidget_2.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
-                    else:
-                        self.listWidget_2.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
-            except:
-                print('no machines found')
-        except:
-            print('starting up')
-
+        self.buildSetup()
 
 
         self.listWidget_2.setIconSize(QSize(40, 40))
@@ -193,6 +148,66 @@ class Ui_Form(object):
         self.label_3.setText(_translate("Form", "Available Machines"))
         self.backButton.setText(_translate("Form", "Back"))
 
+    def refreshSetup(self):
+        self.buildSetup()
+
+    def buildSetup(self):
+        self.listWidget.clear()
+        self.listWidget_2.clear()
+        self.listWidget_3.clear()
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
+        try:
+            try:
+                thisData = data.find_one({'_id': ObjectId(Ui_MainWindow.id)})
+                print('using correct')
+            except:
+                thisData = data.find_one({'_id': ObjectId(Ui_Form.id)})
+                print('using default')
+            try:
+                thisScen = thisData['scenario']
+                thisMach = thisScen['machines']
+                thisVic = thisMach['victim']
+                thisAtt = thisMach['attacker']
+                x=1
+                temp = ""
+                vms = []
+                malware = []
+                for item in thisVic:
+                    if((thisVic.get(item) in vms)==False):
+                        vms.append(thisVic.get(item))
+                    if((thisVic.get(item) in Ui_Form.vmList)==False):
+                        Ui_Form.vmList.append(thisVic.get(item))
+                for item in thisAtt:
+                    if((thisAtt.get(item) in malware)==False):
+                        malware.append(thisAtt.get(item))
+                    if((thisAtt.get(item) in Ui_Form.vmList)==False):
+                        Ui_Form.vmList.append(thisAtt.get(item))
+
+                #Ui_Form.vmList.sort()
+                print(len(Ui_Form.vmList))
+                for x in Ui_Form.vmList:
+                    if('vm' in x):
+                        self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
+                    else:
+                        self.listWidget.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
+
+                for x in vms:
+                    self.listWidget_3.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
+
+                for x in malware:
+                    if('vm' in x):
+                        self.listWidget_2.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
+                    else:
+                        self.listWidget_2.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
+            except:
+                print('no machines found')
+        except:
+            print('starting up')
 
 if __name__ == "__main__":
     import sys
