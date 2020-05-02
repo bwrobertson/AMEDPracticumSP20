@@ -273,8 +273,7 @@ class Ui_EditVM(object):
                 if (key == 'exploit'):
                     for item in exploit:
                         self.vmFilesTREEWIDGET.topLevelItem(j).setText(0, _translate("Export", exploit['file']))
-                        #
-                        (exploit['file'])
+                        #(exploit['file'])
                         try:
                             temp = EXPLOITS.find_one({'name': exploit['file']})
                             self.vmFilesTREEWIDGET.topLevelItem(j).child(0).setText(0, _translate("Export", 'Lauguage : ' + temp['Language']))
