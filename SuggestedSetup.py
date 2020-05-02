@@ -16,9 +16,12 @@ import json
 from NewScenario import Ui_NewScenario
 from bson.objectid import ObjectId
 from DBConfiguration import Ui_DBConfiguration
+from MainWindow import Ui_MainWindow
 
 
 class Ui_Form(object):
+
+    id = 0
 
     def runScen(self):
         try:
@@ -32,14 +35,18 @@ class Ui_Form(object):
         scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
         #scen = data.find_one({'_id': ObjectId("5e840e238a71b65203287a0a")})
         newScen = scen
+        if(Ui_NewScenario.id!=0):
+            Ui_Form.id = Ui_NewScenario.id
+        else:
+            Ui_Form.id = Ui_MainWindow.id
 
         #machines = dictScen['machines']
 
         itemVictims =  [str(self.listWidget_2.item(i).text()) for i in range(self.listWidget_2.count())]
-        print(itemVictims)
+        #print(itemVictims)
 
         itemAttackers =  [str(self.listWidget_3.item(i).text()) for i in range(self.listWidget_3.count())]
-        print(itemAttackers)
+        #print(itemAttackers)
         victims = {}
         attackers = {}
         x = 1
@@ -54,10 +61,10 @@ class Ui_Form(object):
 
         machines = {'victim': victims}
         machines['attacker'] = attackers
-        print(machines)
+        #print(machines)
         thisScen = newScen['scenario']
         thisScen['machines'] = machines
-        print(newScen)
+        #print(newScen)
         #data.delete_one({'_id': ObjectId("5e840e238a71b65203287a0a")})
         data.delete_one({'_id': ObjectId(Ui_NewScenario.id)})
         data.insert_one(newScen)
@@ -100,15 +107,43 @@ class Ui_Form(object):
         self.listWidget.setDragEnabled(True)
 
         ######Dummy data to fill table with drag and drop PoV and Victim machines
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
+        try:
+            #
+            thisData = data.find_one({'_id': ObjectId(Ui_Form.id)})
+            try:
+                thisScen = thisData['scenario']
+                thisMach = thisScen['machines']
+                thisVic = thisMach['victim']
+                thisAtt = thisMach['attacker']
+                x=1
+                temp = ""
+                vms = []
+                malware = []
+                for item in thisVic:
+                    vms.append(thisVic.get(item))
+                for item in thisAtt:
+                    malware.append(thisAtt.get(item))
 
-        vms = ["vm 1", "vm 2", "vm 3", "vm 4"]
-        malware = ["malware 1", "malware 2"]
+                for x in vms:
+                    self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
 
-        for x in vms:
-            self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
+                for x in malware:
+                    if('vm' in x):
+                        self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
+                    else:
+                        self.listWidget.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
+            except:
+                print('no machines found')
+        except:
+            print('starting up')
 
-        for x in malware:
-            self.listWidget.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
+
 
         self.listWidget_2.setIconSize(QSize(40, 40))
         self.listWidget_3.setIconSize(QSize(40, 40))
