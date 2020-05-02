@@ -20,6 +20,7 @@ import time
 from DBConfiguration import Ui_DBConfiguration
 
 class Ui_MainWindow(object):
+    id = 0
 
     # Opens the scenarioRunningWindow on run button click############################3
     def openScenarioRunningWindow(self):
@@ -66,7 +67,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont("Helvetica [Cronyx]", 16) # label
         self.qlabel = QtWidgets.QLabel("List of Scenarios")
         self.qlabel.setFont(font)
-        self.verticalLayout.addWidget(self.qlabel) # label added 
+        self.verticalLayout.addWidget(self.qlabel) # label added
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -108,16 +109,16 @@ class Ui_MainWindow(object):
         self.scenarioInfoLISTWIDGET.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
         self.scenarioInfoLISTWIDGET.setObjectName("scenarioInfoLISTWIDGET")
         item = QtWidgets.QListWidgetItem() # item 0
-        item.setTextAlignment(QtCore.Qt.AlignCenter) 
-        font = QtGui.QFont("Helvetica [Cronyx]", 14) 
-        item.setFont(font) 
-        self.scenarioInfoLISTWIDGET.addItem(item) 
+        item.setTextAlignment(QtCore.Qt.AlignCenter)
+        font = QtGui.QFont("Helvetica [Cronyx]", 14)
+        item.setFont(font)
+        self.scenarioInfoLISTWIDGET.addItem(item)
         item = QtWidgets.QListWidgetItem() # item 1
         item.setFlags(QtCore.Qt.ItemIsEnabled)
-        self.scenarioInfoLISTWIDGET.addItem(item) 
+        self.scenarioInfoLISTWIDGET.addItem(item)
         item = QtWidgets.QListWidgetItem() # item 2
         item.setFlags(QtCore.Qt.ItemIsEnabled)
-        self.scenarioInfoLISTWIDGET.addItem(item) 
+        self.scenarioInfoLISTWIDGET.addItem(item)
         item = QtWidgets.QListWidgetItem() # item 3
         item.setFlags(QtCore.Qt.ItemIsEnabled)
         self.scenarioInfoLISTWIDGET.addItem(item)
@@ -217,7 +218,7 @@ class Ui_MainWindow(object):
             scen = collection['scenario']
             type = scen['exploit']
             type2 = scen['pov']
-            
+
             # Prevents NoneType Error
             if not item:
                 continue
@@ -264,6 +265,7 @@ class Ui_MainWindow(object):
         type2 = ''
         item = self.scenariosLIST.currentItem()
         collections = data.find_one({"scenario.name":item.text()})
+        Ui_MainWindow.id = collections['_id']
         scen = collections['scenario']
         type = scen['exploit']
         type2 = scen['pov']
@@ -301,7 +303,7 @@ class Ui_MainWindow(object):
             scen = collection['scenario']
             type = scen['exploit']
             type2 = scen['pov']
-            
+
             # Prevents NoneType Error
             if not item:
                 continue
