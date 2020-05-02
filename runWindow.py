@@ -79,8 +79,8 @@ class Ui_runWindow(object):
     def retranslateUi(self, runWindow):
         _translate = QtCore.QCoreApplication.translate
         runWindow.setWindowTitle(_translate("runWindow", "Run"))
-        self.label_2.setText(_translate("runWindow", "How long would you like to capture data for during the scenario?"))
-        self.intervalLABEL.setText(_translate("runWindow", "Interval (s):"))
+        self.label_2.setText(_translate("runWindow", "Enter an interval of time for data capture:"))
+        self.intervalLABEL.setText(_translate("runWindow", "Interval (minutes):"))
         self.cancelPushBUTTON.setText(_translate("runWindow", "Cancel"))
         self.okPushBUTTON.setText(_translate("runWindow", "Ok"))
 
