@@ -273,7 +273,8 @@ class Ui_EditVM(object):
                 if (key == 'exploit'):
                     for item in exploit:
                         self.vmFilesTREEWIDGET.topLevelItem(j).setText(0, _translate("Export", exploit['file']))
-                        #print(exploit['file'])
+                        #
+                        (exploit['file'])
                         try:
                             temp = EXPLOITS.find_one({'name': exploit['file']})
                             self.vmFilesTREEWIDGET.topLevelItem(j).child(0).setText(0, _translate("Export", 'Lauguage : ' + temp['Language']))
@@ -325,7 +326,7 @@ class Ui_EditVM(object):
         data = db["Scenario"]
         thisVM = data.find_one({'_id': ObjectId('5e89003d2da10a05adcbf77a')})
         thisScen = thisVM['scenario']
-        print(thisVM)
+        #print(thisVM)
         thisExploit = thisScen['exploit']
         thisPOV = thisScen['pov']
         EXPLOITS = db['Exploits']
