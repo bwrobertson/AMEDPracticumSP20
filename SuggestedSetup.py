@@ -22,6 +22,7 @@ from MainWindow import Ui_MainWindow
 class Ui_Form(object):
 
     id = 0
+    vmList = []
 
     def runScen(self):
         try:
@@ -115,7 +116,7 @@ class Ui_Form(object):
         data = db["Scenario"]
         try:
             #
-            thisData = data.find_one({'_id': ObjectId(Ui_Form.id)})
+            thisData = data.find_one({'_id': ObjectId('5e89003d2da10a05adcbf77a')})
             try:
                 thisScen = thisData['scenario']
                 thisMach = thisScen['machines']
@@ -127,17 +128,26 @@ class Ui_Form(object):
                 malware = []
                 for item in thisVic:
                     vms.append(thisVic.get(item))
+                    Ui_Form.vmList.append(thisVic.get(item))
                 for item in thisAtt:
                     malware.append(thisAtt.get(item))
+                    Ui_Form.vmList.append(thisAtt.get(item))
 
-                for x in vms:
-                    self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
-
-                for x in malware:
+                Ui_Form.vmList.sort()
+                for x in Ui_Form.vmList:
                     if('vm' in x):
                         self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
                     else:
                         self.listWidget.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
+
+                for x in vms:
+                    self.listWidget_3.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
+
+                for x in malware:
+                    if('vm' in x):
+                        self.listWidget_2.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
+                    else:
+                        self.listWidget_2.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
             except:
                 print('no machines found')
         except:
