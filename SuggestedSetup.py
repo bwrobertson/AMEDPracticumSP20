@@ -27,6 +27,7 @@ class Ui_Form(object):
         client = MongoClient(Ui_DBConfiguration.dbConnection)
     except:
         client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+    db = client.Test
 
     def runScen(self):
 
