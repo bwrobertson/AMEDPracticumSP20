@@ -31,7 +31,7 @@ class Ui_Form(object):
     def runScen(self):
 
         db = Ui_Form.client.Test
-        data = db["Scenario"]
+        data = Ui_Form.db["Scenario"]
 
 
         scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
@@ -157,7 +157,7 @@ class Ui_Form(object):
         self.listWidget_2.clear()
         self.listWidget_3.clear()
         db = Ui_Form.client.Test
-        data = db["Scenario"]
+        data = Ui_Form.db["Scenario"]
         try:
             try:
                 thisData = data.find_one({'_id': ObjectId(Ui_MainWindow.id)})
