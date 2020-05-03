@@ -14,7 +14,11 @@ from DBConfiguration import Ui_DBConfiguration
 
 class Ui_NewScenario(object):
     id = 0
-
+    try:
+       client = MongoClient(Ui_DBConfiguration.dbConnection)
+    except:
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+    db = client.Test
     # def exploitBrowser(self):
     #     exploitOptions = QFileDialog.Options()
     #     self.exploitDialog = QFileDialog()
@@ -60,12 +64,7 @@ class Ui_NewScenario(object):
     #         return ""
 
     def storeScenario(self, jd):
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Scenario"]
+        data = Ui_NewScenario.db["Scenario"]
 
         today = date.today()
         today = today.strftime("%d%b%Y")
