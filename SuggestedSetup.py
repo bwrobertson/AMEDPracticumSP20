@@ -23,13 +23,14 @@ class Ui_Form(object):
 
     id = "5e9801a1e6c7aa9190f814dc"
     vmList = []
+    try:
+        client = MongoClient(Ui_DBConfiguration.dbConnection)
+    except:
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
 
     def runScen(self):
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
+
+        db = Ui_Form.client.Test
         data = db["Scenario"]
 
 
@@ -88,7 +89,7 @@ class Ui_Form(object):
         self.listWidget_2 = QtWidgets.QListWidget(self.layoutWidget)
         self.listWidget_2.setObjectName("listWidget_3")
         self.listWidget_2.setAcceptDrops(True)
-        self.listWidget_2.setDragEnabled(False)
+        self.listWidget_2.setDragEnabled(True)
         self.gridLayout.addWidget(self.listWidget_2, 1, 3, 2, 1)
         self.addVmBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.addVmBUTTON.setObjectName("addVmBUTTON")
@@ -100,7 +101,7 @@ class Ui_Form(object):
         self.listWidget_3 = QtWidgets.QListWidget(self.layoutWidget)
         self.listWidget_3.setObjectName("listWidget_2")
         self.listWidget_3.setAcceptDrops(True)
-        self.listWidget_3.setDragEnabled(False)
+        self.listWidget_3.setDragEnabled(True)
         self.gridLayout.addWidget(self.listWidget_3, 1, 0, 2, 2)
         self.listWidget = QtWidgets.QListWidget(self.layoutWidget)
         self.listWidget.setObjectName("listWidget")
@@ -155,11 +156,7 @@ class Ui_Form(object):
         self.listWidget.clear()
         self.listWidget_2.clear()
         self.listWidget_3.clear()
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
+        db = Ui_Form.client.Test
         data = db["Scenario"]
         try:
             try:
