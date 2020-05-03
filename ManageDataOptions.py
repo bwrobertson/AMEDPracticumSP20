@@ -25,7 +25,7 @@ class Ui_ManageDataOptions(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.selectLABEL = QtWidgets.QLabel(self.widget)
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setPointSize(9)
         font.setBold(True)
         font.setWeight(75)
         self.selectLABEL.setFont(font)
