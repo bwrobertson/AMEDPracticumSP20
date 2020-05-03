@@ -20,6 +20,12 @@ class Ui_ManageData(object):
     ############################################
     #           Changes Start Here             #
     ############################################
+
+    try:
+        client = MongoClient(Ui_DBConfiguration.dbConnection)
+    except:
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+    db = client.Test
     # Opens a file browser window
     def exportButtonStatus(self, path):
         if os.path.exists(path):
@@ -31,7 +37,7 @@ class Ui_ManageData(object):
         options = QFileDialog.Options()
         self.dialog = QFileDialog()
         self.dialog.setOptions(options)
-        self.path = str(QFileDialog.getExistingDirectory(self.dialog, "Select Directory")) 
+        self.path = str(QFileDialog.getExistingDirectory(self.dialog, "Select Directory"))
 
         if self.path:
             #If Windows, change the separator
@@ -44,7 +50,7 @@ class Ui_ManageData(object):
             else:
                 self.destinationDirectoryLINEEDIT.setText(self.path)
                 os.chdir(self.path)
-                return self.path    
+                return self.path
         else:
             self.destinationDirectoryLINEEDIT.setText(self.path)
             return ""
@@ -56,12 +62,7 @@ class Ui_ManageData(object):
         ############################################
         #           Changes Start Here             #
         ############################################
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Demo"]
+        data = Ui_ManageData.db["Demo"]
         x=0
         y=0
         self.tree={}
@@ -175,9 +176,7 @@ class Ui_ManageData(object):
         ############################################
         j = 0
         i = 0
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Demo"]
+        data = Ui_ManageData.db["Demo"]
         ############################################
         #           Changes End   Here             #
         ############################################
@@ -213,12 +212,7 @@ class Ui_ManageData(object):
     def setupTree(self, ManageData):
         x=0
         y=0
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Demo"]
+        data = Ui_ManageData.db["Demo"]
         for collection in data.find():
             self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
             self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
@@ -233,12 +227,7 @@ class Ui_ManageData(object):
 
     def progress(self):
         self.progressBar.setValue(0)
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Demo"]
+        data = Ui_ManageData.db["Demo"]
         self.count = 0
         numFiles = 0
         x=0
@@ -294,9 +283,7 @@ class Ui_ManageData(object):
         _translate = QtCore.QCoreApplication.translate
         __sortingEnabled = self.databseTREEWIDGET.isSortingEnabled()
         self.databseTREEWIDGET.setSortingEnabled(False)
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Demo"]
+        data = Ui_ManageData.db["Demo"]
         self.count = 0
         deletion = ""
         x=0
