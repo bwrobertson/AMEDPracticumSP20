@@ -21,6 +21,11 @@ from DBConfiguration import Ui_DBConfiguration
 
 class Ui_MainWindow(object):
     id = 0
+    try:
+        client = MongoClient(Ui_DBConfiguration.dbConnection)
+    except:
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+    db = client.Test
 
     # Opens the scenarioRunningWindow on run button click############################3
     def openScenarioRunningWindow(self):
@@ -201,12 +206,7 @@ class Ui_MainWindow(object):
     def displayScenarios(self):
         self.cancelSearchBUTTON.setDisabled(True)
         self.searchEDITBOX.clear()
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Scenario"]
+        data = Ui_MainWindow.db["Scenario"]
         _translate = QtCore.QCoreApplication.translate
         x = 0
         scen = ""
@@ -253,12 +253,7 @@ class Ui_MainWindow(object):
         self.cancelSearchBUTTON.setEnabled(True)
 
     def listViewClicked(self, MainWindow):
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Scenario"]
+        data = Ui_MainWindow.db["Scenario"]
         _translate = QtCore.QCoreApplication.translate
         scen = ""
         type = ""
@@ -281,12 +276,7 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Vulnerable Program: " + type2['file']))
 
     def retranslateUi(self, MainWindow):
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Scenario"]
+        data = Ui_MainWindow.db["Scenario"]
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.searchLABEL.setText(_translate("MainWindow", "Search"))
