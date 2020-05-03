@@ -17,15 +17,16 @@ import magic
 class Ui_ManageVulnerablePrograms(object):
 
     VulnerableProgramsList = {}
+    try:
+        client = MongoClient(Ui_DBConfiguration.dbConnection)
+    except:
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+    db = client.Test
 
     # Opens a file browser window
     def importButtonStatus(self, path):
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["VulnerableProgramss"]
+
+        data = Ui_ManageVulnerablePrograms.db["VulnerableProgramss"]
         if os.path.exists(path):
             self.importButton.setEnabled(True)
 
@@ -52,12 +53,7 @@ class Ui_ManageVulnerablePrograms(object):
             return ""
 
     def selectVulnerablePrograms(self):
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["VulnerableProgramss"]
+        data = Ui_ManageVulnerablePrograms.db["VulnerableProgramss"]
         x=0
         for collection in data.find():
             if (self.tree["parent{0}".format(x)].checkState(0) == QtCore.Qt.Checked):
@@ -71,12 +67,7 @@ class Ui_ManageVulnerablePrograms(object):
             self.VulnerableProgramsList[key]['File'] = base64.decodebytes(self.VulnerableProgramsList[key]['File'])
 
     def importVP(self):
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["VulnerablePrograms"]
+        data = Ui_ManageVulnerablePrograms.db["VulnerablePrograms"]
         file = self.destinationDirectoryLINEEDIT.text()
         fileName = os.path.split(file)
         fileName = fileName[1]#.replace('.',';')
@@ -125,12 +116,7 @@ class Ui_ManageVulnerablePrograms(object):
         _translate = QtCore.QCoreApplication.translate
         __sortingEnabled = self.databseTREEWIDGET.isSortingEnabled()
         self.databseTREEWIDGET.setSortingEnabled(False)
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["VulnerablePrograms"]
+        data = Ui_ManageVulnerablePrograms.db["VulnerablePrograms"]
         self.count = 0
         deletion = ""
         x=0
@@ -241,9 +227,7 @@ class Ui_ManageVulnerablePrograms(object):
     def retranslateUi(self, ManageVulnerablePrograms):
         j = 0
         i = 0
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["VulnerablePrograms"]
+        data = Ui_ManageVulnerablePrograms.db["VulnerablePrograms"]
         _translate = QtCore.QCoreApplication.translate
         ManageVulnerablePrograms.setWindowTitle(_translate("ManageVulnerablePrograms", "Manage Vulnerable Programs"))
         self.destinationDirectoryLABEL.setText(_translate("ManageVulnerablePrograms", "Destination Directory:"))
@@ -267,12 +251,7 @@ class Ui_ManageVulnerablePrograms(object):
     def setupTree(self, ManageVulnerablePrograms):
         x=0
         y=0
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["VulnerablePrograms"]
+        data = Ui_ManageVulnerablePrograms.db["VulnerablePrograms"]
         for collection in data.find():
             self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
             self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
