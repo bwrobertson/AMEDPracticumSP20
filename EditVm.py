@@ -17,6 +17,12 @@ import threading
 import subprocess
 
 class Ui_EditVM(object):
+
+    try:
+        client = MongoClient(Ui_DBConfiguration.dbConnection)
+    except:
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+
     def setupUi(self, EditVM):
         EditVM.setObjectName("EditVM")
         EditVM.resize(560, 679)
@@ -254,11 +260,11 @@ class Ui_EditVM(object):
         self.softwareLABEL.setText(_translate("EditVM", "Software:"))
         j=0
         i=0
-        try:
+        """try:
             client = MongoClient(Ui_DBConfiguration.dbConnection)
         except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")"""
+        db = Ui_EditVM.client.Test
         data = db["Scenario"]
         EXPLOITS = db['Exploits']
         POVS = db['VulnerablePrograms']
@@ -273,7 +279,7 @@ class Ui_EditVM(object):
                 if (key == 'exploit'):
                     for item in exploit:
                         self.vmFilesTREEWIDGET.topLevelItem(j).setText(0, _translate("Export", exploit['file']))
-                        #(exploit['file'])
+                        #print(exploit['file'])
                         try:
                             temp = EXPLOITS.find_one({'name': exploit['file']})
                             self.vmFilesTREEWIDGET.topLevelItem(j).child(0).setText(0, _translate("Export", 'Lauguage : ' + temp['Language']))
@@ -317,11 +323,7 @@ class Ui_EditVM(object):
         x=0
         y=0
         self.tree={}
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
+        db = Ui_EditVM.client.Test
         data = db["Scenario"]
         thisVM = data.find_one({'_id': ObjectId('5e89003d2da10a05adcbf77a')})
         thisScen = thisVM['scenario']
@@ -356,11 +358,11 @@ class Ui_EditVM(object):
             x=0
             y=0
             self.tree={}
-            try:
+            """try:
                 client = MongoClient(Ui_DBConfiguration.dbConnection)
             except:
-                client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-            db = client.Test
+                client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")"""
+            db = Ui_EditVM.client.Test
             data = db["Scenario"]
             EXPLOITS = db['Exploits']
             POVS = db['VulnerablePrograms']
