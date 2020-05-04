@@ -27,6 +27,8 @@ import os, subprocess
 import qtmodern.styles
 import qtmodern.windows
 
+import platform, threading
+
 # instantiation of UI (View) classes and controller class
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
