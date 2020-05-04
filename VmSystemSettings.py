@@ -12,13 +12,36 @@ from pymongo import MongoClient
 
 class Ui_VmSystemSettings(object):
 
-    # def saveMachine(self):
-        # try:
-        #     client = MongoClient(Ui_DBConfiguration.dbConnection)
-        # except:
-        #     client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        # db = client.Test
-        # data = db["Scenario"]
+    def saveMachine(self):
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        db = client.Test
+        data = db["Scenario"]
+
+        change = {}
+        custom = {}
+
+        change["memory"] = self.baseMemorySPINBOX.value()
+        change["processors"] = self.processorsSPINBOX.value()
+        print(change)
+
+        custom["--boot"] = self.getBootOrder()
+        custom["--apis"] = "on" if self.enableIOApicCHECKBOX.isChecked() else "off"
+        custom["--firmware"] = "on" if self.enableEfiCHECKBOX.isChecked() else "off"
+        custom["--rtcuseutc"] = "on" if self.hardwareClockCHECKBOX.isChecked() else "off"
+        custom["--cpuexecutioncap"] = self.executionCapSPINBOX.value()
+        custom["--pae"] = "on" if self.enablePaeNxQCHECKBOX.isChecked() else "off"
+        custom["--hwvirtex"] = "on" if self.enableVtxAmdv_CHECKBOX.isChecked() else "off"
+        custom["--nestedpaging"] = "on" if self.enableNestedPagingCHECKBOX.isChecked() else "off"
+        print(custom)
+        
+        settings = {"regular": change,
+                        "vbox": custom}
+    
+        self.parentWindow.get_settings(settings)
+        self.hide()
 
         # scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
 
@@ -195,7 +218,7 @@ class Ui_VmSystemSettings(object):
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
         self.okBUTTON = QtWidgets.QPushButton(self.widget)
         self.okBUTTON.setObjectName("okBUTTON")
-        # self.okBUTTON.clicked.connect(self.saveMachine())
+        self.okBUTTON.clicked.connect(self.saveMachine)
         self.horizontalLayout_11.addWidget(self.okBUTTON)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_11.addItem(spacerItem)

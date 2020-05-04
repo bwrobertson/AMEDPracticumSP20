@@ -18,6 +18,8 @@ import subprocess
 
 class Ui_EditVM(object):
 
+    vm_settings = {}
+
     try:
         client = MongoClient(Ui_DBConfiguration.dbConnection)
     except:
@@ -230,6 +232,10 @@ class Ui_EditVM(object):
 
         return data
 
+    def get_settings(self, settings):
+        self.vm_settings = settings
+        print("this is inside edit vm")
+        print(settings)
 
     def runVagrant(self):
         data = self.createJson()
