@@ -289,8 +289,6 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
 class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
     def __init__(self, parent=None):
         self.nav=0
-        self.editVmWindow = EditVmWindow("null")
-        self.vMSystemsSettings=VmSystemSettings(self.editVmWindow)
         super(SuggestedSetupWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
@@ -320,7 +318,6 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
 
 class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
     def __init__(self, text,parent=None):
-        self.alternateManageExploits=AlternateManageExploitsWindow()
         super(EditVmWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
