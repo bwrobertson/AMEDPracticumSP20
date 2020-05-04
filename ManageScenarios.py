@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from NewScenario import Ui_NewScenario
 from pymongo import MongoClient
 from DBConfiguration import Ui_DBConfiguration
 
 class Ui_ManageScenarios(object):
+    try:
+        client = MongoClient(Ui_DBConfiguration.dbConnection)
+    except:
+        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+    db = client.Test
+
     def setupUi(self, ManageScenarios):
         ManageScenarios.setObjectName("ManageScenarios")
         ManageScenarios.resize(483, 330)
@@ -53,6 +60,7 @@ class Ui_ManageScenarios(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.deleteBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.deleteBUTTON.setObjectName("deleteBUTTON")
+        self.deleteBUTTON.clicked.connect(self.deleteSelected)
         self.verticalLayout.addWidget(self.deleteBUTTON)
         spacerItem1 = QtWidgets.QSpacerItem(20, 138, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
@@ -74,25 +82,8 @@ class Ui_ManageScenarios(object):
 
     def retranslateUi(self, ManageScenarios):
         ###Changed###
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Scenario"]
         _translate = QtCore.QCoreApplication.translate
-        scen = ""
-        x = 0 
-        for collection in data.find():
-            self.scenariosLISTWIDGET.addItem(QtWidgets.QListWidgetItem())
-            item = self.scenariosLISTWIDGET.item(x)
-            item.setCheckState(QtCore.Qt.Unchecked)
-            scen = collection['scenario']        
-            # Prevents NoneType Error
-            if not item:
-                continue
-            item.setText(_translate("ManageScenarios", scen['name']))
-            x+=1
+        self.setupTree()
         ###End Changed###
 
         _translate = QtCore.QCoreApplication.translate
@@ -109,6 +100,37 @@ class Ui_ManageScenarios(object):
         self.backBUTTON.setText(_translate("ManageScenarios", "Back"))
         self.newBUTTON.setText(_translate("ManageScenarios", "New"))
         self.deleteBUTTON.setText(_translate("ManageScenarios", "Delete"))
+
+    def setupTree(self):
+        data = Ui_ManageScenarios.db['Scenario']
+        _translate = QtCore.QCoreApplication.translate
+        x = 0
+        for collection in data.find():
+            self.scenariosLISTWIDGET.addItem(QtWidgets.QListWidgetItem())
+            item = self.scenariosLISTWIDGET.item(x)
+            item.setCheckState(QtCore.Qt.Unchecked)
+            scen = collection['scenario']
+            # Prevents NoneType Error
+            if not item:
+                continue
+            item.setText(_translate("ManageScenarios", scen['name']))
+            x+=1
+
+    def deleteSelected(self):
+        _translate = QtCore.QCoreApplication.translate
+        __sortingEnabled = self.scenariosLISTWIDGET.isSortingEnabled()
+        self.scenariosLISTWIDGET.setSortingEnabled(False)
+        data = Ui_ManageScenarios.db["Scenario"]
+        i = 0
+        id = 0
+        for collection in data.find():
+            id = collection['_id']
+            if(self.scenariosLISTWIDGET.item(i).checkState()==QtCore.Qt.Checked):
+                data.delete_one({'_id': id})
+            i+=1
+        self.scenariosLISTWIDGET.clear()
+        self.setupTree()
+        #QMessageBox.about(self, "Success", "Items Deleted Succesfully.")
 
 
 if __name__ == "__main__":
