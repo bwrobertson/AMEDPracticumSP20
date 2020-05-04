@@ -39,9 +39,7 @@ class Ui_importData(object):
 
 
     def pushScenario(self):
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-        db = client.Test
-        data = db["Scenario"]
+        data = Ui_DBConfiguration.db["Scenario"]
         today = date.today()
         today = today.strftime("%d%b%Y")
 
