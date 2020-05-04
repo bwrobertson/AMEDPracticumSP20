@@ -233,9 +233,10 @@ class Ui_ManageData(object):
                         if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
                             numFiles+=1
                         y+=1
-
-        tickSize = int(100/numFiles)
-        print(tickSize)
+        try:
+            tickSize = int(100/numFiles)
+        except:
+            return
         x=0
         y=0
         fileName = ""
@@ -267,8 +268,7 @@ class Ui_ManageData(object):
             self.progressBar.setValue(100)
             QMessageBox.about(self, "Success", "Items Exported Succesfully.")
             self.progressBar.setValue(0)
-
-
+            
         return
 
 
