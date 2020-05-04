@@ -212,7 +212,7 @@ class Ui_CreateNewVm(object):
         CreateNewVm.setWindowTitle(_translate("CreateNewVm", "Create New VM"))
         self.machineNameLABEL.setText(_translate("CreateNewVm", "Machine Name:"))
         self.typeLABEL.setText(_translate("CreateNewVm", "Type:"))
-        self.typeCOMBOBOX.setItemText(0, _translate("CreateNewVm", "POV Entity"))
+        self.typeCOMBOBOX.setItemText(0, _translate("CreateNewVm", "Attacker Entity"))
         self.typeCOMBOBOX.setItemText(1, _translate("CreateNewVm", "Victim Entity"))
         self.createVmLABEL.setText(_translate("CreateNewVm", "Create From Existing VM:"))
         self.openExistingBUTTON.setText(_translate("CreateNewVm", "Open Existing"))

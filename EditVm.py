@@ -254,7 +254,7 @@ class Ui_EditVM(object):
         EditVM.setWindowTitle(_translate("EditVM", "Edit VM"))
         self.machineNameLABEL.setText(_translate("EditVM", "Machine Name:"))
         self.typeLABEL.setText(_translate("EditVM", "Type:"))
-        self.typeCOMBOBOX.setItemText(0, _translate("EditVM", "POV Entity"))
+        self.typeCOMBOBOX.setItemText(0, _translate("EditVM", "Attacker Entity"))
         self.typeCOMBOBOX.setItemText(1, _translate("EditVM", "Victim Entity"))
         self.createVmLABEL.setText(_translate("EditVM", "Create From Existing VM:"))
         self.openExistingBUTTON.setText(_translate("EditVM", "Open Existing"))
