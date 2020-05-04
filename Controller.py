@@ -259,26 +259,6 @@ class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
 
-class AlternateManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
-    def __init__(self, parent=None):
-        super(AlternateManageExploitsWindow, self).__init__(parent)
-        self.setWindowIcon(QIcon("Icon.png"))
-        self.setupUi(self)
-        _translate = QtCore.QCoreApplication.translate
-        self.nextButton.setText(_translate("ManageExploits", "Add"))
-        self.backBUTTON.clicked.connect(self.close)
-        self.nextButton.clicked.connect(self.addMethod)
-
-    def addMethod(self):
-        for item in self.databseTREEWIDGET.findItems("", Qt.MatchContains | Qt.MatchRecursive):
-            if (item.checkState(0)==QtCore.Qt.Checked):
-                print (item.text(0))
-
-                """lastIndex = CreateNewVmWindow.vmFilesTREEWIDGET.count()
-                CreateNewVmWindow.vmFilesTREEWIDGET.addItem(QtWidgets.QListWidgetItem())
-                newitem = CreateNewVmWindow.vmFilesTREEWIDGET.item(lastIndex)
-                newitem.setText(item.text(0))"""
-
 
 class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
                                 Ui_ManageVulnerablePrograms):
