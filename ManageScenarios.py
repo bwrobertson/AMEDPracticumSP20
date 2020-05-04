@@ -6,12 +6,6 @@ from pymongo import MongoClient
 from DBConfiguration import Ui_DBConfiguration
 
 class Ui_ManageScenarios(object):
-    try:
-        client = MongoClient(Ui_DBConfiguration.dbConnection)
-    except:
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-    db = client.Test
-
     def setupUi(self, ManageScenarios):
         ManageScenarios.setObjectName("ManageScenarios")
         ManageScenarios.resize(483, 330)
@@ -102,7 +96,7 @@ class Ui_ManageScenarios(object):
         self.deleteBUTTON.setText(_translate("ManageScenarios", "Delete"))
 
     def setupTree(self):
-        data = Ui_ManageScenarios.db['Scenario']
+        data = Ui_DBConfiguration.db['Scenario']
         _translate = QtCore.QCoreApplication.translate
         x = 0
         for collection in data.find():
@@ -120,7 +114,7 @@ class Ui_ManageScenarios(object):
         _translate = QtCore.QCoreApplication.translate
         __sortingEnabled = self.scenariosLISTWIDGET.isSortingEnabled()
         self.scenariosLISTWIDGET.setSortingEnabled(False)
-        data = Ui_ManageScenarios.db["Scenario"]
+        data = Ui_DBConfiguration.db["Scenario"]
         i = 0
         id = 0
         for collection in data.find():
