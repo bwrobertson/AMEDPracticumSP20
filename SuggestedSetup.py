@@ -17,12 +17,19 @@ from NewScenario import Ui_NewScenario
 from bson.objectid import ObjectId
 from DBConfiguration import Ui_DBConfiguration
 from MainWindow import Ui_MainWindow
+import os
 
 
 class Ui_Form(object):
 
     id = "5e9801a1e6c7aa9190f814dc"
-    vmList = []
+    path = "C:/"
+    for x in os.walk(path):
+        if('\\VirtualBox VMs' in str(x)):
+            thisPath = (x[0])
+            break
+    vmList = os.listdir(thisPath)
+
 
     def runScen(self):
 
@@ -153,6 +160,12 @@ class Ui_Form(object):
         self.listWidget_2.clear()
         self.listWidget_3.clear()
         data = Ui_DBConfiguration.db["Scenario"]
+
+        for x in Ui_Form.vmList:
+            if('malware' in x):
+                self.listWidget.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
+            else:
+                self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))        
         try:
             try:
                 thisData = data.find_one({'_id': ObjectId(Ui_MainWindow.id)})
@@ -172,30 +185,25 @@ class Ui_Form(object):
                 for item in thisVic:
                     if((thisVic.get(item) in vms)==False):
                         vms.append(thisVic.get(item))
-                    if((thisVic.get(item) in Ui_Form.vmList)==False):
-                        Ui_Form.vmList.append(thisVic.get(item))
+                    #if((thisVic.get(item) in Ui_Form.vmList)==False):
+                        #Ui_Form.vmList.append(thisVic.get(item))
                 for item in thisAtt:
                     if((thisAtt.get(item) in malware)==False):
                         malware.append(thisAtt.get(item))
-                    if((thisAtt.get(item) in Ui_Form.vmList)==False):
-                        Ui_Form.vmList.append(thisAtt.get(item))
+                    #if((thisAtt.get(item) in Ui_Form.vmList)==False):
+                        #Ui_Form.vmList.append(thisAtt.get(item))
 
                 #Ui_Form.vmList.sort()
-                print(len(Ui_Form.vmList))
-                for x in Ui_Form.vmList:
-                    if('vm' in x):
-                        self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
-                    else:
-                        self.listWidget.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
+
 
                 for x in vms:
                     self.listWidget_3.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
 
                 for x in malware:
-                    if('vm' in x):
-                        self.listWidget_2.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
-                    else:
+                    if('malware' in x):
                         self.listWidget_2.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
+                    else:
+                        self.listWidget_2.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
             except:
                 print('no machines found')
         except:
