@@ -15,6 +15,7 @@ import os
 
 class Ui_DBConfiguration(object):
     dbConnection = ""
+    db = ""
     def setupUi(self, ConfigureMongoDB):
         ConfigureMongoDB.setObjectName("ConfigureMongoDB")
         ConfigureMongoDB.resize(394, 307)
@@ -107,12 +108,12 @@ class Ui_DBConfiguration(object):
 
     def pingDB(self):
         Ui_DBConfiguration.dbConnection = self.DBConnectionStringLINEEDIT.text()
-        
+
         # Added April 29 2020 #
         db_config = str(Ui_DBConfiguration.dbConnection)
         path = os.getcwd()
         # Used to create a file that has the user's credentials
-        # This is used by the hailCesar.py module to 
+        # This is used by the hailCesar.py module to
         # determine which DB to send data to
         if "C:\\" in path:
             file = path+"\\"+"database_configuration.txt"
@@ -121,8 +122,8 @@ class Ui_DBConfiguration(object):
             else:
                 fd = open(file,'w')
                 fd.write(db_config)
-                fd.close()        
-        
+                fd.close()
+
         dbUser = self.DBUserNameLINEEDIT.text()
         dbPass = self.DBPasswordLINEEDIT.text()
 
@@ -143,9 +144,17 @@ class Ui_DBConfiguration(object):
             file = open('mongodbconnectioninfo.txt', 'wb')
             file.write(base64.b64encode(str.encode(Ui_DBConfiguration.dbConnection)))
             file.close()
+            self.connect()
         except pymongo.errors.ServerSelectionTimeoutError as err:
             # do whatever you need
             print(err)
+
+    def connect(self):
+        try:
+            client = MongoClient(Ui_DBConfiguration.dbConnection)
+        except:
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
+        Ui_DBConfiguration.db = client.Test
 
 if __name__ == "__main__":
     import sys
