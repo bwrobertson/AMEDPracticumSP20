@@ -9,6 +9,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from NewScenario import Ui_NewScenario
 from pymongo import MongoClient
+from DBConfiguration import Ui_DBConfiguration
 
 class Ui_VmSystemSettings(object):
 
