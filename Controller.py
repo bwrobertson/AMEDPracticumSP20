@@ -37,18 +37,187 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.manageScenarioBUTTON.clicked.connect(self.hide)
         self.manageDataBUTTON.clicked.connect(self.hide)
 
-class RunWindow(QtWidgets.QWidget, Ui_runWindow):
+# Run collectors functionality
+class RunWindow(QtWidgets.QWidget, Ui_runWindow): # MAY 3 #
     def __init__(self, parent=None):
         super(RunWindow, self).__init__(parent)
+        self.thread_scenarios = {}
+        self.vms_proc_ids = {}
+        self.t_id_counter = 0
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.okPushBUTTON.clicked.connect(self.okayClicked)
         self.cancelPushBUTTON.clicked.connect(self.close)
 
     def okayClicked(self):
-        ###### use the pollowing line  minus the print() to retrieve the value that is curerntly inside the spinbox
-        print(self.intervalSPINBOX.value())
-        print("Kevin method for Run")
+        ###### use the following line  minus the print() to retrieve the value that is curerntly inside the spinbox
+        interval_minute = self.intervalSPINBOX.value()
+        print("Interval minute: ",interval_minute)
+        print("Run Method. Starting scenario.")
+        
+        # start scenario on thread
+        self.thread_scenarios[self.t_id_counter] = threading.Thread(target=self.runCollectors, args=(interval_minute,), daemon=True)
+        self.thread_scenarios[self.t_id_counter].start()
+        print("Started thread: ",self.thread_scenarios[self.t_id_counter])
+        # self.thread_scenarios[self.t_id_counter].join()
+
+        # to store ids of threads
+        self.t_id_counter += 1
+        self.hide()
+
+    # Run collectors method for an interval of 5 seconds       
+    def runCollectors(self, minute_interval):
+        # identify OS
+        operating_system = platform.system()
+        try:
+            interval_seconds = int(minute_interval)
+        except:
+            print("Not an integer.")
+            return
+
+        interval_seconds = interval_seconds * 60
+        if interval_seconds == 0:
+            interval_seconds = 20
+            print("Defaulting to 20 seconds, because 0 minutes was given as an interval.")
+
+        # Check if Virtualbox on server [would never run on local] has VM's,
+        # If not prompt user to start a scenario
+        # Common path: "C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe"
+        if "windows" in operating_system.lower():
+            # Needs a variable of the scenario info to find VM's to start
+            # scenario_info = ''
+
+            # Path to running VBoxManage.exe to start up vms
+            vbox_manage_path = 'C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe'
+
+            # Run VBoxManage to find the VM's to start
+            try:
+                proc = subprocess.Popen([vbox_manage_path, "list", "vms"], stdout=subprocess.PIPE)
+                output = proc.stdout.read() # shows us a list of vms to run
+                output=output.decode()
+
+                proc_1 = subprocess.Popen([vbox_manage_path, "list", "runningvms"], stdout=subprocess.PIPE)
+                output_1 = proc_1.stdout.read() # shows us a list of vms running
+                output_1=output_1.decode()
+
+            except:
+                print("Need to add VBoxManage.exe to PATH environment variable.")
+                print("Exiting from starting VM scenario.")
+                return
+            
+            # Convert raw (bytes) to string, makes data easier
+            # to modify and run vms based on names/uuids
+            b = output.split('\r\n') # turn VM string into list of VMs
+            
+            # Dictionary of VMs available by name 
+            # and its uuid for VBoxManage startvm command
+            name_uuid_vm = {}
+            print("b: ",b)
+            print("\n\n")
+            for e in b:
+                if e == '':
+                    continue
+                line = e.split('" ')
+                print(line)
+                name_uuid_vm[line[0][1:]] = line[1][1:-1]            
+
+            # Stub vm to start
+            # Ideally, user should be able to enter the
+            # exact vms from their scenario selected
+            vms_to_start = []
+            for key in name_uuid_vm:
+                if "vagrant" in key.lower():        
+                    vms_to_start.append(key)
+
+            # Retrieve running vms to prevent issuing a command to
+            # start an already running vm
+            d = output_1.split('\r\n')
+            running_vms = []
+            for e in d:
+                if e == '':
+                    continue
+                line = e.split('" ')
+                running_vms.append(line[0][1:])
+
+            print("List of vms to start: ", str(vms_to_start))
+            print("Running vms: ", str(running_vms))   
+            print('\n\n') 
+            # Based on scenario find uuid for VMs to start
+            # vms_to_start = [] # collection of strings to be used to find uuid later
+            # ... perform collection from scenario file
+            
+            # Start VMs on their own threads (subprocess)
+            # Could also use vagrant up!
+            print("Proc ID dictionary (before): ",str(self.vms_proc_ids))
+            print('\n\n')
+            for v in vms_to_start:
+
+                # Check if vm is running
+                if v in running_vms:
+                    print("VM is already running, powering off!")
+                    print("ID: ", v)
+                    proc_stop = subprocess.Popen([vbox_manage_path, 'controlvm', v, 'poweroff'], stdout=subprocess.PIPE)
+                    output = proc_stop.stdout.read()
+                    print(output.decode())
+                    print('\n\n')
+                else:
+                    # Create a list to hold information of vm    
+                    print("About to start vms...")
+                    self.vms_proc_ids[v] = []
+                    self.vms_proc_ids[v].append(subprocess.Popen([vbox_manage_path, 'startvm', v], stdout=subprocess.PIPE))
+                    output = self.vms_proc_ids[v][0].stdout.read()
+                    self.vms_proc_ids[v].append(output)
+                    print("Added to vms_proc_ids...\n\n")
+
+            print("Proc ID dictionary (after): ",str(self.vms_proc_ids))
+
+
+            # how to power down vm safely
+            # command must be executed in the folder where the Vagrantfile is
+            # located (End of the day might be the AMED folder)
+            # change into the vagrant folder where the Vagrantfile is located /path/to/AMEDPracticumSP20/vagrant
+            current_directory = os.getcwd()
+            if "vagrant" in current_directory:
+                print("\nAlready in Vagrant folder.")
+            elif "vagrant" in os.listdir(current_directory):
+                os.chdir(current_directory + os.sep + "vagrant")
+                print("\n"+str(os.getcwd()))
+            else:
+                print("\nVagrant folder not found.")
+                print(os.getcwd())
+                return
+            try:
+                # Need to verify the VM is up and running??
+
+                # Sending vagrant command to start collectors
+                vagrant_command_string = "sudo $ECEL_HOME/standalone.sh "+str(interval_seconds)
+                proc = subprocess.Popen(['vagrant', 'ssh', '-c', vagrant_command_string], stdout=subprocess.PIPE)
+                print("\nVagrant standalone command sent, output to follow ->")
+                print('\n\n')
+                output = proc.stdout.read()
+                print(output)
+                return
+            except:
+                print("\nEither the VM was not started, or")
+                print("standalone.sh not found within Ubuntu guest or guest OS is Windows-based.\n")
+                return
+
+
+        # Stub windows (have it send a return value) 
+        # verifying it received a signal from host
+        # (Something present on all windows machines)
+        else:
+            # Ubuntu-based hosts that are running AMED
+
+            # Controller.py must be ran in root (i.e. $ sudo su, on Linux)
+            uid = os.getuid()
+            if uid != 0:
+                msg = QMessageBox.about(self.main, "Warning", "Collectors must be ran with root privileges.")
+            else:
+                proc = subprocess.Popen(["python", "ecel/start_stop_collectors.py"])
+                msg = QMessageBox.about(self.main, "Notice", "Collectors have started!")
+                # Need to add functionality to let Dr. Acosta 
+                # know when collectors are done (signal w/ messagebox)
 
 
 
