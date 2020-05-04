@@ -403,121 +403,119 @@ class NetworkSetupAdvancedWindow(QtWidgets.QDialog, Ui_NetworkSetupAdvanced):
 
         # shows window whenever an action is taken by the user via the GUI
 class Controller:
-    def __init__(self):
-        self.showSplashScreen()
-        self.main = MainWindow()
-        self.runWindow =RunWindow()
-        self.progressBar.setValue(1)
-        QApplication.processEvents()
-        self.openingDBConfiguration = OpeningDBConfigurationWindow()
-        self.progressBar.setValue(2)
-        QApplication.processEvents()
-        self.manageData = ManageDataWindow()
-        self.progressBar.setValue(3)
-        QApplication.processEvents()
-        self.configureDatabase = ConfigureDatabaseWindow()
-        self.progressBar.setValue(4)
-        QApplication.processEvents()
-        self.manageScenarios = ManageScenariosWindow()
-        self.progressBar.setValue(5)
-        QApplication.processEvents()
-        self.newScenario = NewScenariosWindow()
-        self.progressBar.setValue(6)
-        QApplication.processEvents()
-        self.manageExploits = ManageExploitsWindow()
-        self.progressBar.setValue(7)
-        QApplication.processEvents()
-        self.alternateManageExploits = AlternateManageExploitsWindow()
-        self.progressBar.setValue(8)
-        QApplication.processEvents()
-        self.manageVulnerablePrograms = ManageVulnerableProgramsWindow()
-        self.progressBar.setValue(9)
-        QApplication.processEvents()
-        self.suggestedSetup=SuggestedSetupWindow()
-        self.progressBar.setValue(10)
-        QApplication.processEvents()
-        self.createNewVm = CreateNewVmWindow()
-        self.progressBar.setValue(11)
-        QApplication.processEvents()
-        self.editVm= EditVmWindow("null")
-        self.progressBar.setValue(12)
-        QApplication.processEvents()
-        self.vmSystemSettings = VmSystemSettings(self.editVm)
-        self.progressBar.setValue(13)
-        QApplication.processEvents()
-        self.manageDataOptions=ManageDataOptionsWindow()
-        self.progressBar.setValue(14)
-        QApplication.processEvents()
-        self.importData=ImportDataWindow()
-        self.progressBar.setValue(15)
-        QApplication.processEvents()
-        self.networkSetup=NetworkSetupWindow()
-        self.progressBar.setValue(16)
-        QApplication.processEvents()
-        self.advancedNetworkSetup=NetworkSetupAdvancedWindow()
-        self.progressBar.setValue(17)
-        QApplication.processEvents()
-        self.splash.close()
-        #
-        self.openingDBConfiguration.connectBUTTON.clicked.connect(self.main.show)
-        #
-        self.main.manageDataBUTTON.clicked.connect(self.manageDataOptions.show)
-        self.main.runBUTTON.clicked.connect(self.runWindow.show)
-        #
-        self.main.setupBUTTON.clicked.connect(self.setupButtonNav)
-        self.main.configureBUTTON.clicked.connect(self.configureButtonNav)
-        #
-        self.manageDataOptions.exportBUTTON.clicked.connect(self.manageData.show)
-        self.manageDataOptions.importBUTTON.clicked.connect(self.importData.show)
-        self.manageDataOptions.backBUTTON.clicked.connect(self.main.show)
-        #
-        self.main.configureDatabaseBUTTON.clicked.connect(self.configureDatabase.show)
-        self.configureDatabase.backBUTTON.clicked.connect(self.main.show)
-        #
-        self.main.manageScenarioBUTTON.clicked.connect(self.manageScenarios.show)
-        #
-        self.manageData.backBUTTON.clicked.connect(self.main.show)
-        #
-        self.importData.pushButton_2.clicked.connect(self.main.show)
-        #
-        self.manageScenarios.backBUTTON.clicked.connect(self.main.show)
-        self.manageScenarios.newBUTTON.clicked.connect(self.newScenario.show)
-        #
-        self.newScenario.exploitBrowseBUTTON.clicked.connect(self.manageExploits.show)
-        self.newScenario.vulnerableProgramBrowseBUTTON.clicked.connect(self.manageVulnerablePrograms.show)
-        self.newScenario.cancelBUTTON.clicked.connect(self.manageScenarios.show)
-        self.newScenario.nextBUTTON.clicked.connect(self.suggestedSetup.show)
-        self.newScenario.nextBUTTON.clicked.connect(self.suggestedSetup.refreshSetup)
-        #
-        self.manageExploits.backBUTTON.clicked.connect(self.newScenario.show)
-        #
-        self.manageVulnerablePrograms.backBUTTON.clicked.connect(self.newScenario.show)
-        #
-        self.suggestedSetup.backButton.clicked.connect(self.alternateNavSuggestedSetup)
-        self.suggestedSetup.addVmBUTTON.clicked.connect(self.createNewVm.show)
-        self.suggestedSetup.nextBUTTON.clicked.connect(self.networkSetup.show)
-        self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
-        self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
-        #
-        #########---ALTERNATE MANAGE EXPLOITS---##################
-        #self.createNewVm.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
-        self.editVm.settingsBUTTON.clicked.connect(self.vmSystemSettings.show)
-        self.editVm.saveBUTTON.clicked.connect(self.suggestedSetup.refreshSetup)
-        ################################################
-        #
-        self.networkSetup.backButton.clicked.connect(self.alternateNavNetworkSetup)
-        self.networkSetup.advancedSettingsBUTTON.clicked.connect(self.advancedNetworkSetup.show)
-        #
-        self.advancedNetworkSetup.backBUTTON.clicked.connect(self.networkSetup.show)
-        #
-        # Functionality for "Run" button (interval-based collection/
-        # proof of concept)
-        self.main.runBUTTON.clicked.connect(self.runCollectors)
-        #
+ def __init__(self):
+        self.openingDBWindow = OpeningDBConfigurationWindow()
+        self.openingDBWindow.show()
+        self.openingDBWindow.connectBUTTON.clicked.connect(self.checkDBConnection)
 
-        #
-        self.openingDBConfiguration.show()
-
+    def launchAMED(self):
+            self.showSplashScreen()
+            self.main = MainWindow()
+            self.runWindow =RunWindow()
+            self.progressBar.setValue(1)
+            QApplication.processEvents()
+            self.progressBar.setValue(2)
+            QApplication.processEvents()
+            self.manageData = ManageDataWindow()
+            self.progressBar.setValue(3)
+            QApplication.processEvents()
+            self.configureDatabase = ConfigureDatabaseWindow()
+            self.progressBar.setValue(4)
+            QApplication.processEvents()
+            self.manageScenarios = ManageScenariosWindow()
+            self.progressBar.setValue(5)
+            QApplication.processEvents()
+            self.newScenario = NewScenariosWindow()
+            self.progressBar.setValue(6)
+            QApplication.processEvents()
+            self.manageExploits = ManageExploitsWindow()
+            self.progressBar.setValue(7)
+            QApplication.processEvents()
+            self.progressBar.setValue(8)
+            QApplication.processEvents()
+            self.manageVulnerablePrograms = ManageVulnerableProgramsWindow()
+            self.progressBar.setValue(9)
+            QApplication.processEvents()
+            self.suggestedSetup=SuggestedSetupWindow()
+            self.progressBar.setValue(10)
+            QApplication.processEvents()
+            self.createNewVm = CreateNewVmWindow()
+            self.progressBar.setValue(11)
+            QApplication.processEvents()
+            self.vmSystemSettings = VmSystemSettings()
+            self.progressBar.setValue(12)
+            QApplication.processEvents()
+            self.editVm= EditVmWindow("null")
+            self.progressBar.setValue(13)
+            QApplication.processEvents()
+            self.manageDataOptions=ManageDataOptionsWindow()
+            self.progressBar.setValue(14)
+            QApplication.processEvents()
+            self.importData=ImportDataWindow()
+            self.progressBar.setValue(15)
+            QApplication.processEvents()
+            self.networkSetup=NetworkSetupWindow()
+            self.progressBar.setValue(16)
+            QApplication.processEvents()
+            self.advancedNetworkSetup=NetworkSetupAdvancedWindow()
+            self.progressBar.setValue(17)
+            QApplication.processEvents()
+            self.splash.close()
+            #
+            self.main.manageDataBUTTON.clicked.connect(self.manageDataOptions.show)
+            self.main.runBUTTON.clicked.connect(self.runWindow.show)
+            #
+            self.main.setupBUTTON.clicked.connect(self.setupButtonNav)
+            self.main.configureBUTTON.clicked.connect(self.configureButtonNav)
+            #
+            self.manageDataOptions.exportBUTTON.clicked.connect(self.manageData.show)
+            self.manageDataOptions.importBUTTON.clicked.connect(self.importData.show)
+            self.manageDataOptions.backBUTTON.clicked.connect(self.main.show)
+            #
+            self.main.configureDatabaseBUTTON.clicked.connect(self.configureDatabase.show)
+            self.configureDatabase.backBUTTON.clicked.connect(self.main.show)
+            #
+            self.main.manageScenarioBUTTON.clicked.connect(self.manageScenarios.show)
+            #
+            self.manageData.backBUTTON.clicked.connect(self.main.show)
+            #
+            self.importData.pushButton_2.clicked.connect(self.main.show)
+            #
+            self.manageScenarios.backBUTTON.clicked.connect(self.main.show)
+            self.manageScenarios.newBUTTON.clicked.connect(self.newScenario.show)
+            #
+            self.newScenario.exploitBrowseBUTTON.clicked.connect(self.manageExploits.show)
+            self.newScenario.vulnerableProgramBrowseBUTTON.clicked.connect(self.manageVulnerablePrograms.show)
+            self.newScenario.cancelBUTTON.clicked.connect(self.manageScenarios.show)
+            self.newScenario.nextBUTTON.clicked.connect(self.suggestedSetup.show)
+            self.newScenario.nextBUTTON.clicked.connect(self.suggestedSetup.refreshSetup)
+            #
+            self.manageExploits.backBUTTON.clicked.connect(self.newScenario.show)
+            #
+            self.manageVulnerablePrograms.backBUTTON.clicked.connect(self.newScenario.show)
+            #
+            self.suggestedSetup.backButton.clicked.connect(self.alternateNavSuggestedSetup)
+            self.suggestedSetup.addVmBUTTON.clicked.connect(self.createNewVm.show)
+            self.suggestedSetup.nextBUTTON.clicked.connect(self.networkSetup.show)
+            self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
+            self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
+            #
+            #########---ALTERNATE MANAGE EXPLOITS---##################
+            self.editVm.settingsBUTTON.clicked.connect(self.vmSystemSettings.show)
+            self.editVm.saveBUTTON.clicked.connect(self.suggestedSetup.refreshSetup)
+            ################################################
+            #
+            self.networkSetup.backButton.clicked.connect(self.alternateNavNetworkSetup)
+            self.networkSetup.advancedSettingsBUTTON.clicked.connect(self.advancedNetworkSetup.show)
+            #
+            self.advancedNetworkSetup.backBUTTON.clicked.connect(self.networkSetup.show)
+            #
+            # Functionality for "Run" button (interval-based collection/
+            # proof of concept)
+            self.main.runBUTTON.clicked.connect(self.runCollectors)
+            #
+            self.main.show()
+            #
 
      # Run collectors method for an interval of 5 seconds
     def runCollectors(self):
@@ -576,6 +574,15 @@ class Controller:
         print(item.text())
         self.editVm.machineNameLINEEDIT.setText(item.text())
         self.editVm.show()
+   
+    def checkDBConnection(self):
+        #####Processing methods checking for connection
+        self.dbconnection =True
+        if self.dbconnection:
+            self.launchAMED()
+            print("Connection Succesful : ", self.openingDBWindow.dbconnection)
+        else:
+            print("connection Unsuccesful")
 
 if __name__ == '__main__':
     import sys
