@@ -403,7 +403,7 @@ class NetworkSetupAdvancedWindow(QtWidgets.QDialog, Ui_NetworkSetupAdvanced):
 
         # shows window whenever an action is taken by the user via the GUI
 class Controller:
- def __init__(self):
+    def __init__(self):
         self.openingDBWindow = OpeningDBConfigurationWindow()
         self.openingDBWindow.show()
         self.openingDBWindow.connectBUTTON.clicked.connect(self.checkDBConnection)
