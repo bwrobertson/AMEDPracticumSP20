@@ -324,7 +324,6 @@ class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
         super(EditVmWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
-        self.machineNameLINEEDIT.setText(text)
         self.discardBUTTON.clicked.connect(self.close)
         self.vmSystemSettings = VmSystemSettings(self)
         #self.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
@@ -576,7 +575,7 @@ class Controller:
     def handleDoubleClick(self, item):
         item.setSelected(False)
         print(item.text())
-        self.editVm = EditVmWindow(item.text())
+        self.editVm.machineNameLINEEDIT.setText(item.text())
         self.editVm.show()
 
 if __name__ == '__main__':
