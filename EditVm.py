@@ -19,12 +19,6 @@ import subprocess
 class Ui_EditVM(object):
 
     vm_settings = {}
-
-    try:
-        client = MongoClient(Ui_DBConfiguration.dbConnection)
-    except:
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-
     def setupUi(self, EditVM):
         EditVM.setObjectName("EditVM")
         EditVM.resize(560, 679)
@@ -266,14 +260,9 @@ class Ui_EditVM(object):
         self.softwareLABEL.setText(_translate("EditVM", "Software:"))
         j=0
         i=0
-        """try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")"""
-        db = Ui_EditVM.client.Test
-        data = db["Scenario"]
-        EXPLOITS = db['Exploits']
-        POVS = db['VulnerablePrograms']
+        data = Ui_DBConfiguration.db["Scenario"]
+        EXPLOITS = Ui_DBConfiguration.db['Exploits']
+        POVS = Ui_DBConfiguration.db['VulnerablePrograms']
         _translate = QtCore.QCoreApplication.translate
         __sortingEnabled = self.softwareTREEWIDGET.isSortingEnabled()
         """for collection in data.find({'_id': ObjectId('5e89003d2da10a05adcbf77a')}):
@@ -329,15 +318,14 @@ class Ui_EditVM(object):
         x=0
         y=0
         self.tree={}
-        db = Ui_EditVM.client.Test
-        data = db["Scenario"]
+        data = Ui_DBConfiguration.db["Scenario"]
         thisVM = data.find_one({'_id': ObjectId('5e89003d2da10a05adcbf77a')})
         thisScen = thisVM['scenario']
         #print(thisVM)
         thisExploit = thisScen['exploit']
         thisPOV = thisScen['pov']
-        EXPLOITS = db['Exploits']
-        POVS = db['VulnerablePrograms']
+        EXPLOITS = Ui_DBConfiguration.db['Exploits']
+        POVS = Ui_DBConfiguration.db['VulnerablePrograms']
         for collection in EXPLOITS.find():
             self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
             #print(collection['name'])
@@ -364,14 +352,9 @@ class Ui_EditVM(object):
             x=0
             y=0
             self.tree={}
-            """try:
-                client = MongoClient(Ui_DBConfiguration.dbConnection)
-            except:
-                client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")"""
-            db = Ui_EditVM.client.Test
-            data = db["Scenario"]
-            EXPLOITS = db['Exploits']
-            POVS = db['VulnerablePrograms']
+            data = Ui_DBConfiguration.db["Scenario"]
+            EXPLOITS = Ui_DBConfiguration.db['Exploits']
+            POVS = Ui_DBConfiguration.db['VulnerablePrograms']
             for collection in data.find({'_id': ObjectId('5e89003d2da10a05adcbf77a')}):
                 scen = collection['scenario']
                 #self.tree["parent{0}".format(x)].setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate)
