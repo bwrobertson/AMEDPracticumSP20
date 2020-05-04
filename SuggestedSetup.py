@@ -152,7 +152,6 @@ class Ui_Form(object):
         self.listWidget.clear()
         self.listWidget_2.clear()
         self.listWidget_3.clear()
-        db = Ui_Form.client.Test
         data = Ui_DBConfiguration.db["Scenario"]
         try:
             try:
