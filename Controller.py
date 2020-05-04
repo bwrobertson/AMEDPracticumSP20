@@ -56,7 +56,7 @@ class RunWindow(QtWidgets.QWidget, Ui_runWindow): # MAY 3 #
         interval_minute = self.intervalSPINBOX.value()
         print("Interval minute: ",interval_minute)
         print("Run Method. Starting scenario.")
-        
+
         # start scenario on thread
         self.thread_scenarios[self.t_id_counter] = threading.Thread(target=self.runCollectors, args=(interval_minute,), daemon=True)
         self.thread_scenarios[self.t_id_counter].start()
@@ -67,7 +67,7 @@ class RunWindow(QtWidgets.QWidget, Ui_runWindow): # MAY 3 #
         self.t_id_counter += 1
         self.hide()
 
-    # Run collectors method for an interval of 5 seconds       
+    # Run collectors method for an interval of 5 seconds
     def runCollectors(self, minute_interval):
         # identify OS
         operating_system = platform.system()
@@ -106,12 +106,12 @@ class RunWindow(QtWidgets.QWidget, Ui_runWindow): # MAY 3 #
                 print("Need to add VBoxManage.exe to PATH environment variable.")
                 print("Exiting from starting VM scenario.")
                 return
-            
+
             # Convert raw (bytes) to string, makes data easier
             # to modify and run vms based on names/uuids
             b = output.split('\r\n') # turn VM string into list of VMs
-            
-            # Dictionary of VMs available by name 
+
+            # Dictionary of VMs available by name
             # and its uuid for VBoxManage startvm command
             name_uuid_vm = {}
             print("b: ",b)
@@ -121,14 +121,14 @@ class RunWindow(QtWidgets.QWidget, Ui_runWindow): # MAY 3 #
                     continue
                 line = e.split('" ')
                 print(line)
-                name_uuid_vm[line[0][1:]] = line[1][1:-1]            
+                name_uuid_vm[line[0][1:]] = line[1][1:-1]
 
             # Stub vm to start
             # Ideally, user should be able to enter the
             # exact vms from their scenario selected
             vms_to_start = []
             for key in name_uuid_vm:
-                if "vagrant" in key.lower():        
+                if "vagrant" in key.lower():
                     vms_to_start.append(key)
 
             # Retrieve running vms to prevent issuing a command to
@@ -142,12 +142,12 @@ class RunWindow(QtWidgets.QWidget, Ui_runWindow): # MAY 3 #
                 running_vms.append(line[0][1:])
 
             print("List of vms to start: ", str(vms_to_start))
-            print("Running vms: ", str(running_vms))   
-            print('\n\n') 
+            print("Running vms: ", str(running_vms))
+            print('\n\n')
             # Based on scenario find uuid for VMs to start
             # vms_to_start = [] # collection of strings to be used to find uuid later
             # ... perform collection from scenario file
-            
+
             # Start VMs on their own threads (subprocess)
             # Could also use vagrant up!
             print("Proc ID dictionary (before): ",str(self.vms_proc_ids))
@@ -163,7 +163,7 @@ class RunWindow(QtWidgets.QWidget, Ui_runWindow): # MAY 3 #
                     print(output.decode())
                     print('\n\n')
                 else:
-                    # Create a list to hold information of vm    
+                    # Create a list to hold information of vm
                     print("About to start vms...")
                     self.vms_proc_ids[v] = []
                     self.vms_proc_ids[v].append(subprocess.Popen([vbox_manage_path, 'startvm', v], stdout=subprocess.PIPE))
@@ -205,7 +205,7 @@ class RunWindow(QtWidgets.QWidget, Ui_runWindow): # MAY 3 #
                 return
 
 
-        # Stub windows (have it send a return value) 
+        # Stub windows (have it send a return value)
         # verifying it received a signal from host
         # (Something present on all windows machines)
         else:
@@ -218,7 +218,7 @@ class RunWindow(QtWidgets.QWidget, Ui_runWindow): # MAY 3 #
             else:
                 proc = subprocess.Popen(["python", "ecel/start_stop_collectors.py"])
                 msg = QMessageBox.about(self.main, "Notice", "Collectors have started!")
-                # Need to add functionality to let Dr. Acosta 
+                # Need to add functionality to let Dr. Acosta
                 # know when collectors are done (signal w/ messagebox)
 
 
@@ -258,6 +258,26 @@ class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
+
+class AlternateManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
+    def __init__(self, parent=None):
+        super(AlternateManageExploitsWindow, self).__init__(parent)
+        self.setWindowIcon(QIcon("Icon.png"))
+        self.setupUi(self)
+        _translate = QtCore.QCoreApplication.translate
+        self.nextButton.setText(_translate("ManageExploits", "Add"))
+        self.backBUTTON.clicked.connect(self.close)
+        self.nextButton.clicked.connect(self.addMethod)
+
+    def addMethod(self):
+        for item in self.databseTREEWIDGET.findItems("", Qt.MatchContains | Qt.MatchRecursive):
+            if (item.checkState(0)==QtCore.Qt.Checked):
+                print (item.text(0))
+
+                """lastIndex = CreateNewVmWindow.vmFilesTREEWIDGET.count()
+                CreateNewVmWindow.vmFilesTREEWIDGET.addItem(QtWidgets.QListWidgetItem())
+                newitem = CreateNewVmWindow.vmFilesTREEWIDGET.item(lastIndex)
+                newitem.setText(item.text(0))"""
 
 
 class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
@@ -320,7 +340,7 @@ class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
         self.close()
 
 class VmSystemSettings(QtWidgets.QDialog, Ui_VmSystemSettings):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super(VmSystemSettings, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
@@ -554,15 +574,9 @@ class Controller:
         print(item.text())
         self.editVm.machineNameLINEEDIT.setText(item.text())
         self.editVm.show()
-   
+
     def checkDBConnection(self):
-        #####Processing methods checking for connection
-        self.dbconnection =True
-        if self.dbconnection:
-            self.launchAMED()
-            print("Connection Succesful : ", self.openingDBWindow.dbconnection)
-        else:
-            print("connection Unsuccesful")
+        self.launchAMED()
 
 if __name__ == '__main__':
     import sys
