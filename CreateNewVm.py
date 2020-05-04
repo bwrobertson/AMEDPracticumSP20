@@ -6,11 +6,6 @@ from pymongo import MongoClient
 from DBConfiguration import Ui_DBConfiguration
 
 class Ui_CreateNewVm(object):
-    try:
-        client = MongoClient(Ui_DBConfiguration.dbConnection)
-    except:
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-    db = client.Test
 
     def setupUi(self, CreateNewVm):
         CreateNewVm.setObjectName("CreateNewVm")
@@ -221,8 +216,8 @@ class Ui_CreateNewVm(object):
         self.vmFilesLABEL.setText(_translate("CreateNewVm", "VM Files:"))
         j = 0
         i = 0
-        data = Ui_CreateNewVm.db["Exploits"]
-        POVS = Ui_CreateNewVm.db['VulnerablePrograms']
+        data = Ui_DBConfiguration.db["Exploits"]
+        POVS = Ui_DBConfiguration.db['VulnerablePrograms']
         _translate = QtCore.QCoreApplication.translate
         __sortingEnabled = self.vmFilesTREEWIDGET.isSortingEnabled()
         self.vmFilesTREEWIDGET.setSortingEnabled(False)
@@ -265,9 +260,9 @@ class Ui_CreateNewVm(object):
         x=0
         y=0
         self.tree={}
-        data = Ui_CreateNewVm.db["Scenario"]
-        EXPLOITS = Ui_CreateNewVm.db['Exploits']
-        POVS = Ui_CreateNewVm.db['VulnerablePrograms']
+        data = Ui_DBConfiguration.db["Scenario"]
+        EXPLOITS = Ui_DBConfiguration.db['Exploits']
+        POVS = Ui_DBConfiguration.db['VulnerablePrograms']
         for collection in EXPLOITS.find():
             self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
             self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
@@ -286,7 +281,7 @@ class Ui_CreateNewVm(object):
             x=0
             y=0
             self.tree={}
-            data = Ui_CreateNewVm.db["Exploits"]
+            data = Ui_DBConfiguration.db["Exploits"]
             for collection in data.find():
                 self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
                 self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
