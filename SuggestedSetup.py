@@ -23,16 +23,11 @@ class Ui_Form(object):
 
     id = "5e9801a1e6c7aa9190f814dc"
     vmList = []
-    try:
-        client = MongoClient(Ui_DBConfiguration.dbConnection)
-    except:
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-    db = client.Test
 
     def runScen(self):
 
         db = Ui_Form.client.Test
-        data = Ui_Form.db["Scenario"]
+        data = Ui_DBConfiguration.db["Scenario"]
 
 
         scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
@@ -158,7 +153,7 @@ class Ui_Form(object):
         self.listWidget_2.clear()
         self.listWidget_3.clear()
         db = Ui_Form.client.Test
-        data = Ui_Form.db["Scenario"]
+        data = Ui_DBConfiguration.db["Scenario"]
         try:
             try:
                 thisData = data.find_one({'_id': ObjectId(Ui_MainWindow.id)})
