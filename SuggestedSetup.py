@@ -24,12 +24,14 @@ class Ui_Form(object):
 
     id = "5e9801a1e6c7aa9190f814dc"
     path = "C:/"
-    for x in os.walk(path):
-        if('\\VirtualBox VMs' in str(x)):
-            thisPath = (x[0])
-            break
-    vmList = os.listdir(thisPath)
-
+    try:
+        for x in os.walk(path):
+            if('\\VirtualBox VMs' in str(x)):
+                thisPath = (x[0])
+                break
+        vmList = os.listdir(thisPath)
+    except:
+        vmList = []
 
     def runScen(self):
 
