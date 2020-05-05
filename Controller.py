@@ -178,6 +178,7 @@ class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
         self.discardBUTTON.clicked.connect(self.close)
         self.vmSystemSettings = VmSystemSettings(self)
         self.settingsBUTTON.clicked.connect(self.vmSystemSettings.show)
+        self.editVm.saveBUTTON.clicked.connect(self.suggestedSetup.refreshSetup)
         #self.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
 
 class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
@@ -348,10 +349,6 @@ class Controller:
             self.suggestedSetup.listWidget_2.itemDoubleClicked.connect(self.handleDoubleClick)
             self.suggestedSetup.listWidget_3.itemDoubleClicked.connect(self.handleDoubleClick)
             #
-            #########---ALTERNATE MANAGE EXPLOITS---##################
-            self.editVm.settingsBUTTON.clicked.connect(self.vmSystemSettings.show)
-            self.editVm.saveBUTTON.clicked.connect(self.suggestedSetup.refreshSetup)
-            ################################################
             #
             self.networkSetup.backButton.clicked.connect(self.alternateNavNetworkSetup)
             self.networkSetup.advancedSettingsBUTTON.clicked.connect(self.advancedNetworkSetup.show)
