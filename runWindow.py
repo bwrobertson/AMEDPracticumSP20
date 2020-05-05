@@ -17,6 +17,7 @@ class Ui_runWindow(object):
     def setupUi(self, runWindow):
         self.checkbox_list = ""
         self.amed_home = os.getcwd()
+        print(self.amed_home)
         
         runWindow.setObjectName("runWindow")
         runWindow.resize(360, 200)
@@ -226,22 +227,15 @@ class Ui_runWindow(object):
             # change into the vagrant folder where the Vagrantfile is located /path/to/AMEDPracticumSP20/vagrant
             current_directory = os.getcwd()
             if "vagrant" in current_directory:
-                # msg = "Already in Vagrant folder."
-                # QMessageBox.about(self, "Information", msg)
                 print("\nAlready in Vagrant folder.")
-
             elif "vagrant" in os.listdir(self.amed_home):
                 os.chdir(self.amed_home + os.sep + "vagrant")
                 print("\n"+str(os.getcwd()))
-
             else:
-                print("\nVagrant folder not found.")
-                msg = "Already in Vagrant folder."+str(os.getcwd())
-                QMessageBox.about(self, "Information", msg)
-                print(os.getcwd())
                 return
 
             # May have to do this recursively to find all action_provision ids with scenario VM's
+            print(self.amed_home)
             os.chdir(self.amed_home+os.sep+'vagrant\\.vagrant\\machines\\default\\virtualbox')
             action_provision_id=-1
             try:
