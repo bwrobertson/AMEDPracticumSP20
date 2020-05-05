@@ -257,7 +257,7 @@ class Controller:
     def launchAMED(self):
             self.showSplashScreen()
             self.main = MainWindow()
-            self.runWindow =RunWindow()
+            self.runVMWindow = RunVMWindow()
             self.progressBar.setValue(1)
             QApplication.processEvents()
             self.progressBar.setValue(2)
@@ -309,7 +309,7 @@ class Controller:
             self.splash.close()
             #
             self.main.manageDataBUTTON.clicked.connect(self.manageDataOptions.show)
-            self.main.runBUTTON.clicked.connect(self.runWindow.show)
+            self.main.runBUTTON.clicked.connect(self.runVMWindow.show)
             #
             self.main.setupBUTTON.clicked.connect(self.setupButtonNav)
             self.main.configureBUTTON.clicked.connect(self.configureButtonNav)
@@ -355,10 +355,6 @@ class Controller:
             self.networkSetup.advancedSettingsBUTTON.clicked.connect(self.advancedNetworkSetup.show)
             #
             self.advancedNetworkSetup.backBUTTON.clicked.connect(self.networkSetup.show)
-            #
-            # Functionality for "Run" button (interval-based collection/
-            # proof of concept)
-            self.main.runBUTTON.clicked.connect(self.runCollectors)
             #
             self.main.show()
             #
