@@ -126,17 +126,17 @@ class Ui_RunVM(object):
         #           Changes Start Here             #
         ############################################
         self.startBUTTON.setEnabled(True)
-        self.startBUTTON.clicked.connect(self.progress)
+        # self.startBUTTON.clicked.connect(self.progress)
         ############################################
         #           Changes End   Here             #
         ############################################
         self.horizontalLayout_2.addWidget(self.startBUTTON)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
 
-        self.progressBar = QtWidgets.QProgressBar(self.layoutWidget)
-        self.progressBar.setProperty("value", 0)
-        self.progressBar.setObjectName("progressBar")
-        self.verticalLayout_3.addWidget(self.progressBar)
+        # self.progressBar = QtWidgets.QProgressBar(self.layoutWidget)
+        # self.progressBar.setProperty("value", 0)
+        # self.progressBar.setObjectName("progressBar")
+        # self.verticalLayout_3.addWidget(self.progressBar)
         
         self.retranslateUi(RunVM)
         QtCore.QMetaObject.connectSlotsByName(RunVM)
