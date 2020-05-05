@@ -40,19 +40,29 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.manageScenarioBUTTON.clicked.connect(self.hide)
         self.manageDataBUTTON.clicked.connect(self.hide)
 
-# Run VM functionality
+        
 class RunVMWindow(QtWidgets.QDialog, Ui_RunVM):
     def __init__(self, parent=None):
         super(RunVMWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
+        self.vms_checkmarked = []
         self.setupUi(self)
-        self.runWindow = RunWindow()
-        self.startBUTTON.clicked.connect(self.check)
+        self.runWindow = RunWindow() # child process
+        self.startBUTTON.clicked.connect(self.send_vm_info)
         self.backBUTTON.clicked.connect(self.close)
 
-    def check(self):
+    def send_vm_info(self):
         print("Here.")
+        self.vms_checkmarked = self.progress()
+        if not self.vms_checkmarked:
+            msg = "No VM's selected. Please select VM's."
+            QMessageBox.about(self, "Warning", msg)
+            return
+
+        print(self.vms_checkmarked)
+        self.runWindow.set_vm_info(self.vms_checkmarked)
         self.runWindow.show()
+
 
 # Run collectors functionality
 class RunWindow(QtWidgets.QWidget, Ui_runWindow): # MAY 3 #
