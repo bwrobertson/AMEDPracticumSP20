@@ -16,6 +16,7 @@ import os, sys, subprocess
 class Ui_runWindow(object):
     def setupUi(self, runWindow):
         self.checkbox_list = ""
+        self.amed_home = os.getcwd()
         
         runWindow.setObjectName("runWindow")
         runWindow.resize(360, 200)
@@ -141,14 +142,15 @@ class Ui_runWindow(object):
                 return
 
 
-            vagrant_folder = os.getcwd()+os.sep+'\\vagrant'
+            vagrant_folder = self.amed_home+os.sep+'\\vagrant'
             if not 'AMEDPracticumSP20' in vagrant_folder:
                 QMessageBox.about(self, "Warning", "No vagrant folder present. Creating one! \
                     Add a Vagrantfile of the scenario VM's you would like.")
                 os.mkdir(os.getcwd()+os.sep+'\\vagrant')
                 return
 
-            amed_home = os.getcwd()
+            # Add functionality for when the user has no Vagrantfiles init            
+
             # Run VBoxManage to find the VM's to start
             try:
 
@@ -228,8 +230,8 @@ class Ui_runWindow(object):
                 # QMessageBox.about(self, "Information", msg)
                 print("\nAlready in Vagrant folder.")
 
-            elif "vagrant" in os.listdir(amed_home):
-                os.chdir(amed_home + os.sep + "vagrant")
+            elif "vagrant" in os.listdir(self.amed_home):
+                os.chdir(self.amed_home + os.sep + "vagrant")
                 print("\n"+str(os.getcwd()))
 
             else:
@@ -240,7 +242,7 @@ class Ui_runWindow(object):
                 return
 
             # May have to do this recursively to find all action_provision ids with scenario VM's
-            os.chdir(amed_home+os.sep+'vagrant\\.vagrant\\machines\\default\\virtualbox')
+            os.chdir(self.amed_home+os.sep+'vagrant\\.vagrant\\machines\\default\\virtualbox')
             action_provision_id=-1
             try:
                 f=open('action_provision','r') # Get the p_id from the vagrant file
@@ -261,7 +263,7 @@ class Ui_runWindow(object):
 
                     if action_provision_id == name_uuid_vm[key]:
                         # start scenario on thread
-                        self.thread_scenarios[self.t_id_counter] = threading.Thread(target=self.vagrant_up_ssh, args=(interval_seconds, amed_home,), daemon=True)
+                        self.thread_scenarios[self.t_id_counter] = threading.Thread(target=self.vagrant_up_ssh, args=(interval_seconds, self.amed_home,), daemon=True)
                         self.thread_scenarios[self.t_id_counter].start()
                         print("Started thread: ",self.thread_scenarios[self.t_id_counter])
                         # self.thread_scenarios[self.t_id_counter].join()
@@ -276,7 +278,7 @@ class Ui_runWindow(object):
                 return
 
             
-            os.chdir(amed_home)
+            os.chdir(self.amed_home)
         # Stub windows (have it send a return value) 
         # verifying it received a signal from host
         # (Something present on all windows machines)
