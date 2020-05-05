@@ -41,11 +41,21 @@ class Ui_VmSystemSettings(object):
         settings = {"regular": change,
                         "vbox": custom}
     
-        self.parentWindow.get_settings(settings)
         self.hide()
+        self.parentWindow.get_settings(settings)
 
         # scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
 
+    def getBootOrder(self):
+        if(self.floppyCHECKBOX.isChecked()):
+            return 1
+        elif(self.opticalCHECKBOX.isChecked()):
+            return 2
+        elif(self.harddiskCHECKBOX.isChecked()):
+            return 3
+        elif(self.networkCHECKBOX.isChecked()):
+            return 4
+        return 0
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
