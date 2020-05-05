@@ -259,7 +259,7 @@ class Controller:
     def launchAMED(self):
             self.showSplashScreen()
             self.main = MainWindow()
-            # self.runVMWindow = RunVMWindow()
+            self.runVMWindow = RunVMWindow()
             self.progressBar.setValue(1)
             QApplication.processEvents()
             self.progressBar.setValue(2)
@@ -311,7 +311,7 @@ class Controller:
             self.splash.close()
             #
             self.main.manageDataBUTTON.clicked.connect(self.manageDataOptions.show)
-            # self.main.runBUTTON.clicked.connect(self.runVMWindow.show)
+            self.main.runBUTTON.clicked.connect(self.runVMWindow.show)
             #
             self.main.setupBUTTON.clicked.connect(self.setupButtonNav)
             self.main.configureBUTTON.clicked.connect(self.configureButtonNav)
