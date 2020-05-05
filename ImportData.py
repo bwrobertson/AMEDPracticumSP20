@@ -9,11 +9,19 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 import time
+import os
 from datetime import date
 from pymongo import MongoClient
 import json
+from DBConfiguration import Ui_DBConfiguration
 
 class Ui_importData(object):
+    
+    def importButtonStatus(self, path):
+        if os.path.exists(path) and len(path) > 2:
+            self.pushButton_3.setEnabled(True)
+        else:
+            self.pushButton_3.setEnabled(False)
 
     def scenarioBrowser(self):
         scenarioOptions = QFileDialog.Options()
@@ -123,6 +131,8 @@ class Ui_importData(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.pushButton_3 = QtWidgets.QPushButton(self.layoutWidget_2)
         self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_3.setEnabled(False)
+        self.lineEdit_2.textChanged.connect(self.importButtonStatus)
         self.pushButton_3.clicked.connect(self.pushScenario)
         self.horizontalLayout_2.addWidget(self.pushButton_3)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
