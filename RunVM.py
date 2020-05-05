@@ -31,7 +31,7 @@ class Ui_RunVM(object):
     db = client.Test
 
     def create_vm(self):
-        os.chdir(amed_home+os.sep+'vagrant')
+        os.chdir(self.amed_home+os.sep+'vagrant')
         proc = subprocess.Popen(['vagrant','up'], stdout=subprocess.PIPE)
         output=proc.stdout.read().decode()
         print(output)
@@ -39,6 +39,7 @@ class Ui_RunVM(object):
         proc_0 = subprocess.Popen(['vagrant','halt'], stdout=subprocess.PIPE)
         output=proc.stdout.read().decode()
         print(output)
+        os.chdir(self.amed_home)
 
 
 
@@ -50,18 +51,20 @@ class Ui_RunVM(object):
         self.tree={}
         self.vms_start = []
 
-        amed_home=os.getcwd()
+        self.amed_home=os.getcwd()
         self.action_provision_id=-1
 
         try:
-            os.chdir(amed_home+os.sep+'vagrant\\.vagrant\\machines\\default\\virtualbox')
+            os.chdir(self.amed_home+os.sep+'vagrant\\.vagrant\\machines\\default\\virtualbox')
             f=open('action_provision','r') # Get the p_id from the vagrant file
             line=f.read()
             line=line.split(':')
             self.action_provision_id=line[1]
         except:
+            os.chdir(self.amed_home)
             pass
 
+        os.chdir(self.amed_home)
         # Path to running VBoxManage.exe to start up vms
         vbox_manage_path = os.environ['PATH']
         vbox_manage_path = vbox_manage_path.split(';')
