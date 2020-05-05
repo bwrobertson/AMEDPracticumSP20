@@ -18,12 +18,21 @@ from bson.objectid import ObjectId
 from DBConfiguration import Ui_DBConfiguration
 from MainWindow import Ui_MainWindow
 import os
+import platform
 
 
 class Ui_Form(object):
 
     id = "5e9801a1e6c7aa9190f814dc"
-    path = "C:/"
+    thisPlat = platform.system()
+    if(thisPlat=="Windows"):
+        path = "C:/"
+    elif(thisPlat=='Mac'):
+        #need this verified by a mac buddy
+        path= '/'
+    elif(thisPlat=='Linux'):
+        #need a linux buddy to fill this in with the base directory
+        path = '/bin'
     try:
         for x in os.walk(path):
             if('\\VirtualBox VMs' in str(x)):
