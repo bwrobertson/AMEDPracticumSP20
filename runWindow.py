@@ -8,7 +8,10 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
+import threading, platform
+import os, sys, subprocess
 
 class Ui_runWindow(object):
     def setupUi(self, runWindow):
@@ -83,7 +86,7 @@ class Ui_runWindow(object):
         self.intervalLABEL.setText(_translate("runWindow", "Interval (minutes):"))
         self.cancelPushBUTTON.setText(_translate("runWindow", "Cancel"))
         self.okPushBUTTON.setText(_translate("runWindow", "Ok"))
-    
+
     def okayClicked(self):
         ###### use the following line  minus the print() to retrieve the value that is curerntly inside the spinbox
         interval_minute = self.intervalSPINBOX.value()
@@ -123,11 +126,22 @@ class Ui_runWindow(object):
             # scenario_info = ''
 
             # Path to running VBoxManage.exe to start up vms
-            vbox_manage_path = 'C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe'
+            vbox_manage_path = os.environ['PATH']
+            vbox_manage_path = vbox_manage_path.split(';')
+            for ll in vbox_manage_path:
+                if 'Oracle' in ll:
+                    vbox_manage_path = ll+os.sep+'VBoxManage.exe'
 
+            vagrant_folder = os.getcwd()+os.sep+'\\vagrant'
+            if not 'AMEDPracticumSP20' in vagrant_folder:
+                QMessageBox.about(self, "Warning", "No vagrant folder present.")
+                return
+
+            amed_home = os.getcwd()
             # Run VBoxManage to find the VM's to start
             try:
-                proc = subprocess.Popen([vbox_manage_path, "list", "vms"], stdout=subprocess.PIPE)
+
+                proc = subprocess.Popen([vbox_manage_path, 'list', 'vms'], stdout=subprocess.PIPE)
                 output = proc.stdout.read() # shows us a list of vms to run
                 output=output.decode()
 
@@ -136,16 +150,19 @@ class Ui_runWindow(object):
                 output_1=output_1.decode()
 
             except:
+                QMessageBox.about(self, "Warning", "Need to add VBoxManage.exe to PATH environment variable.")
+                print(vbox_manage_path)
                 print("Need to add VBoxManage.exe to PATH environment variable.")
                 print("Exiting from starting VM scenario.")
                 return
             
+            os.chdir(amed_home)
             # Convert raw (bytes) to string, makes data easier
             # to modify and run vms based on names/uuids
             b = output.split('\r\n') # turn VM string into list of VMs
             
-            # Dictionary of VMs available by name 
-            # and its uuid for VBoxManage startvm command
+            # # Dictionary of VMs available by name 
+            # # and its uuid for VBoxManage startvm command
             name_uuid_vm = {}
             print("b: ",b)
             print("\n\n")
@@ -156,16 +173,16 @@ class Ui_runWindow(object):
                 print(line)
                 name_uuid_vm[line[0][1:]] = line[1][1:-1]            
 
-            # Stub vm to start
-            # Ideally, user should be able to enter the
-            # exact vms from their scenario selected
+            # # Stub vm to start
+            # # Ideally, user should be able to enter the
+            # # exact vms from their scenario selected
             vms_to_start = []
             for key in name_uuid_vm:
                 if "vagrant" in key.lower():        
                     vms_to_start.append(key)
 
-            # Retrieve running vms to prevent issuing a command to
-            # start an already running vm
+            # # Retrieve running vms to prevent issuing a command to
+            # # start an already running vm
             d = output_1.split('\r\n')
             running_vms = []
             for e in d:
@@ -173,18 +190,9 @@ class Ui_runWindow(object):
                     continue
                 line = e.split('" ')
                 running_vms.append(line[0][1:])
-
-            print("List of vms to start: ", str(vms_to_start))
-            print("Running vms: ", str(running_vms))   
-            print('\n\n') 
-            # Based on scenario find uuid for VMs to start
-            # vms_to_start = [] # collection of strings to be used to find uuid later
-            # ... perform collection from scenario file
             
-            # Start VMs on their own threads (subprocess)
-            # Could also use vagrant up!
-            print("Proc ID dictionary (before): ",str(self.vms_proc_ids))
-            print('\n\n')
+            # # Start VMs on their own threads (subprocess)
+            # # Could also use vagrant up!
             for v in vms_to_start:
 
                 # Check if vm is running
@@ -195,16 +203,6 @@ class Ui_runWindow(object):
                     output = proc_stop.stdout.read()
                     print(output.decode())
                     print('\n\n')
-                else:
-                    # Create a list to hold information of vm    
-                    print("About to start vms...")
-                    self.vms_proc_ids[v] = []
-                    self.vms_proc_ids[v].append(subprocess.Popen([vbox_manage_path, 'startvm', v], stdout=subprocess.PIPE))
-                    output = self.vms_proc_ids[v][0].stdout.read()
-                    self.vms_proc_ids[v].append(output)
-                    print("Added to vms_proc_ids...\n\n")
-
-            print("Proc ID dictionary (after): ",str(self.vms_proc_ids))
 
 
             # how to power down vm safely
@@ -225,19 +223,28 @@ class Ui_runWindow(object):
                 # Need to verify the VM is up and running??
 
                 # Sending vagrant command to start collectors
+                os.chdir(vagrant_folder)
                 vagrant_command_string = "sudo $ECEL_HOME/standalone.sh "+str(interval_seconds)
+                proc_1 = subprocess.Popen(['vagrant', 'up'], stdout=subprocess.PIPE)
+                print("\nVagrant standalone command sent, output to follow ->")
+                print('\n\n')
+                output = proc_1.stdout.read()
+                print(output)          
+
                 proc = subprocess.Popen(['vagrant', 'ssh', '-c', vagrant_command_string], stdout=subprocess.PIPE)
                 print("\nVagrant standalone command sent, output to follow ->")
                 print('\n\n')
                 output = proc.stdout.read()
                 print(output)
+                os.chdir(amed_home)
                 return
             except:
                 print("\nEither the VM was not started, or")
                 print("standalone.sh not found within Ubuntu guest or guest OS is Windows-based.\n")
                 return
 
-
+            
+            os.chdir(amed_home)
         # Stub windows (have it send a return value) 
         # verifying it received a signal from host
         # (Something present on all windows machines)
@@ -253,6 +260,7 @@ class Ui_runWindow(object):
                 msg = QMessageBox.about(self.main, "Notice", "Collectors have started!")
                 # Need to add functionality to let Dr. Acosta 
                 # know when collectors are done (signal w/ messagebox)
+
 
 if __name__ == "__main__":
     import sys
