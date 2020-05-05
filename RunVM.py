@@ -15,7 +15,6 @@ from DBConfiguration import Ui_DBConfiguration
 
 # MAY 3 #
 import subprocess
-import sys
 ############################################
 #           Changes End   Here             #
 ############################################
@@ -39,15 +38,28 @@ class Ui_RunVM(object):
         self.tree={}
         self.vms_start = []
 
-        # MAY 3 #
+        amed_home=os.getcwd()
+        os.chdir(amed_home+os.sep+'vagrant\\.vagrant\\machines\\default\\virtualbox')
+        self.action_provision_id=-1
+        try:
+            f=open('action_provision','r') # Get the p_id from the vagrant file
+            line=f.read()
+            line=line.split(':')
+            self.action_provision_id=line[1]
+        except:
+            msg="No provision file found."
+            QMessageBox.about(self, "Information", msg)
+
+        os.chdir(amed_home)
         vbox_manage_path = 'C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe'
         try:
             proc = subprocess.Popen([vbox_manage_path, "list", "vms"], stdout=subprocess.PIPE)
             output = proc.stdout.read() # shows us a list of vms to run
             output=output.decode()
         except:
-            QMessageBox.about(self, "Error", "VBoxManage.exe is not in the PATH environment variable. \
-                Unable to find VBoxManage.exe.")
+            msg="VBoxManage.exe is not in the PATH environment variable. \
+                Unable to find VBoxManage.exe."
+            QMessageBox.about(self, "Error", msg)
             self.close()
 
         # Convert raw (bytes) to string, makes data easier
@@ -126,23 +138,18 @@ class Ui_RunVM(object):
         #           Changes Start Here             #
         ############################################
         self.startBUTTON.setEnabled(True)
-        # self.startBUTTON.clicked.connect(self.progress)
         ############################################
         #           Changes End   Here             #
         ############################################
         self.horizontalLayout_2.addWidget(self.startBUTTON)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
-
-        # self.progressBar = QtWidgets.QProgressBar(self.layoutWidget)
-        # self.progressBar.setProperty("value", 0)
-        # self.progressBar.setObjectName("progressBar")
-        # self.verticalLayout_3.addWidget(self.progressBar)
         
         self.retranslateUi(RunVM)
         QtCore.QMetaObject.connectSlotsByName(RunVM)
 
     def retranslateUi(self, RunVM):
         i = 0
+        x = 0
         _translate = QtCore.QCoreApplication.translate
         RunVM.setWindowTitle(_translate("RunVM", "Virtual Machine Selection"))
         self.destinationDirectoryLABEL.setText(_translate("RunVM", "Virtual Machines on System:"))
@@ -153,10 +160,15 @@ class Ui_RunVM(object):
         ############################################
         for key in self.name_uuid_vm:
             try:
-                self.databseTREEWIDGET.topLevelItem(i).setText(0, _translate("Export", key))
+                if self.name_uuid_vm[key] == self.action_provision_id:
+                    self.databseTREEWIDGET.topLevelItem(i).setText(0, _translate("Export", key))
+                    i+=1
             except:
-                print(key)
-            i+=1
+                msg="Problem with retranslateUi in RunVM.py."
+                QMessageBox.about(self, "Error", msg)
+                pass
+                
+
         ############################################
         #           Changes End   Here             #
         ############################################
@@ -171,32 +183,25 @@ class Ui_RunVM(object):
     def setupTree(self, RunVM):
         x=0
         for key in self.name_uuid_vm:
-
-            self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
-            self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
-            self.tree["parent{0}".format(x)].setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate)
-
-            x+=1
+            if self.name_uuid_vm[key] == self.action_provision_id:
+                self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
+                self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
+                self.tree["parent{0}".format(x)].setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsTristate)
+                x+=1
 
         return RunVM
 
     def progress(self):
-        print('\nEntered Progress.')
-        self.progressBar.setValue(0)
-        self.count = 0
-        numFiles = 0
+        self.vms_start = []
         x=0
         for key in self.name_uuid_vm:
-            if(self.tree["parent{0}".format(x)].checkState(0) == QtCore.Qt.Checked):
-                print(key)
-                self.vms_start.append(key)
-            x+=1
+            if self.name_uuid_vm[key] == self.action_provision_id:
+                if(self.tree["parent{0}".format(x)].checkState(0) == QtCore.Qt.Checked):
+                    print(key)
+                    self.vms_start.append(key)
+                x+=1
 
-        self.progressBar.setValue(100)
-        # QMessageBox.about(self, "Success", "Virtual Machines were started.")
-        self.progressBar.setValue(0)
-
-        return
+        return self.vms_start
 
 
 if __name__ == "__main__":
