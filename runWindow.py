@@ -134,7 +134,8 @@ class Ui_runWindow(object):
 
             vagrant_folder = os.getcwd()+os.sep+'\\vagrant'
             if not 'AMEDPracticumSP20' in vagrant_folder:
-                QMessageBox.about(self, "Warning", "No vagrant folder present.")
+                QMessageBox.about(self, "Warning", "No vagrant folder present. Creating one!")
+                os.mkdir(os.getcwd()+os.sep+'\\vagrant')
                 return
 
             amed_home = os.getcwd()
