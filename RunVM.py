@@ -15,6 +15,7 @@ from DBConfiguration import Ui_DBConfiguration
 
 # MAY 3 #
 import subprocess
+import threading
 ############################################
 #           Changes End   Here             #
 ############################################
@@ -29,38 +30,52 @@ class Ui_RunVM(object):
         client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
     db = client.Test
 
+    def create_vm(self):
+        os.chdir(amed_home+os.sep+'vagrant')
+        proc = subprocess.Popen(['vagrant','up'], stdout=subprocess.PIPE)
+        output=proc.stdout.read().decode()
+        print(output)
+
+        proc_0 = subprocess.Popen(['vagrant','halt'], stdout=subprocess.PIPE)
+        output=proc.stdout.read().decode()
+        print(output)
+
+
 
     def setupUi(self, RunVM):
         ############################################
         #           Changes Start Here             #
         ############################################
-
+        print("Entered setupui.")
         self.tree={}
         self.vms_start = []
 
         amed_home=os.getcwd()
-        os.chdir(amed_home+os.sep+'vagrant\\.vagrant\\machines\\default\\virtualbox')
         self.action_provision_id=-1
+
         try:
+            os.chdir(amed_home+os.sep+'vagrant\\.vagrant\\machines\\default\\virtualbox')
             f=open('action_provision','r') # Get the p_id from the vagrant file
             line=f.read()
             line=line.split(':')
             self.action_provision_id=line[1]
         except:
-            msg="No provision file found."
-            QMessageBox.about(self, "Information", msg)
+            pass
 
-        os.chdir(amed_home)
-        vbox_manage_path = 'C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe'
+        # Path to running VBoxManage.exe to start up vms
+        vbox_manage_path = os.environ['PATH']
+        vbox_manage_path = vbox_manage_path.split(';')
+        for ll in vbox_manage_path:
+            if 'Oracle' in ll:
+                vbox_manage_path = ll+os.sep+'VBoxManage.exe'
+
         try:
             proc = subprocess.Popen([vbox_manage_path, "list", "vms"], stdout=subprocess.PIPE)
             output = proc.stdout.read() # shows us a list of vms to run
             output=output.decode()
         except:
-            msg="VBoxManage.exe is not in the PATH environment variable. \
-                Unable to find VBoxManage.exe."
-            QMessageBox.about(self, "Error", msg)
-            self.close()
+            pass
+
 
         # Convert raw (bytes) to string, makes data easier
         # to modify and run vms based on names/uuids
@@ -146,6 +161,7 @@ class Ui_RunVM(object):
         
         self.retranslateUi(RunVM)
         QtCore.QMetaObject.connectSlotsByName(RunVM)
+        print("Exited setupui")
 
     def retranslateUi(self, RunVM):
         i = 0
