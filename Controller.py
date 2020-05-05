@@ -143,15 +143,12 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
 
     def contextMenuEvent(self, event):
         cmenu = QMenu(self)
-        infoAct = cmenu.addAction("Info")
         removeAct = cmenu.addAction("Remove")
 
         action = cmenu.exec_(self.mapToGlobal(event.pos()))
         if action == removeAct:
             self.removeSelectedItem()
-        if action == infoAct:
-            print("launch info window")
-            #Line where  VM Details Window will open with VM id being passed
+      
 
 #method responsible for removing an element from the PoV and Victim Lists
     def removeSelectedItem(self):
