@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QFont, QIcon
 from PyQt5.QtWidgets import QSplashScreen, QMenu, QApplication, QProgressBar
 from qtpy import QtCore
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from ConfigureMongoDB import Ui_ConfigureMongoDB
 from DBConfiguration import Ui_DBConfiguration
@@ -257,7 +258,7 @@ class Controller:
     def launchAMED(self):
             self.showSplashScreen()
             self.main = MainWindow()
-            self.runVMWindow = RunVMWindow()
+            # self.runVMWindow = RunVMWindow()
             self.progressBar.setValue(1)
             QApplication.processEvents()
             self.progressBar.setValue(2)
@@ -309,7 +310,7 @@ class Controller:
             self.splash.close()
             #
             self.main.manageDataBUTTON.clicked.connect(self.manageDataOptions.show)
-            self.main.runBUTTON.clicked.connect(self.runVMWindow.show)
+            # self.main.runBUTTON.clicked.connect(self.runVMWindow.show)
             #
             self.main.setupBUTTON.clicked.connect(self.setupButtonNav)
             self.main.configureBUTTON.clicked.connect(self.configureButtonNav)
