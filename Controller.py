@@ -177,6 +177,7 @@ class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
         self.setupUi(self)
         self.discardBUTTON.clicked.connect(self.close)
         self.vmSystemSettings = VmSystemSettings(self)
+        self.settingsBUTTON.clicked.connect(self.vmSystemSettings.show)
         #self.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
 
 class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
@@ -187,7 +188,7 @@ class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
         self.discardBUTTON.clicked.connect(self.close)
 
 class VmSystemSettings(QtWidgets.QDialog, Ui_VmSystemSettings):
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         super(VmSystemSettings, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
@@ -289,10 +290,10 @@ class Controller:
             self.createNewVm = CreateNewVmWindow()
             self.progressBar.setValue(11)
             QApplication.processEvents()
-            self.vmSystemSettings = VmSystemSettings()
+            self.editVm= EditVmWindow("null")
             self.progressBar.setValue(12)
             QApplication.processEvents()
-            self.editVm= EditVmWindow("null")
+            self.vmSystemSettings = VmSystemSettings(self.editVm)
             self.progressBar.setValue(13)
             QApplication.processEvents()
             self.manageDataOptions=ManageDataOptionsWindow()
