@@ -55,7 +55,7 @@ class Ui_RunVM(object):
         self.action_provision_id=-1
 
         try:
-            os.chdir(self.amed_home+os.sep+'vagrant\\.vagrant\\machines\\default\\virtualbox')
+            os.chdir(self.amed_home+os.sep+'vagrant'+os.sep+'.vagrant'+os.sep+'machines'+os.sep+'default'+os.sep+'virtualbox')
             f=open('action_provision','r') # Get the p_id from the vagrant file
             line=f.read()
             line=line.split(':')
