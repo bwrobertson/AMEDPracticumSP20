@@ -38,6 +38,7 @@ class Ui_MainWindow(object):
         self.configureBUTTON.setEnabled(True)
         self.setupBUTTON.setEnabled(True)
         self.runBUTTON.setEnabled(True)
+        self.runBUTTON.setStyleSheet('QPushButton {background-color: #2471A3; color: white;}')
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
