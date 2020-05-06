@@ -69,7 +69,7 @@ class Ui_RunVM(object):
         vbox_manage_path = os.environ['PATH']
         vbox_manage_path = vbox_manage_path.split(';')
         for ll in vbox_manage_path:
-            if 'Oracle' in ll:
+            if 'virtualbox' in ll.lower():
                 vbox_manage_path = ll+os.sep+'VBoxManage.exe'
 
         try:
