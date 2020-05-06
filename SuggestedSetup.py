@@ -25,6 +25,7 @@ class Ui_Form(object):
 
     id = "5e9801a1e6c7aa9190f814dc"
     thisPlat = platform.system()
+    VBOXID = os.sep + 'VirtualBox VMs'
     if(thisPlat=="Windows"):
         path = "C:/"
     elif(thisPlat=='Mac'):
@@ -35,7 +36,7 @@ class Ui_Form(object):
         path = '/'
     try:
         for x in os.walk(path):
-            if('\\VirtualBox VMs' in str(x)):
+            if(VBOXID in str(x)):
                 thisPath = (x[0])
                 break
         vmList = os.listdir(thisPath)
