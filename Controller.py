@@ -177,8 +177,9 @@ class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
         self.setupUi(self)
         self.discardBUTTON.clicked.connect(self.close)
         self.vmSystemSettings = VmSystemSettings(self)
+        self.suggestedSetup = SuggestedSetupWindow()
         self.settingsBUTTON.clicked.connect(self.vmSystemSettings.show)
-        self.editVm.saveBUTTON.clicked.connect(self.suggestedSetup.refreshSetup)
+        self.saveBUTTON.clicked.connect(self.suggestedSetup.refreshSetup)
         #self.manageExploitsBUTTON.clicked.connect(self.alternateManageExploits.show)
 
 class CreateNewVmWindow(QtWidgets.QDialog, Ui_CreateNewVm):
@@ -260,7 +261,7 @@ class Controller:
     def launchAMED(self):
             self.showSplashScreen()
             self.main = MainWindow()
-            self.runVMWindow = RunVMWindow()
+            #self.runVMWindow = RunVMWindow()
             self.progressBar.setValue(1)
             QApplication.processEvents()
             self.progressBar.setValue(2)
@@ -312,7 +313,7 @@ class Controller:
             self.splash.close()
             #
             self.main.manageDataBUTTON.clicked.connect(self.manageDataOptions.show)
-            self.main.runBUTTON.clicked.connect(self.runVMWindow.show)
+            #self.main.runBUTTON.clicked.connect(self.runVMWindow.show)
             #
             self.main.setupBUTTON.clicked.connect(self.setupButtonNav)
             self.main.configureBUTTON.clicked.connect(self.configureButtonNav)
