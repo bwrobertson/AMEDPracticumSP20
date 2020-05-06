@@ -96,6 +96,7 @@ class Ui_ManageScenarios(object):
         self.deleteBUTTON.setText(_translate("ManageScenarios", "Delete"))
 
     def setupTree(self):
+        self.scenariosLISTWIDGET.clear()
         data = Ui_DBConfiguration.db['Scenario']
         _translate = QtCore.QCoreApplication.translate
         x = 0
