@@ -19,6 +19,7 @@ from DBConfiguration import Ui_DBConfiguration
 from MainWindow import Ui_MainWindow
 import os
 import platform
+from pathlib import Path
 
 
 class Ui_Form(object):
@@ -26,14 +27,7 @@ class Ui_Form(object):
     id = "5e9801a1e6c7aa9190f814dc"
     thisPlat = platform.system()
     VBOXID = os.sep + 'VirtualBox VMs'
-    if(thisPlat=="Windows"):
-        path = "C:/"
-    elif(thisPlat=='Mac'):
-        #need this verified by a mac buddy
-        path= '/'
-    elif(thisPlat=='Linux'):
-        #need a linux buddy to fill this in with the base directory
-        path = '/'
+    path = str(Path.home())
     try:
         for x in os.walk(path):
             if(VBOXID in str(x)):
