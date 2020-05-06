@@ -211,7 +211,7 @@ class Ui_runWindow(object):
 
                 # Check if vm is running
                 if v in running_vms:
-                    msg = "VM is already running, powering off. ID: "+std(name_uuid_vm[v])
+                    msg = "VM is already running, powering off. ID: "+str(name_uuid_vm[v])
                     QMessageBox.about(self, "Warning", msg)
                     print("VM is already running, powering off!")
                     print("ID: ", v)
