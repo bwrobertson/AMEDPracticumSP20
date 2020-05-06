@@ -148,6 +148,9 @@ class Ui_RunVM(object):
         self.horizontalLayout_2.addWidget(self.backBUTTON)
         spacerItem = QtWidgets.QSpacerItem(38, 28, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
+        self.rdpBUTTON = QtWidgets.QPushButton(self.layoutWidget)
+        self.rdpBUTTON.setObjectName("rdpBUTTON")
+        self.horizontalLayout_2.addWidget(self.rdpBUTTON)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem1)
         self.startBUTTON = QtWidgets.QPushButton(self.layoutWidget)
@@ -171,7 +174,7 @@ class Ui_RunVM(object):
         x = 0
         _translate = QtCore.QCoreApplication.translate
         RunVM.setWindowTitle(_translate("RunVM", "Virtual Machine Selection"))
-        self.destinationDirectoryLABEL.setText(_translate("RunVM", "Virtual Machines on System:"))
+        self.destinationDirectoryLABEL.setText(_translate("RunVM", "Virtual Machines for Scenario:"))
         __sortingEnabled = self.databseTREEWIDGET.isSortingEnabled()
         self.databseTREEWIDGET.setSortingEnabled(False)
         ############################################
@@ -193,6 +196,7 @@ class Ui_RunVM(object):
         ############################################
         self.databseTREEWIDGET.setSortingEnabled(__sortingEnabled)
         self.backBUTTON.setText(_translate("RunVM", "Back"))
+        self.rdpBUTTON.setText(_translate("RunVM", "Remote Desktop"))
         self.startBUTTON.setText(_translate("RunVM", "Start Selected"))
 
     ############################################
