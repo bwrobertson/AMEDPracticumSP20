@@ -305,7 +305,7 @@ class Ui_ManageData(object):
             x+=1
         self.progressBar.setValue(50)
         self.databseTREEWIDGET.clear()
-        self.setupTree(self)
+        self.setupTree()
         self.retranslateUi(self)
         self.progressBar.setValue(100)
         QMessageBox.about(self, "Success", "Items Deleted Succesfully.")
