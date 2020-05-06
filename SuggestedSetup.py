@@ -32,7 +32,7 @@ class Ui_Form(object):
         path= '/'
     elif(thisPlat=='Linux'):
         #need a linux buddy to fill this in with the base directory
-        path = '/bin'
+        path = '/'
     try:
         for x in os.walk(path):
             if('\\VirtualBox VMs' in str(x)):
