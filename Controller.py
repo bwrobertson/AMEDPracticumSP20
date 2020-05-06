@@ -318,6 +318,7 @@ class Controller:
             self.main.setupBUTTON.clicked.connect(self.setupButtonNav)
             self.main.configureBUTTON.clicked.connect(self.configureButtonNav)
             #
+            self.manageDataOptions.exportBUTTON.clicked.connect(self.manageData.resetTree)
             self.manageDataOptions.exportBUTTON.clicked.connect(self.manageData.show)
             self.manageDataOptions.importBUTTON.clicked.connect(self.importData.show)
             self.manageDataOptions.backBUTTON.clicked.connect(self.main.show)
