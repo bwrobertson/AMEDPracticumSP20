@@ -396,7 +396,6 @@ class Controller:
         self.progressBar.setMaximum(17)
         self.progressBar.setGeometry(0, self.pix.height() - 15, 834, 20)
         self.splash.show()
-        self.splash.show()
 
     def setupButtonNav(self):
         self.suggestedSetup.nav = 1
