@@ -25,17 +25,8 @@ from pathlib import Path
 class Ui_Form(object):
 
     id = "5e9801a1e6c7aa9190f814dc"
-    thisPlat = platform.system()
-    VBOXID = os.sep + 'VirtualBox VMs'
-    path = str(Path.home())
-    try:
-        for x in os.walk(path):
-            if(VBOXID in str(x)):
-                thisPath = (x[0])
-                break
-        vmList = os.listdir(thisPath)
-    except:
-        vmList = []
+    vmList = []
+
 
     def runScen(self):
 
@@ -80,9 +71,21 @@ class Ui_Form(object):
         data.delete_one({'_id': ObjectId(Ui_NewScenario.id)})
         data.insert_one(newScen)
 
-
+    def findVMs(self):
+        thisPlat = platform.system()
+        VBOXID = os.sep + 'VirtualBox VMs'
+        path = str(Path.home())
+        try:
+            for x in os.walk(path):
+                if(VBOXID in str(x)):
+                    thisPath = (x[0])
+                    break
+            Ui_Form.vmList = os.listdir(thisPath)
+        except:
+            Ui_Form.vmList = []
 
     def setupUi(self, Form):
+        self.findVMs()
         Form.setObjectName("Form")
         Form.resize(753, 480)
         Form.setMinimumSize(QtCore.QSize(753, 480))
@@ -171,7 +174,7 @@ class Ui_Form(object):
             if('malware' in x):
                 self.listWidget.insertItem(1, QListWidgetItem(QIcon("vmmalware.png"), x))
             else:
-                self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))        
+                self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
         try:
             try:
                 thisData = data.find_one({'_id': ObjectId(Ui_MainWindow.id)})
