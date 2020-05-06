@@ -113,7 +113,7 @@ class Ui_ManageData(object):
         ############################################
         #           Changes Start Here             #
         ############################################
-        self.setupTree(ManageData)
+        self.setupTree()
         """for collection in data.find():
             self.tree["parent{0}".format(x)] = QtWidgets.QTreeWidgetItem(self.databseTREEWIDGET)
             self.tree["parent{0}".format(x)].setCheckState(0, QtCore.Qt.Unchecked)
@@ -168,9 +168,7 @@ class Ui_ManageData(object):
         ############################################
         #           Changes Start Here             #
         ############################################
-        j = 0
-        i = 0
-        data = Ui_DBConfiguration.db["Demo"]
+
         ############################################
         #           Changes End   Here             #
         ############################################
@@ -178,6 +176,24 @@ class Ui_ManageData(object):
         ManageData.setWindowTitle(_translate("ManageData", "Manage Data"))
         self.destinationDirectoryLABEL.setText(_translate("ManageData", "Destination Directory:"))
         self.browserBUTTON.setText(_translate("ManageData", "Browse"))
+        self.populateTree()
+        self.backBUTTON.setText(_translate("ManageData", "Back"))
+        self.deleteBUTTON.setText(_translate("ManageData", "Delete Selected"))
+        self.exportBUTTON.setText(_translate("ManageData", "Export Selected"))
+
+    ############################################
+    #           Changes Start Here             #
+    ############################################
+    def resetTree(self):
+        self.databseTREEWIDGET.clear()
+        self.setupTree()
+        self.populateTree()
+
+    def populateTree(self):
+        j = 0
+        i = 0
+        data = Ui_DBConfiguration.db["Demo"]
+        _translate = QtCore.QCoreApplication.translate
         __sortingEnabled = self.databseTREEWIDGET.isSortingEnabled()
         self.databseTREEWIDGET.setSortingEnabled(False)
         ############################################
@@ -195,15 +211,8 @@ class Ui_ManageData(object):
         #           Changes End   Here             #
         ############################################
         self.databseTREEWIDGET.setSortingEnabled(__sortingEnabled)
-        self.backBUTTON.setText(_translate("ManageData", "Back"))
-        self.deleteBUTTON.setText(_translate("ManageData", "Delete Selected"))
-        self.exportBUTTON.setText(_translate("ManageData", "Export Selected"))
 
-    ############################################
-    #           Changes Start Here             #
-    ############################################
-
-    def setupTree(self, ManageData):
+    def setupTree(self):
         x=0
         y=0
         data = Ui_DBConfiguration.db["Demo"]
@@ -217,7 +226,6 @@ class Ui_ManageData(object):
                     self.tree["child{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
                     y+=1
             x+=1
-        return ManageData
 
     def progress(self):
         self.progressBar.setValue(0)
@@ -233,10 +241,9 @@ class Ui_ManageData(object):
                         if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
                             numFiles+=1
                         y+=1
-        try:
-            tickSize = int(100/numFiles)
-        except:
-            return
+
+        tickSize = int(100/numFiles)
+        print(tickSize)
         x=0
         y=0
         fileName = ""
@@ -268,7 +275,8 @@ class Ui_ManageData(object):
             self.progressBar.setValue(100)
             QMessageBox.about(self, "Success", "Items Exported Succesfully.")
             self.progressBar.setValue(0)
-            
+
+
         return
 
 
