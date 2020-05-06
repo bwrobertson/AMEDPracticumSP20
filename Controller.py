@@ -39,7 +39,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.manageScenarioBUTTON.clicked.connect(self.hide)
-        self.manageDataBUTTON.clicked.connect(self.hide)
+       
 
         
 class RunVMWindow(QtWidgets.QDialog, Ui_RunVM):
