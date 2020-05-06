@@ -17,7 +17,6 @@ class Ui_runWindow(object):
     def setupUi(self, runWindow):
         self.checkbox_list = ""
         self.amed_home = os.getcwd()
-        print(self.amed_home)
         
         runWindow.setObjectName("runWindow")
         runWindow.resize(360, 200)
@@ -125,8 +124,8 @@ class Ui_runWindow(object):
 
         # Check if Virtualbox on server [would never run on local] has VM's,
         # If not prompt user to start a scenario
-        # Common path: "C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe"
-        if "windows" in operating_system.lower():
+        # Common path: "C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe" (Windows)
+        if True:
             # Needs a variable of the scenario info to find VM's to start
             # scenario_info = ''
 
@@ -143,11 +142,11 @@ class Ui_runWindow(object):
                 return
 
 
-            vagrant_folder = self.amed_home+os.sep+'\\vagrant'
+            vagrant_folder = self.amed_home+os.sep+'vagrant'
             if not 'AMEDPracticumSP20' in vagrant_folder:
                 QMessageBox.about(self, "Warning", "No vagrant folder present. Creating one! \
                     Add a Vagrantfile of the scenario VM's you would like.")
-                os.mkdir(os.getcwd()+os.sep+'\\vagrant')
+                os.mkdir(os.getcwd()+os.sep+'vagrant')
                 return
 
             # Add functionality for when the user has no Vagrantfiles init            
@@ -236,7 +235,7 @@ class Ui_runWindow(object):
 
             # May have to do this recursively to find all action_provision ids with scenario VM's
             print(self.amed_home)
-            os.chdir(self.amed_home+os.sep+'vagrant\\.vagrant\\machines\\default\\virtualbox')
+            os.chdir(self.amed_home+os.sep+'vagrant'+os.sep+'.vagrant'+os.sep+'machines'+os.sep+'default'+os.sep+'virtualbox')
             action_provision_id=-1
             try:
                 f=open('action_provision','r') # Get the p_id from the vagrant file
@@ -277,17 +276,10 @@ class Ui_runWindow(object):
         # verifying it received a signal from host
         # (Something present on all windows machines)
         else:
-            # Ubuntu-based hosts that are running AMED
 
-            # Controller.py must be ran in root (i.e. $ sudo su, on Linux)
-            uid = os.getuid()
-            if uid != 0:
-                msg = QMessageBox.about(self.main, "Warning", "Collectors must be ran with root privileges.")
-            else:
-                proc = subprocess.Popen(["python", "ecel/start_stop_collectors.py"])
-                msg = QMessageBox.about(self.main, "Notice", "Collectors have started!")
-                # Need to add functionality to let Dr. Acosta 
-                # know when collectors are done (signal w/ messagebox)
+            # Ubuntu-based hosts that are running AMED
+            QMessageBox.about(self.main, "Warning", "OS not supported!")
+
     
     def vagrant_up_ssh(self, interval_seconds, amed_home):
         vagrant_command_string = "sudo $ECEL_HOME/standalone.sh "+str(interval_seconds)
