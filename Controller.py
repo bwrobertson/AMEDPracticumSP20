@@ -104,9 +104,16 @@ class NewScenariosWindow(QtWidgets.QDialog, Ui_NewScenario):
         self.setupUi(self)
         self.exploitBrowseBUTTON.clicked.connect(self.hide)
         self.vulnerableProgramBrowseBUTTON.clicked.connect(self.hide)
+        self.nextBUTTON.clicked.connect(self.clearLineEdits)
+        self.cancelBUTTON.clicked.connect(self.clearLineEdits)
         self.cancelBUTTON.clicked.connect(self.close)
         self.nextBUTTON.clicked.connect(self.close)
 
+    def clearLineEdits(self):
+        self.exploitLINEEDIT.setText("")
+        self.vulnerableProgramLINEEDIT.setText("")
+        self.scenarioLINEEDIT.setText("")
+        
 class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
     def __init__(self, parent=None):
         super(ManageExploitsWindow, self).__init__(parent)
@@ -334,12 +341,14 @@ class Controller:
             #
             self.manageScenarios.backBUTTON.clicked.connect(self.main.show)
             self.manageScenarios.newBUTTON.clicked.connect(self.newScenario.show)
+            self.manageScenarios.backBUTTON.clicked.connect(self.main.scenarioListCreation)
             #
             self.newScenario.exploitBrowseBUTTON.clicked.connect(self.manageExploits.show)
             self.newScenario.vulnerableProgramBrowseBUTTON.clicked.connect(self.manageVulnerablePrograms.show)
             self.newScenario.cancelBUTTON.clicked.connect(self.manageScenarios.show)
             self.newScenario.nextBUTTON.clicked.connect(self.suggestedSetup.show)
             self.newScenario.nextBUTTON.clicked.connect(self.suggestedSetup.refreshSetup)
+            self.newScenario.cancelBUTTON.clicked.connect(self.manageScenarios.setupTree)
             #
             self.manageExploits.backBUTTON.clicked.connect(self.newScenario.show)
             #
