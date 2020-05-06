@@ -26,7 +26,7 @@ class Ui_VmSystemSettings(object):
 
         change["memory"] = self.baseMemorySPINBOX.value()
         change["processors"] = self.processorsSPINBOX.value()
-        print(change)
+        # print(change)
 
         custom["--boot"] = self.getBootOrder()
         custom["--apis"] = "on" if self.enableIOApicCHECKBOX.isChecked() else "off"
@@ -36,13 +36,13 @@ class Ui_VmSystemSettings(object):
         custom["--pae"] = "on" if self.enablePaeNxQCHECKBOX.isChecked() else "off"
         custom["--hwvirtex"] = "on" if self.enableVtxAmdv_CHECKBOX.isChecked() else "off"
         custom["--nestedpaging"] = "on" if self.enableNestedPagingCHECKBOX.isChecked() else "off"
-        print(custom)
+        # print(custom)
         
         settings = {"regular": change,
                         "vbox": custom}
     
-        self.hide()
         self.parentWindow.get_settings(settings)
+        self.close()
 
         # scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
 

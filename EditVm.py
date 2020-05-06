@@ -246,13 +246,13 @@ class Ui_EditVM(object):
         software = ""
 
         reg = self.vm_settings["regular"]
-        print(reg)
+        # print(reg)
         memory = reg["memory"]
-        print(memory)
+        # print(memory)
         processors = reg["processors"]
-        print(processors)
+        # print(processors)
         other_settings = self.vm_settings["vbox"]
-        print(other_settings)
+        # print(other_settings)
 
         all_settings = {"vm_name": name,
                         "entity_type": entity,
@@ -263,7 +263,9 @@ class Ui_EditVM(object):
                         "proc": processors,
                         "vbox_settings": other_settings}
         
-        print(all_settings)
+        # print(all_settings)
+        self.suggestedSetup.getVmData(all_settings)
+        self.close()
 
     def get_settings(self, settings):
         self.vm_settings = settings
