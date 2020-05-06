@@ -281,6 +281,24 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.searchLABEL.setText(_translate("MainWindow", "Search"))
+        self.scenarioListCreation()
+        __sortingEnabled = self.scenarioInfoLISTWIDGET.isSortingEnabled()
+        self.scenarioInfoLISTWIDGET.setSortingEnabled(False)
+        item = self.scenarioInfoLISTWIDGET.item(0)  # added a new item
+        item.setText(_translate("MainWindow", "Scenario Details"))
+        self.scenarioInfoLISTWIDGET.setSortingEnabled(__sortingEnabled)
+        self.runBUTTON.setText(_translate("MainWindow", "Run"))
+        self.configureBUTTON.setText(_translate("MainWindow", "Configure"))
+        self.setupBUTTON.setText(_translate("MainWindow", "Setup"))
+        self.manageDataBUTTON.setText(_translate("MainWindow", "Manage Data"))
+        self.configureDatabaseBUTTON.setText(_translate("MainWindow", "Configure Database"))
+        self.manageScenarioBUTTON.setText(_translate("MainWindow", "Manage Scenario"))
+        self.cancelSearchBUTTON.setText(_translate("MainWindow","Clear Search"))
+        
+    def scenarioListCreation(self):
+        self.scenariosLIST.clear()
+        data = Ui_MainWindow.db["Scenario"]
+        _translate = QtCore.QCoreApplication.translate
         self.scenariosLIST.setSortingEnabled(False)
         __sortingEnabled = self.scenariosLIST.isSortingEnabled()
         self.scenariosLIST.setSortingEnabled(False)
@@ -298,22 +316,9 @@ class Ui_MainWindow(object):
             # Prevents NoneType Error
             if not item:
                 continue
-            item.setText(_translate("MainWindow", scen['name'])) #SCENARIO NAME IS CHANGED HERE
-            x+=1
+            item.setText(_translate("MainWindow", scen['name']))  # SCENARIO NAME IS CHANGED HERE
+            x += 1
         self.scenariosLIST.setSortingEnabled(__sortingEnabled)
-        __sortingEnabled = self.scenarioInfoLISTWIDGET.isSortingEnabled()
-        self.scenarioInfoLISTWIDGET.setSortingEnabled(False)
-        item = self.scenarioInfoLISTWIDGET.item(0)  # added a new item
-        item.setText(_translate("MainWindow", "Scenario Details"))
-        self.scenarioInfoLISTWIDGET.setSortingEnabled(__sortingEnabled)
-        self.runBUTTON.setText(_translate("MainWindow", "Run"))
-        self.configureBUTTON.setText(_translate("MainWindow", "Configure"))
-        self.setupBUTTON.setText(_translate("MainWindow", "Setup"))
-        self.manageDataBUTTON.setText(_translate("MainWindow", "Manage Data"))
-        self.configureDatabaseBUTTON.setText(_translate("MainWindow", "Configure Database"))
-        self.manageScenarioBUTTON.setText(_translate("MainWindow", "Manage Scenario"))
-        self.cancelSearchBUTTON.setText(_translate("MainWindow","Clear Search"))
-
 
 if __name__ == "__main__":
     import sys
