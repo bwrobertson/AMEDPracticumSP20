@@ -7,21 +7,17 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 import time
-import os
 from datetime import date
 from pymongo import MongoClient
 import json
 from DBConfiguration import Ui_DBConfiguration
+import base64
+import os
+import magic
 
 class Ui_importData(object):
-    
-    def importButtonStatus(self, path):
-        if os.path.exists(path) and len(path) > 2:
-            self.pushButton_3.setEnabled(True)
-        else:
-            self.pushButton_3.setEnabled(False)
 
     def scenarioBrowser(self):
         scenarioOptions = QFileDialog.Options()
@@ -46,17 +42,6 @@ class Ui_importData(object):
             return ""
 
 
-    def pushScenario(self):
-        data = Ui_DBConfiguration.db["Scenario"]
-        today = date.today()
-        today = today.strftime("%d%b%Y")
-
-        absolutePath = self.scenarioPath
-        with open(absolutePath) as jsonFile:
-            dataJson = json.load(jsonFile)
-        name = str(today) + self.lineEdit.text()
-
-        data.insert_one(dataJson)
 
     def setupUi(self, importData):
         importData.setObjectName("importData")
@@ -131,8 +116,6 @@ class Ui_importData(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.pushButton_3 = QtWidgets.QPushButton(self.layoutWidget_2)
         self.pushButton_3.setObjectName("pushButton_3")
-        self.pushButton_3.setEnabled(False)
-        self.lineEdit_2.textChanged.connect(self.importButtonStatus)
         self.pushButton_3.clicked.connect(self.pushScenario)
         self.horizontalLayout_2.addWidget(self.pushButton_3)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -148,7 +131,7 @@ class Ui_importData(object):
         _translate = QtCore.QCoreApplication.translate
         importData.setWindowTitle(_translate("importData", "Import Data"))
         self.label.setText(_translate("importData", "File type:"))
-        self.comboBox.setItemText(0, _translate("importData", "POV"))
+        self.comboBox.setItemText(0, _translate("importData", "Vulnerable Program"))
         self.comboBox.setItemText(1, _translate("importData", "Scenario"))
         self.comboBox.setItemText(2, _translate("importData", "Exploit"))
         self.comboBox.setItemText(3, _translate("importData", "VM"))
@@ -159,6 +142,94 @@ class Ui_importData(object):
         self.pushButton_3.setText(_translate("importData", "Import"))
         self.pushButton_2.setText(_translate("importData", "Back"))
 
+    def pushScenario(self):
+        folder = str(self.comboBox.currentText())
+        if(folder=='Exploit'):
+            self.importExploit()
+        elif(folder == 'Vulnerable Program'):
+            self.importVP()
+
+        """data = Ui_DBConfiguration.db[folder]
+        today = date.today()
+        today = today.strftime("%d%b%Y")
+
+        absolutePath = self.scenarioPath
+
+        # try:
+        with open(absolutePath, "rb") as image_file:
+            encoded_img = base64.b64encode(image_file.read())
+
+        #m = hashlib.sha256(encoded_content) # Hashed encoded data
+        file_name = self.lineEdit.text()
+        d = {'name' : file_name}
+        d['file'] = encoded_img # to recover base64.b64decode(encoded_content.encode()).decode()
+        #d['hash'] = m.hexdigest()
+
+        data.insert_one(d)
+        #QMessage.about(self, "Select Folder", "File uploaded.")
+        # except:
+        #     print("ImportData.py -- pushScenario.")
+
+        return"""
+
+    def importExploit(self):
+        data = Ui_DBConfiguration.db["Exploits"]
+        file = self.lineEdit.text()
+        fileName = os.path.split(file)
+        fileName = fileName[1]#.replace('.',';')
+        absolutePath = self.scenarioPath
+        scenario = {'name' : fileName}
+        with open(absolutePath, 'rb') as eFile:
+            encoded_img = base64.b64encode(eFile.read())
+        scenario['File'] = encoded_img
+
+        scenario['Language'] = magic.from_file(absolutePath)
+
+        Platform = ['Windows', 'Mac', 'Linux', 'Unix']
+        netCon = ['Local', 'Remote']
+
+        scenario['Platform'] = ''
+        scenario['Type'] = ''
+        with open(absolutePath) as f:
+            try:
+                scenario['Type'] = next((x for x in netCon if x in f.read()), False)
+            except:
+                scenario['Type']='Unknown'
+        f.close()
+
+        with open(absolutePath) as f:
+            try:
+                scenario['Platform'] = next((x for x in Platform if x in f.read()), False)
+            except:
+                scenario['Platform']='Multiple'
+        f.close()
+
+        if(scenario['Platform']==False):
+            scenario['Platform']='Multiple'
+
+        if(scenario['Type']==False):
+            scenario['Type']='Unknown'
+
+        print("beginning push of " + fileName)
+        data.insert_one(scenario)
+        QMessageBox.about(self, "Success", fileName + " successfully uploaded!")
+
+    def importVP(self):
+        data = Ui_DBConfiguration.db["VulnerablePrograms"]
+        file = self.lineEdit.text()
+        fileName = os.path.split(file)
+        fileName = fileName[1]#.replace('.',';')
+        absolutePath = self.scenarioPath
+        scenario = {'name' : fileName}
+        with open(absolutePath, 'rb') as eFile:
+            encoded_img = base64.b64encode(eFile.read())
+        scenario['File'] = encoded_img
+
+        #print(magic.from_file(file, mime=True))
+        scenario['Information'] = magic.from_file(absolutePath)
+        print("beginning push of " + fileName)
+        data.insert_one(scenario)
+        QMessageBox.about(self, "Success", fileName + " successfully uploaded!")
 
 if __name__ == "__main__":
     import sys
