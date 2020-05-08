@@ -52,14 +52,17 @@ class Ui_ManageVulnerablePrograms(object):
         data = Ui_DBConfiguration.db["VulnerablePrograms"]
         x=0
         y=0
+        temp = ''
         for collection in data.find():
             if(self.tree["parent{0}".format(x)].checkState(0)==QtCore.Qt.Checked):
-                self.VulnerableProgramsList[collection['name']] = collection
+                temp = collection['name']
+                temp = temp.replace('.',';')
+                self.VulnerableProgramsList[temp] = collection
                 #print(collection)
                 y+=1
             x+=1
         Ui_ManageVulnerablePrograms.VPName = str(y) + " vulnerable programs selected"
-        self.translateVulnerablePrograms()
+        #self.translateVulnerablePrograms()
 
     def translateVulnerablePrograms(self):
         #print(self.VulnerableProgramsList['rubySlippers']['File'])
