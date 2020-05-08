@@ -191,7 +191,7 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
 
 
 class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
-    def __init__(self,parent=None):
+    def __init__(self,text, parent=None):
         super(EditVmWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
@@ -312,7 +312,7 @@ class Controller:
             self.createNewVm = CreateNewVmWindow()
             self.progressBar.setValue(11)
             QApplication.processEvents()
-            self.editVm= EditVmWindow()
+            self.editVm= EditVmWindow("null")
             self.progressBar.setValue(12)
             QApplication.processEvents()
             self.vmSystemSettings = VmSystemSettings(self.editVm)
