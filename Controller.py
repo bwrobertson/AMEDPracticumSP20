@@ -120,6 +120,7 @@ class ManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
+        self.nextButton.clicked.connect(self.close)
 
 class AlternateManageExploitsWindow(QtWidgets.QWidget, Ui_ManageExploits):
     def __init__(self, parent=None):
@@ -149,6 +150,7 @@ class ManageVulnerableProgramsWindow(QtWidgets.QWidget,
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
         self.backBUTTON.clicked.connect(self.close)
+        self.nextButton.clicked.connect(self.close)
 
 class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
     def __init__(self, parent=None):
@@ -351,8 +353,12 @@ class Controller:
             self.newScenario.cancelBUTTON.clicked.connect(self.manageScenarios.setupTree)
             #
             self.manageExploits.backBUTTON.clicked.connect(self.newScenario.show)
+            self.manageExploits.nextButton.clicked.connect(self.newScenario.show)
+            self.manageExploits.nextButton.clicked.connect(self.newScenario.refreshSetup)
             #
             self.manageVulnerablePrograms.backBUTTON.clicked.connect(self.newScenario.show)
+            self.manageVulnerablePrograms.nextButton.clicked.connect(self.newScenario.show)
+            self.manageVulnerablePrograms.nextButton.clicked.connect(self.newScenario.refreshSetup)
             #
             self.suggestedSetup.backButton.clicked.connect(self.alternateNavSuggestedSetup)
             self.suggestedSetup.addVmBUTTON.clicked.connect(self.createNewVm.show)
