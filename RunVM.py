@@ -65,33 +65,36 @@ class Ui_RunVM(object):
             pass
 
         os.chdir(self.amed_home)
+
         # Path to running VBoxManage.exe to start up vms
+        self.vbox_manage_path = "" # MAY 7
         vbox_manage_path = os.environ['PATH']
         vbox_manage_path = vbox_manage_path.split(';')
         for ll in vbox_manage_path:
             if 'virtualbox' in ll.lower():
                 vbox_manage_path = ll+os.sep+'VBoxManage.exe'
+                self.vbox_manage_path = vbox_manage_path # MAY 7
 
         try:
             proc = subprocess.Popen([vbox_manage_path, "list", "vms"], stdout=subprocess.PIPE)
             output = proc.stdout.read() # shows us a list of vms to run
             output=output.decode()
+
         except:
             pass
 
 
         # Convert raw (bytes) to string, makes data easier
         # to modify and run vms based on names/uuids
-        b = output.split('\r\n') # turn VM string into list of VMs
-        
-        # Dictionary of VMs available by name 
-        # and its uuid for VBoxManage startvm command
-        self.name_uuid_vm = {}
-        for e in b:
-            if e == '':
-                continue
-            line = e.split('" ')
-            self.name_uuid_vm[line[0][1:]] = line[1][1:-1]   
+        if not output == '':
+            b = output.split('\r\n') # turn VM string into list of VMs
+            self.name_uuid_vm = {}
+            for e in b:
+                if not e == '':
+                    line = e.split('" ')
+                    self.name_uuid_vm[line[0][1:]] = line[1][1:-1]   
+
+
         ############################################
         #           Changes End   Here             #
         ############################################
@@ -151,6 +154,7 @@ class Ui_RunVM(object):
         self.rdpBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.rdpBUTTON.setObjectName("rdpBUTTON")
         self.horizontalLayout_2.addWidget(self.rdpBUTTON)
+        self.rdpBUTTON.setEnabled(False)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem1)
         self.startBUTTON = QtWidgets.QPushButton(self.layoutWidget)
@@ -225,6 +229,26 @@ class Ui_RunVM(object):
                 x+=1
 
         return self.vms_start
+
+    # MAY 7
+    def get_vbox_manage_path(self):
+        return self.vbox_manage_path
+
+
+    def get_running_vms(self):
+        proc = subprocess.Popen([self.vbox_manage_path, 'list', 'runningvms'], stdout=subprocess.PIPE)
+        output = proc.stdout.read()
+        output = output.decode()
+
+        d = {}
+        if not output == '':
+            a = output.split('\r\n')
+            for vm in a:
+                if not vm == '':
+                    line = vm.split('" ')
+                    d[line[0][1:]] = line[1][1:-1]
+
+        return d
 
 
 if __name__ == "__main__":
