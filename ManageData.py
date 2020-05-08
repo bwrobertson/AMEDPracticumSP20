@@ -242,39 +242,42 @@ class Ui_ManageData(object):
                             numFiles+=1
                         y+=1
 
-        tickSize = int(100/numFiles)
-        print(tickSize)
-        x=0
-        y=0
-        fileName = ""
-        fileContent = ""
-        today = date.today()
-        today = today.strftime("%d%b%Y")
-        zipName = str(today) + "Scenario.zip"
-        with ZipFile(zipName, 'w') as newzip:
-            for collection in data.find():
-                #if (self.tree["parent{0}".format(x)] == QtCore.Qt.Checked):
-                for key in collection:
-                    if(key!="_id" and key!="name"):
-                        if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
-                            fileName = collection["name"] + key
-                            fileContent = collection[key]
-                            fileName = fileName.replace(";",".")
-                            with open(fileName, "wb") as decoded_image:
-                                decoded_content = base64.decodebytes(fileContent)
-                                decoded_image.write(decoded_content)
-                                decoded_image.close()
-                                print(fileName + " written to " + self.path)
-                                newzip.write(fileName)
-                            os.remove(fileName)
-                            self.count+=tickSize
-                            print(self.count)
-                            self.progressBar.setValue(self.count)
-                        y+=1
-                x+=1
-            self.progressBar.setValue(100)
-            QMessageBox.about(self, "Success", "Items Exported Succesfully.")
-            self.progressBar.setValue(0)
+        try:
+            tickSize = int(100/numFiles)
+            print(tickSize)
+            x=0
+            y=0
+            fileName = ""
+            fileContent = ""
+            today = date.today()
+            today = today.strftime("%d%b%Y")
+            zipName = str(today) + "Scenario.zip"
+            with ZipFile(zipName, 'w') as newzip:
+                for collection in data.find():
+                    #if (self.tree["parent{0}".format(x)] == QtCore.Qt.Checked):
+                    for key in collection:
+                        if(key!="_id" and key!="name"):
+                            if(self.tree["child{0}".format(y)].checkState(0)== QtCore.Qt.Checked):
+                                fileName = collection["name"] + key
+                                fileContent = collection[key]
+                                fileName = fileName.replace(";",".")
+                                with open(fileName, "wb") as decoded_image:
+                                    decoded_content = base64.decodebytes(fileContent)
+                                    decoded_image.write(decoded_content)
+                                    decoded_image.close()
+                                    print(fileName + " written to " + self.path)
+                                    newzip.write(fileName)
+                                os.remove(fileName)
+                                self.count+=tickSize
+                                print(self.count)
+                                self.progressBar.setValue(self.count)
+                            y+=1
+                    x+=1
+                self.progressBar.setValue(100)
+                QMessageBox.about(self, "Success", "Items Exported Succesfully.")
+                self.progressBar.setValue(0)
+        except:
+            QMessageBox.about(self, "Success", "No files were selected, so no files were exported!")
 
 
         return
