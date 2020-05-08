@@ -17,6 +17,7 @@ class Ui_runWindow(object):
     def setupUi(self, runWindow):
         self.checkbox_list = ""
         self.amed_home = os.getcwd()
+        self.thread_scenarios = {} # MAY 7
         
         runWindow.setObjectName("runWindow")
         runWindow.resize(360, 200)
@@ -132,9 +133,11 @@ class Ui_runWindow(object):
             # Path to running VBoxManage.exe to start up vms
             vbox_manage_path = os.environ['PATH']
             vbox_manage_path = vbox_manage_path.split(';')
+            self.vbox_headless = ""
             for ll in vbox_manage_path:
                 if 'Oracle' in ll:
                     vbox_manage_path = ll+os.sep+'VBoxManage.exe'
+                    self.vbox_headless=ll+os.sep+'VBoxHeadless.exe'
             
             if not 'Oracle' in vbox_manage_path:
                 msg="Need to add VBoxManage.exe to PATH environment variable. Exiting from starting VM scenario."
@@ -176,17 +179,17 @@ class Ui_runWindow(object):
             
             # # Dictionary of VMs available by name 
             # # and its uuid for VBoxManage startvm command
-            name_uuid_vm = {}
+            self.name_uuid_vm = {}
             for e in b:
                 if not e == '':
                     line = e.split('" ')
-                    name_uuid_vm[line[0][1:]] = line[1][1:-1]            
+                    self.name_uuid_vm[line[0][1:]] = line[1][1:-1]            
 
             # # Stub vm to start
             # # Ideally, user should be able to enter the
             # # exact vms from their scenario selected
             vms_to_start = []
-            for key in name_uuid_vm:
+            for key in self.name_uuid_vm:
                 if not self.checkbox_list:
                     msg="No VM's were selected. Please select VM's to run."
                     QMessageBox.about(self, "Warning", msg)
@@ -210,7 +213,7 @@ class Ui_runWindow(object):
 
                 # Check if vm is running
                 if v in running_vms:
-                    msg = "VM is already running, powering off. ID: "+str(name_uuid_vm[v])
+                    msg = "VM is already running, powering off. ID: "+str(self.name_uuid_vm[v])
                     QMessageBox.about(self, "Warning", msg)
                     print("VM is already running, powering off!")
                     print("ID: ", v)
@@ -218,6 +221,7 @@ class Ui_runWindow(object):
                     output = proc_stop.stdout.read()
                     print(output.decode())
                     print('\n\n')
+                    return # MAY 7
 
 
             # how to power down vm safely
@@ -236,12 +240,12 @@ class Ui_runWindow(object):
             # May have to do this recursively to find all action_provision ids with scenario VM's
             print(self.amed_home)
             os.chdir(self.amed_home+os.sep+'vagrant'+os.sep+'.vagrant'+os.sep+'machines'+os.sep+'default'+os.sep+'virtualbox')
-            action_provision_id=-1
+            self.action_provision_id=-1
             try:
                 f=open('action_provision','r') # Get the p_id from the vagrant file
                 line=f.read()
                 line=line.split(':')
-                action_provision_id=line[1]
+                self.action_provision_id=line[1]
             except:
                 print("No provision file found.")
 
@@ -252,11 +256,11 @@ class Ui_runWindow(object):
 
                 # Sending vagrant command to start collectors
                 # Check to see if the action_p_id is in the list of vms presented
-                for key in name_uuid_vm:
+                for key in self.name_uuid_vm:
 
-                    if action_provision_id == name_uuid_vm[key]:
+                    if self.action_provision_id == self.name_uuid_vm[key]:
                         # start scenario on thread
-                        self.thread_scenarios[self.t_id_counter] = threading.Thread(target=self.vagrant_up_ssh, args=(interval_seconds, self.amed_home,), daemon=True)
+                        self.thread_scenarios[self.t_id_counter] = threading.Thread(target=self.vagrant_up_ssh, args=(interval_seconds, self.amed_home, key), daemon=True)
                         self.thread_scenarios[self.t_id_counter].start()
                         print("Started thread: ",self.thread_scenarios[self.t_id_counter])
                         # self.thread_scenarios[self.t_id_counter].join()
@@ -281,13 +285,13 @@ class Ui_runWindow(object):
             QMessageBox.about(self.main, "Warning", "OS not supported!")
 
     
-    def vagrant_up_ssh(self, interval_seconds, amed_home):
+    def vagrant_up_ssh(self, interval_seconds, amed_home, vm_name):
         vagrant_command_string = "sudo $ECEL_HOME/standalone.sh "+str(interval_seconds)
-        proc_1 = subprocess.Popen(['vagrant', 'up'], stdout=subprocess.PIPE)
+        proc_1 = subprocess.Popen([self.vbox_headless, '-s', vm_name], stdout=subprocess.PIPE)# subprocess.Popen(['vagrant', 'up'], stdout=subprocess.PIPE)
         print("\nVagrant standalone command sent, output to follow ->")
         print('\n\n')
-        output = proc_1.stdout.read()
-        print(output)          
+        # output = proc_1.stdout.read()
+        # print(output)          
 
         proc = subprocess.Popen(['vagrant', 'ssh', '-c', vagrant_command_string], stdout=subprocess.PIPE)
         print("\nVagrant standalone command sent, output to follow ->")
@@ -308,4 +312,4 @@ if __name__ == "__main__":
     ui.setupUi(runWindow)
     runWindow.show()
     sys.exit(app.exec_())
-   
+    
