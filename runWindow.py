@@ -267,6 +267,8 @@ class Ui_runWindow(object):
 
                         # to store ids of threads
                         self.t_id_counter += 1
+                        msg="VM started!"
+                        QMessageBox.about(self, "Information", msg)
 
                 return
             except:
