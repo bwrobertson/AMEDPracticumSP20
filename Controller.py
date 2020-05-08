@@ -48,13 +48,24 @@ class RunVMWindow(QtWidgets.QDialog, Ui_RunVM):
         self.setWindowIcon(QIcon("Icon.png"))
         self.vms_checkmarked = []
         self.setupUi(self)
-        self.runWindow = RunWindow() # child process
+        self.runWindow = RunWindow() 
         self.startBUTTON.clicked.connect(self.send_vm_info)
         self.backBUTTON.clicked.connect(self.close)
 
     def send_vm_info(self):
         print("Here.")
         self.vms_checkmarked = self.progress()
+        running_vms = self.get_running_vms() 
+
+        # MAY 7
+        self.vbox_manage_path = self.get_vbox_manage_path()
+        for key in running_vms:
+            for vm in self.vms_checkmarked:
+                if key == vm:
+                    QMessageBox.about(self, "Warning", str(key)+" is already running, powering down.")
+                    subprocess.Popen([self.vbox_manage_path, 'controlvm', vm, 'poweroff'])
+                    return
+
         if not self.vms_checkmarked:
             msg = "No VM's selected. Please select VM's."
             QMessageBox.about(self, "Warning", msg)
@@ -66,7 +77,7 @@ class RunVMWindow(QtWidgets.QDialog, Ui_RunVM):
 
 
 # Run collectors functionality
-class RunWindow(QtWidgets.QWidget, Ui_runWindow): # MAY 3 #
+class RunWindow(QtWidgets.QWidget, Ui_runWindow): 
     def __init__(self, parent=None):
         super(RunWindow, self).__init__(parent)
         self.thread_scenarios = {}
