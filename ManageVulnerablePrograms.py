@@ -17,6 +17,7 @@ import magic
 class Ui_ManageVulnerablePrograms(object):
 
     VulnerableProgramsList = {}
+    VPName = 'No Vulnerable Programs Selected'
 
     # Opens a file browser window
     def importButtonStatus(self, path):
@@ -48,12 +49,16 @@ class Ui_ManageVulnerablePrograms(object):
             return ""
 
     def selectVulnerablePrograms(self):
-        data = Ui_DBConfiguration.db["VulnerableProgramss"]
+        data = Ui_DBConfiguration.db["VulnerablePrograms"]
         x=0
+        y=0
         for collection in data.find():
-            if (self.tree["parent{0}".format(x)].checkState(0) == QtCore.Qt.Checked):
+            if(self.tree["parent{0}".format(x)].checkState(0)==QtCore.Qt.Checked):
                 self.VulnerableProgramsList[collection['name']] = collection
+                #print(collection)
+                y+=1
             x+=1
+        Ui_ManageVulnerablePrograms.VPName = str(y) + " vulnerable programs selected"
         self.translateVulnerablePrograms()
 
     def translateVulnerablePrograms(self):
