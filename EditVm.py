@@ -20,6 +20,8 @@ from MainWindow import Ui_MainWindow
 class Ui_EditVM(object):
 
     vm_settings = {}
+    full_settings = {}
+
     def setupUi(self, EditVM):
         EditVM.setObjectName("EditVM")
         EditVM.resize(560, 679)
@@ -206,12 +208,56 @@ class Ui_EditVM(object):
         self.horizontalLayout_6.addItem(spacerItem2)
         self.saveBUTTON = QtWidgets.QPushButton(self.widget)
         self.saveBUTTON.setObjectName("saveBUTTON")
-        self.saveBUTTON.clicked.connect(self.runVagrant)
+        self.saveBUTTON.clicked.connect(self.saveThisMachine)
         self.horizontalLayout_6.addWidget(self.saveBUTTON)
         self.verticalLayout_8.addLayout(self.horizontalLayout_6)
 
         self.retranslateUi(EditVM)
         QtCore.QMetaObject.connectSlotsByName(EditVM)
+
+    def getOs(self):
+        if self.vmOsCOMBOBOX.currentIndex() == 1:
+            return "ubuntu/trusty64"
+        elif self.vmOsCOMBOBOX.currentIndex() == 2:
+            return "windows"
+        return "kali linux"
+
+    def allChecked(self):
+        checked = list()
+        root = self.vmFilesTREEWIDGET.invisibleRootItem()
+        count = root.childCount()
+
+        for i in range(count):
+            child = root.child(i)
+
+            if child.checkState(0) == QtCore.Qt.Checked:
+                checked.append(child.text(0))
+
+        return checked
+
+    def saveThisMachine(self):
+        name = self.machineNameLINEEDIT.text()
+        entity = self.typeCOMBOBOX.currentIndex()
+        os = self.getOs()
+        files = self.allChecked()
+        software = ""
+
+        reg = self.vm_settings["regular"]
+        memory = reg["memory"]
+        processors = reg["processors"]
+        other_settings = self.vm_settings["vbox"]
+
+        all_settings = {"vm_name": name,
+                        "entity_type": entity,
+                        "os": os,
+                        "vm_files": files,
+                        "software": software,
+                        "mem": memory,
+                        "proc": processors,
+                        "vbox_settings": other_settings}
+
+        self.suggestedSetup.getVmData(all_settings)
+        self.close()
 
     def createJson(self):
         data = temp.VagrantFileTemplate.createJson(self)

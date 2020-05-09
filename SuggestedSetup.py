@@ -20,12 +20,67 @@ from MainWindow import Ui_MainWindow
 import os
 import platform
 from pathlib import Path
+import threading
+import subprocess
 
 
 class Ui_Form(object):
 
     vmList = []
+    vms = {}
 
+    def getVmData(self, settings_data):	
+        try:	
+            client = MongoClient(Ui_DBConfiguration.dbConnection)	
+        except:	
+            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")	
+
+        db = client.Test	
+        data = Ui_DBConfiguration.db["Scenario"]	
+
+        scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})	
+        newScen = scen     	
+
+        if(Ui_NewScenario.id!=0):	
+            Ui_Form.id = Ui_NewScenario.id	
+        else:	
+            Ui_Form.id = Ui_MainWindow.id	
+
+        thisScen = newScen['scenario'] 	
+        machine_list = {}	
+        new_machine = {}	
+        vm_name = settings_data["vm_name"]	
+
+        machine_list.update(thisScen['machines'])	
+        new_machine = {vm_name : settings_data}	
+        machine_list.update(new_machine)	
+
+        thisScen['machines'] = machine_list	
+        print(thisScen['machines'])	
+
+        data.delete_one({'_id': ObjectId(Ui_NewScenario.id)})	
+        data.insert_one(newScen)	
+
+        # Ui_Form.vms.update(data)	
+        # print(Ui_Form.vms)
+
+    def createPacker(self, vm_settings):
+        custom = vm_settings["vbox_settings"]
+        vbox = [
+            ["modifyvm", "{{.Name}}", "--boot", custom["--boot"]],
+            ["modifyvm", "{{.Name}}", "--vrde", custom["--vrde"]],
+            ["modifyvm", "{{.Name}}", "--apis", custom["--apis"]],
+            ["modifyvm", "{{.Name}}", "--firmware", custom["--firmware"]],
+            ["modifyvm", "{{.Name}}", "--rtcuseutc", custom["--rtcuseutc"]],
+            ["modifyvm", "{{.Name}}", "--cpuexecutioncap", custom["--cpuexecutioncap"]],
+            ["modifyvm", "{{.Name}}", "--pae", custom["--pae"]],
+            ["modifyvm", "{{.Name}}", "--hwvirtex", custom["--hwvirtex"]],
+            ["modifyvm", "{{.Name}}", "--nestedpaging", custom["--nestedpaging"]]
+        ]
+        source_path = vm_settings["os"]
+
+    def createVm(self):
+        subprocess.run(["vagrant", "up", "--provision"])
 
     def runScen(self):
         data = Ui_DBConfiguration.db["Scenario"]
@@ -128,7 +183,7 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.listWidget, 1, 7, 1, 1)
         self.nextBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.nextBUTTON.setObjectName("nextBUTTON")
-        self.nextBUTTON.clicked.connect(self.runScen)
+        self.nextBUTTON.clicked.connect(self.createVm)
         self.gridLayout.addWidget(self.nextBUTTON, 4, 3, 1, 1)
         self.line = QtWidgets.QFrame(self.layoutWidget)
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
