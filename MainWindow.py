@@ -259,6 +259,7 @@ class Ui_MainWindow(object):
         scen = ""
         type = ""
         type2 = ''
+        temp = 'Exploit: '
         item = self.scenariosLIST.currentItem()
         collections = data.find_one({"scenario.name":item.text()})
         Ui_MainWindow.id = collections['_id']
@@ -272,9 +273,14 @@ class Ui_MainWindow(object):
         item = self.scenarioInfoLISTWIDGET.item(2)
         item.setText(_translate("MainWindow", "Date Modified: " + scen['date_modified']))
         item = self.scenarioInfoLISTWIDGET.item(3)
-        item.setText(_translate("MainWindow", "Exploit: " + type['file']))
+        for thing in type:
+            temp = temp + thing + ", "
+        item.setText(_translate("MainWindow", temp))
         item = self.scenarioInfoLISTWIDGET.item(4)
-        item.setText(_translate("MainWindow", "Vulnerable Program: " + type2['file']))
+        temp = 'Vulnerable Program: '
+        for thing in type2:
+            temp = temp + thing + ", "
+        item.setText(_translate("MainWindow", temp))
 
     def retranslateUi(self, MainWindow):
         data = Ui_MainWindow.db["Scenario"]

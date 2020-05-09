@@ -11,75 +11,25 @@ from datetime import date
 import time
 import ScenarioJsonTemplate as template
 from DBConfiguration import Ui_DBConfiguration
+from ManageExploits import Ui_ManageExploits
+from ManageVulnerablePrograms import Ui_ManageVulnerablePrograms
 
 class Ui_NewScenario(object):
     id = 0
-    try:
-       client = MongoClient(Ui_DBConfiguration.dbConnection)
-    except:
-        client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-    db = client.Test
-    # def exploitBrowser(self):
-    #     exploitOptions = QFileDialog.Options()
-    #     self.exploitDialog = QFileDialog()
-    #     self.exploitDialog.setOptions(exploitOptions)
-    #     self.exploitPath, __ = QFileDialog.getOpenFileName(self.exploitDialog, "Select Exploit", '/home')
-
-    #     if self.exploitPath:
-    #         #If Windows, change the separator
-    #         if self.exploitPath == 'C:\\':
-    #             self.exploitPath = self.exploitPath.replace('/', '\\')
-    #             self.exploitLINEEDIT.setText(self.exploitPath)
-    #             #os.chdir(self.exploitPath)
-    #             return self.exploitPath
-    #         # if Linux-based
-    #         else:
-    #             self.exploitLINEEDIT.setText(self.exploitPath)
-    #             #os.chdir(self.exploitPath)
-    #             return self.exploitPath
-    #     else:
-    #         self.exploitLINEEDIT.setText(self.exploitPath)
-    #         return ""
-
-    # def vulnerableProgramBrowser(self):
-    #     VPoptions = QFileDialog.Options()
-    #     self.VPdialog = QFileDialog()
-    #     self.VPdialog.setOptions(VPoptions)
-    #     self.vulnerableProgramPath, __ = QFileDialog.getOpenFileName(self.VPdialog, "Select Vulnerable Program", '/home')
-
-    #     if self.vulnerableProgramPath:
-    #         #If Windows, change the separator
-    #         if self.vulnerableProgramPath == 'C:\\':
-    #             self.vulnerableProgramPath = self.vulnerableProgramPath.replace('/', '\\')
-    #             self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
-    #             #os.chdir(self.vulnerableProgramPath)
-    #             return self.vulnerableProgramPath
-    #         # if Linux-based
-    #         else:
-    #             self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
-    #             #os.chdir(self.vulnerableProgramPath)
-    #             return self.vulnerableProgramPath
-    #     else:
-    #         self.vulnerableProgramLINEEDIT.setText(self.vulnerableProgramPath)
-    #         return ""
 
     def storeScenario(self, jd):
-        data = Ui_NewScenario.db["Scenario"]
+        data = Ui_DBConfiguration.db["Scenario"]
 
         today = date.today()
         today = today.strftime("%d%b%Y")
         scenName = str(today) + self.scenarioLINEEDIT.text()
         encodedFile = ""
-        #exploitName = self.exploitLINEEDIT.text()
-        exploitName = self.exploitLINEEDIT.text()
-        #VPname = self.vulnerableProgramLINEEDIT.text()
-        VPname = self.vulnerableProgramLINEEDIT.text()
 
         jd["name"] = scenName
         jd["date_created"] = today
         jd["date_modified"] = today
-        jd["exploit"] = {"file" : exploitName}
-        jd["pov"] = {"file" : VPname}
+        jd["exploit"] = Ui_ManageExploits.exploitList
+        jd["pov"] = Ui_ManageVulnerablePrograms.VulnerableProgramsList
 
         # scenarioStore = {"name": scenName}
         # scenarioStore['Date'] = today
@@ -91,13 +41,16 @@ class Ui_NewScenario(object):
         id = data.insert_one(jsondata)
         print("end push")
         Ui_NewScenario.id = id.inserted_id
-        print(Ui_NewScenario.id)
+        #print(Ui_NewScenario.id)
         # self.manageExploits = ct.ManageExploitsWindow()
         # self.manageExploits.show
 
     def createScenario(self):
         data = template.ScenarioJsonTemplate.createJson(self)
         self.storeScenario(data)
+
+    def clearExploits(self):
+        Ui_ManageExploits.exploitList = {}
 
     def setupUi(self, NewScenario):
         NewScenario.setObjectName("NewScenario")
@@ -141,7 +94,7 @@ class Ui_NewScenario(object):
         self.horizontalLayout.addWidget(self.exploitLINEEDIT)
         self.exploitBrowseBUTTON = QtWidgets.QPushButton(self.widget)
         self.exploitBrowseBUTTON.setObjectName("exploitBrowseBUTTON")
-        #self.exploitBrowseBUTTON.clicked.connect(self.exploitBrowser)
+        self.exploitBrowseBUTTON.clicked.connect(self.clearExploits)
         self.horizontalLayout.addWidget(self.exploitBrowseBUTTON)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.verticalLayout_4.addLayout(self.verticalLayout_2)
@@ -197,6 +150,13 @@ class Ui_NewScenario(object):
         self.cancelBUTTON.setText(_translate("NewScenario", "Back"))
         self.addBUTTON.setText(_translate("NewScenario", "Add"))
         self.nextBUTTON.setText(_translate("NewScenario", "Next"))
+        self.refreshSetup()
+
+    def refreshSetup(self):
+        self.exploitLINEEDIT.clear()
+        #print(Ui_ManageExploits.exploitName)
+        self.exploitLINEEDIT.setText(Ui_ManageExploits.exploitName)
+        self.vulnerableProgramLINEEDIT.setText(Ui_ManageVulnerablePrograms.VPName)
 
 
 if __name__ == "__main__":

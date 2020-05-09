@@ -191,7 +191,7 @@ class SuggestedSetupWindow(QtWidgets.QDialog, Ui_Form):
 
 
 class EditVmWindow(QtWidgets.QDialog, Ui_EditVM):
-    def __init__(self, text,parent=None):
+    def __init__(self,text, parent=None):
         super(EditVmWindow, self).__init__(parent)
         self.setWindowIcon(QIcon("Icon.png"))
         self.setupUi(self)
