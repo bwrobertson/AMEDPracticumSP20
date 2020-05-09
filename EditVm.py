@@ -15,12 +15,11 @@ from DBConfiguration import Ui_DBConfiguration
 from bson.objectid import ObjectId
 import threading
 import subprocess
+from MainWindow import Ui_MainWindow
 
 class Ui_EditVM(object):
 
     vm_settings = {}
-    full_settings = {}
-
     def setupUi(self, EditVM):
         EditVM.setObjectName("EditVM")
         EditVM.resize(560, 679)
@@ -207,65 +206,26 @@ class Ui_EditVM(object):
         self.horizontalLayout_6.addItem(spacerItem2)
         self.saveBUTTON = QtWidgets.QPushButton(self.widget)
         self.saveBUTTON.setObjectName("saveBUTTON")
-        self.saveBUTTON.clicked.connect(self.saveThisMachine)
+        self.saveBUTTON.clicked.connect(self.runVagrant)
         self.horizontalLayout_6.addWidget(self.saveBUTTON)
         self.verticalLayout_8.addLayout(self.horizontalLayout_6)
 
         self.retranslateUi(EditVM)
         QtCore.QMetaObject.connectSlotsByName(EditVM)
 
-    def getOs(self):
-       # data = temp.VagrantFileTemplate.createJson(self)
+    def createJson(self):
+        data = temp.VagrantFileTemplate.createJson(self)
 
-        if self.vmOsCOMBOBOX.currentIndex() == 1:
-            return "ubuntu/trusty64"
-        elif self.vmOsCOMBOBOX.currentIndex() == 2:
-            return "windows"
-        # data['source_path'] = os
+        os = ""
+        if self.vmOsCOMBOBOX.currentIndex == 0:
+            os = "kali linux"
+        elif self.vmOsCOMBOBOX.currentIndex == 1:
+            os = "ubuntu/trusty64"
+        elif self.vmOsCOMBOBOX.currentIndex == 2:
+            os = "windows"
+        data['source_path'] = os
 
-        return "kali linux"
-
-    def allChecked(self):
-        checked = list()
-        root = self.vmFilesTREEWIDGET.invisibleRootItem()
-        count = root.childCount()
-
-        for i in range(count):
-            child = root.child(i)
-
-            if child.checkState(0) == QtCore.Qt.Checked:
-                checked.append(child.text(0))
-
-        return checked
-
-    def saveThisMachine(self):
-        name = self.machineNameLINEEDIT.text()
-        entity = self.typeCOMBOBOX.currentIndex()
-        os = self.getOs()
-        files = self.allChecked()
-        software = ""
-
-        reg = self.vm_settings["regular"]
-        # print(reg)
-        memory = reg["memory"]
-        # print(memory)
-        processors = reg["processors"]
-        # print(processors)
-        other_settings = self.vm_settings["vbox"]
-        # print(other_settings)
-
-        all_settings = {"vm_name": name,
-                        "entity_type": entity,
-                        "os": os,
-                        "vm_files": files,
-                        "software": software, 
-                        "mem": memory,
-                        "proc": processors,
-                        "vbox_settings": other_settings}
-        
-        # print(all_settings)
-        self.suggestedSetup.getVmData(all_settings)
-        self.close()
+        return data
 
     def get_settings(self, settings):
         self.vm_settings = settings
@@ -338,55 +298,59 @@ class Ui_EditVM(object):
             i+=1
         """
         self.softwareTREEWIDGET.setSortingEnabled(False)
-        i=0
-        for collection in EXPLOITS.find():
-            self.vmFilesTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
-            self.vmFilesTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Language : ' + collection['Language']))
-            self.vmFilesTREEWIDGET.topLevelItem(i).child(1).setText(0, _translate("EditVM", 'Platform : ' + collection['Platform']))
-            self.vmFilesTREEWIDGET.topLevelItem(i).child(2).setText(0, _translate("EditVM", 'Type : ' + collection['Type']))
-            i+=1
-        for collection in POVS.find():
-            self.vmFilesTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
-            self.vmFilesTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Information : ' + collection['Information']))
-            i+=1
-
+        try:
+            i=0
+            for collection in EXPLOITS.find():
+                self.vmFilesTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
+                self.vmFilesTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Language : ' + collection['Language']))
+                self.vmFilesTREEWIDGET.topLevelItem(i).child(1).setText(0, _translate("EditVM", 'Platform : ' + collection['Platform']))
+                self.vmFilesTREEWIDGET.topLevelItem(i).child(2).setText(0, _translate("EditVM", 'Type : ' + collection['Type']))
+                i+=1
+            for collection in POVS.find():
+                self.vmFilesTREEWIDGET.topLevelItem(i).setText(0, _translate("EditVM", collection['name']))
+                self.vmFilesTREEWIDGET.topLevelItem(i).child(0).setText(0, _translate("EditVM", 'Information : ' + collection['Information']))
+                i+=1
+        except:
+            print('starting up')
         self.vmFilesTREEWIDGET.setSortingEnabled(__sortingEnabled)
         self.discardBUTTON.setText(_translate("EditVM", "Discard"))
         self.settingsBUTTON.setText(_translate("EditVM", "System Settings"))
         self.saveBUTTON.setText(_translate("EditVM", "Save"))
 
     def setupVMFiles(self, EditVM):
-        x=0
-        y=0
-        self.tree={}
-        data = Ui_DBConfiguration.db["Scenario"]
-        thisVM = data.find_one({'_id': ObjectId('5eb587be883db3065c51a6d9')})
-        thisScen = thisVM['scenario']
-        #print(thisVM)
-        thisExploit = thisScen['exploit']
-        thisPOV = thisScen['pov']
-        EXPLOITS = Ui_DBConfiguration.db['Exploits']
-        POVS = Ui_DBConfiguration.db['VulnerablePrograms']
-        for collection in EXPLOITS.find():
-            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
-            #print(collection['name'])
-            if(collection['name'] in thisExploit.values()):
-                self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Checked)
-            else:
-                self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
-            self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
-            self.tree["child{0}".format(1)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
-            self.tree["child{0}".format(2)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
-            y+=1
-        for collection in POVS.find():
-            self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
-            if(collection['name'] in thisPOV.values()):
-                self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Checked)
-            else:
-                self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
-            self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
-            y+=1
-
+        try:
+            x=0
+            y=0
+            self.tree={}
+            data = Ui_DBConfiguration.db["Scenario"]
+            thisVM = data.find_one({'_id': ObjectId(Ui_MainWindow.id)})
+            thisScen = thisVM['scenario']
+            #print(thisVM)
+            thisExploit = thisScen['exploit']
+            thisPOV = thisScen['pov']
+            EXPLOITS = Ui_DBConfiguration.db['Exploits']
+            POVS = Ui_DBConfiguration.db['VulnerablePrograms']
+            for collection in EXPLOITS.find():
+                self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
+                #print(collection['name'])
+                if(collection['name'] in thisExploit.values()):
+                    self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Checked)
+                else:
+                    self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+                self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+                self.tree["child{0}".format(1)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+                self.tree["child{0}".format(2)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+                y+=1
+            for collection in POVS.find():
+                self.tree["parent{0}".format(y)] = QtWidgets.QTreeWidgetItem(self.vmFilesTREEWIDGET)
+                if(collection['name'] in thisPOV.values()):
+                    self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Checked)
+                else:
+                    self.tree["parent{0}".format(y)].setCheckState(0, QtCore.Qt.Unchecked)
+                self.tree["child{0}".format(0)] = QtWidgets.QTreeWidgetItem(self.tree["parent{0}".format(y)])
+                y+=1
+        except:
+            print('no VM loaded')
         return EditVM
 
     def setupTree(self, EditVM):
