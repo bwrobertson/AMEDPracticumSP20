@@ -24,52 +24,16 @@ from pathlib import Path
 
 class Ui_Form(object):
 
-    id = "5e9801a1e6c7aa9190f814dc"
     vmList = []
-    vms = {}
 
-    def getVmData(self, settings_data):
-        try:
-            client = MongoClient(Ui_DBConfiguration.dbConnection)
-        except:
-            client = MongoClient("mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test")
-
-        db = client.Test
-        data = Ui_DBConfiguration.db["Scenario"]
-
-        scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
-        newScen = scen     
-
-        if(Ui_NewScenario.id!=0):
-            Ui_Form.id = Ui_NewScenario.id
-        else:
-            Ui_Form.id = Ui_MainWindow.id
-        
-        thisScen = newScen['scenario'] 
-        machine_list = {}
-        new_machine = {}
-        vm_name = settings_data["vm_name"]
-        
-        machine_list.update(thisScen['machines'])
-        new_machine = {vm_name : settings_data}
-        machine_list.update(new_machine)
-
-        thisScen['machines'] = machine_list
-        print(thisScen['machines'])
-
-        data.delete_one({'_id': ObjectId(Ui_NewScenario.id)})
-        data.insert_one(newScen)
-
-        # Ui_Form.vms.update(data)
-        # print(Ui_Form.vms)
 
     def runScen(self):
-
-        db = Ui_Form.client.Test
         data = Ui_DBConfiguration.db["Scenario"]
 
-
-        scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
+        try:
+            scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
+        except:
+            scen = data.find_one({'_id': ObjectId(Ui_MainWindow.id)})
         #scen = data.find_one({'_id': ObjectId("5e840e238a71b65203287a0a")})
         newScen = scen
         if(Ui_NewScenario.id!=0):
@@ -103,7 +67,7 @@ class Ui_Form(object):
         thisScen['machines'] = machines
         #print(newScen)
         #data.delete_one({'_id': ObjectId("5e840e238a71b65203287a0a")})
-        data.delete_one({'_id': ObjectId(Ui_NewScenario.id)})
+        data.delete_one({'_id': ObjectId(Ui_Form.id)})
         data.insert_one(newScen)
 
     def findVMs(self):
@@ -164,7 +128,7 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.listWidget, 1, 7, 1, 1)
         self.nextBUTTON = QtWidgets.QPushButton(self.layoutWidget)
         self.nextBUTTON.setObjectName("nextBUTTON")
-        #self.nextBUTTON.clicked.connect(runScen())
+        self.nextBUTTON.clicked.connect(self.runScen)
         self.gridLayout.addWidget(self.nextBUTTON, 4, 3, 1, 1)
         self.line = QtWidgets.QFrame(self.layoutWidget)
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
@@ -212,11 +176,11 @@ class Ui_Form(object):
                 self.listWidget.insertItem(1, QListWidgetItem(QIcon("vm.png"), x))
         try:
             try:
-                thisData = data.find_one({'_id': ObjectId(Ui_MainWindow.id)})
-                print('using correct')
+                thisData = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})
+                #print('using correct')
             except:
-                thisData = data.find_one({'_id': ObjectId(Ui_Form.id)})
-                print('using default')
+                thisData = data.find_one({'_id': ObjectId(Ui_MainWindow.id)})
+                #print('using default')
             try:
                 thisScen = thisData['scenario']
                 thisMach = thisScen['machines']
