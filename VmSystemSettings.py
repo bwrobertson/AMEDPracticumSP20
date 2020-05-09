@@ -29,6 +29,7 @@ class Ui_VmSystemSettings(object):
         # print(change)
 
         custom["--boot"] = self.getBootOrder()
+        custom["--vrde"] = "on"         #rdp always on
         custom["--apis"] = "on" if self.enableIOApicCHECKBOX.isChecked() else "off"
         custom["--firmware"] = "on" if self.enableEfiCHECKBOX.isChecked() else "off"
         custom["--rtcuseutc"] = "on" if self.hardwareClockCHECKBOX.isChecked() else "off"
