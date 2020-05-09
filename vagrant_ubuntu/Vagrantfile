@@ -1,0 +1,100 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# To have vbox guest additions automatically installed (host)
+# vagrant plugin install vagrant-vbguest
+
+Vagrant.configure("2") do |config|
+
+
+
+  config.vm.box = "ubuntu/xenial64"
+  # config.vm.network "forwarded_port", guest: 3389, host: 3389
+
+  config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # config.vm.network "public_network"
+
+  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  config.vm.provider "virtualbox" do |vb|
+    # Display the VirtualBox GUI when booting the machine
+    vb.gui = true
+  
+    # Customize the amount of memory on the VM:
+    vb.memory = "1024"
+
+    vb.cpus = 1
+
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+
+    apt-get update
+    sleep 3
+
+    fuser /var/lib/dpkg/lock
+    sleep 3
+
+    apt install -y net-tools network-manager
+    sleep 0.3
+
+    apt-get install -y gcc make curl python-pip python3-pip git expect 
+    sleep 0.3
+
+    pip3 install pymongo dnspython python-magic
+    sleep 0.3
+
+    pip install pymongo dnspython python-magic
+    sleep 0.3
+
+    apt-get install -y python3-pyqt5
+    sleep 0.3
+
+    git clone https://github.com/bwrobertson/AMEDPracticumSP20.git
+    sleep 0.3
+
+    cd AMEDPracticumSP20
+    sleep 0.3
+
+    git clone https://github.com/kevinHonsaker01/ecel.git
+    sleep 0.3
+
+    cd ecel
+    # this needs to be tied to the Controller.py
+    sed -i -e 's/\r$//' standalone.sh
+    echo "mongodb+srv://BWR:benji@adventurermart-j760a.mongodb.net/test" >> database_configuration.txt
+    sleep 0.3
+
+    chown $HOSTNAME:$HOSTNAME -R ~/AMEDPracticumSP20
+    sleep 0.3
+
+    echo ECEL_HOME="\"${PWD}\"" >> /etc/environment
+    export ECEL_HOME="\"${PWD}\""
+    sleep 0.3
+
+    # start/stop collectors from ECEL project (tshark/snoopy)
+    chown root:root standalone.sh
+    sleep 0.3
+
+    chmod 4755 standalone.sh
+    sleep 0.3
+
+    chmod 755 script.exp
+    sleep 0.3
+
+    mkdir /root/.config
+    sleep 0.3
+
+    mkdir /root/.config/autostart
+    sleep 1
+
+    service network-manager start
+    sleep 0.3
+
+    ./script.exp 
+    sleep 3
+  SHELL
+end
