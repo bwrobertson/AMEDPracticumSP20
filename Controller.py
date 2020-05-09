@@ -280,6 +280,8 @@ class Controller:
 
     def launchAMED(self):
             self.showSplashScreen()
+            elf.progressBar.setValue(1)
+            QApplication.processEvents()
             self.main = MainWindow()
             #self.runVMWindow = RunVMWindow()
             self.progressBar.setValue(1)
