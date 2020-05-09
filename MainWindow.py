@@ -253,7 +253,7 @@ class Ui_MainWindow(object):
             self.scenariosLIST.takeItem(i)
         self.cancelSearchBUTTON.setEnabled(True)
 
-        def listViewClicked(self, MainWindow):
+    def listViewClicked(self, MainWindow):
         data = Ui_MainWindow.db["Scenario"]
         _translate = QtCore.QCoreApplication.translate
         scen = ""
