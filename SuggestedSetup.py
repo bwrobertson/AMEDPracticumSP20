@@ -200,6 +200,7 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.label_3, 0, 7, 1, 1)
         self.backButton = QtWidgets.QPushButton(self.layoutWidget)
         self.backButton.setObjectName("backButton")
+        self.backButton.clicked.connect(self.clearIDs)        
         self.gridLayout.addWidget(self.backButton, 4, 0, 1, 2)
 
         self.retranslateUi(Form)
@@ -215,6 +216,10 @@ class Ui_Form(object):
         self.label_3.setText(_translate("Form", "Available Machines"))
         self.backButton.setText(_translate("Form", "Back"))
 
+    def clearIDs(self):
+        Ui_MainWindow.id = 0
+        Ui_NewScenario.id = 0
+        
     def refreshSetup(self):
         self.buildSetup()
 
