@@ -217,7 +217,7 @@ class Ui_Form(object):
         self.backButton.setText(_translate("Form", "Back"))
 
     def clearIDs(self):
-        Ui_MainWindow.id = 0
+        #Ui_MainWindow.id = 0
         Ui_NewScenario.id = 0
         
     def refreshSetup(self):
