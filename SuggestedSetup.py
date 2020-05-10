@@ -38,13 +38,13 @@ class Ui_Form(object):
         db = client.Test	
         data = Ui_DBConfiguration.db["Scenario"]	
 
-        scen = data.find_one({'_id': ObjectId(Ui_NewScenario.id)})	
-        newScen = scen     	
-
         if(Ui_NewScenario.id!=0):	
             Ui_Form.id = Ui_NewScenario.id	
         else:	
-            Ui_Form.id = Ui_MainWindow.id	
+            Ui_Form.id = Ui_MainWindow.id	        
+        
+        scen = data.find_one({'_id': ObjectId(Ui_Form.id)})	
+        newScen = scen     	
 
         thisScen = newScen['scenario'] 	
         machine_list = {}	
@@ -58,7 +58,7 @@ class Ui_Form(object):
         thisScen['machines'] = machine_list	
         print(thisScen['machines'])	
 
-        data.delete_one({'_id': ObjectId(Ui_NewScenario.id)})	
+        data.delete_one({'_id': ObjectId(Ui_Form.id)})	
         data.insert_one(newScen)	
 
         # Ui_Form.vms.update(data)	
