@@ -129,6 +129,15 @@ class Check():
                 break
             print(line.rstrip())
 
+        poll = proc.poll()
+        while True:
+            if poll == None:
+                print("Alive!")
+                poll = proc.poll()
+            else:
+                break
+        
+
 
         print("Running vagrant halt...\n")
         proc_0 = subprocess.Popen(['vagrant', 'halt'], stdout=subprocess.PIPE)
@@ -191,7 +200,7 @@ class Check():
         vagrant_folder = d['folder']
         ubuntu_home = '/home/vagrant/'
         kali_home = '/'
-        windows_home = 'C:'+os.sep+os.environ['HOMEPATH']+os.sep+'Desktop'+os.sep
+        windows_home = 'C:'+os.sep+'vagrant'+os.sep+'Desktop'+os.sep
         os.chdir(vagrant_folder)
 
         print("\nRunning vagrant up for uploading file...")
