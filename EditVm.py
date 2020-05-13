@@ -217,10 +217,10 @@ class Ui_EditVM(object):
 
     def getOs(self):
         if self.vmOsCOMBOBOX.currentIndex() == 1:
-            return "ubuntu/trusty64"
+            return "ubuntu"
         elif self.vmOsCOMBOBOX.currentIndex() == 2:
             return "windows"
-        return "kali linux"
+        return "kali"
 
     def allChecked(self):
         checked = list()
