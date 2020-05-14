@@ -22,12 +22,14 @@ import platform
 from pathlib import Path
 import threading
 import subprocess
+import vagrant_update as up
 
 
 class Ui_Form(object):
 
     vmList = []
     vms = {}
+    os = ""
 
     def getVmData(self, settings_data):	
         try:	
@@ -52,7 +54,7 @@ class Ui_Form(object):
         vm_name = settings_data["vm_name"]	
 
         machine_list.update(thisScen['machines'])	
-        new_machine = {vm_name : settings_data}	
+        new_machine = settings_data
         machine_list.update(new_machine)	
 
         thisScen['machines'] = machine_list	
@@ -61,25 +63,16 @@ class Ui_Form(object):
         data.delete_one({'_id': ObjectId(Ui_Form.id)})	
         data.insert_one(newScen)	
 
+        Ui_Form.vms = settings_data
+        Ui_Form.os = settings_data["os"]
         # Ui_Form.vms.update(data)	
         # print(Ui_Form.vms)
 
-    def createPacker(self, vm_settings):
-        custom = vm_settings["vbox_settings"]
-        vbox = [
-            ["modifyvm", "{{.Name}}", "--boot", custom["--boot"]],
-            ["modifyvm", "{{.Name}}", "--vrde", custom["--vrde"]],
-            ["modifyvm", "{{.Name}}", "--apis", custom["--apis"]],
-            ["modifyvm", "{{.Name}}", "--firmware", custom["--firmware"]],
-            ["modifyvm", "{{.Name}}", "--rtcuseutc", custom["--rtcuseutc"]],
-            ["modifyvm", "{{.Name}}", "--cpuexecutioncap", custom["--cpuexecutioncap"]],
-            ["modifyvm", "{{.Name}}", "--pae", custom["--pae"]],
-            ["modifyvm", "{{.Name}}", "--hwvirtex", custom["--hwvirtex"]],
-            ["modifyvm", "{{.Name}}", "--nestedpaging", custom["--nestedpaging"]]
-        ]
-        source_path = vm_settings["os"]
-
     def createVm(self):
+        c = up.Check()
+        c.edit_vagrantfile(Ui_Form.vms)
+        vagrant_folder = "cd vagrant_"+Ui_Form.os
+        os.system(vagrant_folder)
         subprocess.run(["vagrant", "up", "--provision"])
 
     def runScen(self):
@@ -246,6 +239,8 @@ class Ui_Form(object):
                 thisMach = thisScen['machines']
                 thisVic = thisMach['victim']
                 thisAtt = thisMach['attacker']
+                Ui_Form.vms = thisMach
+                Ui_Form.os = thisMach["os"]
                 x=1
                 temp = ""
                 vms = []

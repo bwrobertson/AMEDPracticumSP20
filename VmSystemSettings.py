@@ -24,16 +24,16 @@ class Ui_VmSystemSettings(object):
         change = {}
         custom = {}
 
-        change["memory"] = self.baseMemorySPINBOX.value()
-        change["processors"] = self.processorsSPINBOX.value()
+        change["memory"] = str(self.baseMemorySPINBOX.value())
+        change["processors"] = str(self.processorsSPINBOX.value())
         # print(change)
 
-        custom["--boot"] = self.getBootOrder()
+        custom["--boot"] = str(self.getBootOrder())
         custom["--vrde"] = "on"         #rdp always on
         custom["--apis"] = "on" if self.enableIOApicCHECKBOX.isChecked() else "off"
         custom["--firmware"] = "on" if self.enableEfiCHECKBOX.isChecked() else "off"
         custom["--rtcuseutc"] = "on" if self.hardwareClockCHECKBOX.isChecked() else "off"
-        custom["--cpuexecutioncap"] = self.executionCapSPINBOX.value()
+        custom["--cpuexecutioncap"] = str(self.executionCapSPINBOX.value())
         custom["--pae"] = "on" if self.enablePaeNxQCHECKBOX.isChecked() else "off"
         custom["--hwvirtex"] = "on" if self.enableVtxAmdv_CHECKBOX.isChecked() else "off"
         custom["--nestedpaging"] = "on" if self.enableNestedPagingCHECKBOX.isChecked() else "off"
