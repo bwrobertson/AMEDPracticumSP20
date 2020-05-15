@@ -71,8 +71,10 @@ class Ui_Form(object):
     def createVm(self):
         c = up.Check()
         c.edit_vagrantfile(Ui_Form.vms)
-        vagrant_folder = "cd vagrant_"+Ui_Form.os
-        os.system(vagrant_folder)
+        vagrant_folder = "vagrant_"+Ui_Form.os
+        #vagrant_up = "vagrant up --provision"
+
+        os.chdir(vagrant_folder)
         subprocess.run(["vagrant", "up", "--provision"])
 
     def runScen(self):
